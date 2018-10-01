@@ -1,3 +1,6 @@
+# Project ignore
+settings.json
+
 # Logs
 logs
 *.log
