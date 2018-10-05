@@ -1,5 +1,6 @@
 #! /usr/bin/env node
 const config = require('./config.js');
+const initServer = require('./server/index.js');
 
 main(process.argv[2]);
 
@@ -18,11 +19,14 @@ function main(command) {
 
   switch (command) {
     case 'config':
-      config();
+      config()
+        .catch((err) => console.log(err));
       break;
 
     case 'start':
-     break;
+      initServer()
+        .catch((err) => console.log(err));
+      break;
 
     case undefined:
       console.log(noCommandMsg);
