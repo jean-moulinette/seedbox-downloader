@@ -11,10 +11,10 @@ function main(command) {
     To start using this CLI tool, you must provide a command, here is a list of valid commands:
 
       - seedbox-downloader config
-      Use this to configure how the seedbox-downloader should be configured.
+        Use this to configure how the seedbox-downloader should be configured.
 
       - seedbox-downloader start
-      Once you have configured seedbox-downloader, you can run the server by running this command.
+        Once you have configured seedbox-downloader, you can run the server by running this command.
   `;
 
   switch (command) {
