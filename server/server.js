@@ -1,5 +1,11 @@
 const Koa = require('koa');
 const send = require('koa-send');
+const template = require('lodash.template');
+const dirTree = require('directory-tree');
+const Entities = require('html-entities').XmlEntities;
+
+const { getHtmlIndexAsString } = require('../helpers/index.js');
+const entities = new Entities();
 
 module.exports = function startServer({
   hostingPort,
@@ -37,6 +43,9 @@ function setupAppMiddlewares(app, folderLocation) {
     const { path } = ctx;
     let staticFile;
 
+    // Skip HTML file, we need to compile it, in another middleware
+    if (path === '/index.html') return await next();
+
     try {
       staticFile = await send(ctx, path, { root: __dirname + '/../public' });
     } catch (e) {
@@ -55,7 +64,7 @@ function setupAppMiddlewares(app, folderLocation) {
 
     if (!rootPaths.includes(path) || method !== 'GET') return await next();
 
-    await send(ctx, 'public/index.html');
+    ctx.body = compileHtmlTemplate(folderLocation);
   });
 
   // 404
@@ -65,4 +74,19 @@ function setupAppMiddlewares(app, folderLocation) {
     ctx.status = 404;
     ctx.body = 'Not found';
   });
+}
+
+function compileHtmlTemplate(folderLocation) {
+  const seedboxDirTree = entities.encode(
+    JSON.stringify(
+      getSeedboxDirectoryStructure(folderLocation)
+    )
+  );
+  const compiled = template(getHtmlIndexAsString());
+
+  return compiled({ directoryStructure: seedboxDirTree });
+}
+
+function getSeedboxDirectoryStructure(folderLocation) {
+  return dirTree(folderLocation);
 }

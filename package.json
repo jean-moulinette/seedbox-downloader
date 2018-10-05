@@ -16,8 +16,11 @@
   },
   "homepage": "https://github.com/fanghornn/seedbox-downloader#readme",
   "dependencies": {
+    "directory-tree": "^2.1.0",
+    "html-entities": "^1.2.1",
     "koa": "^2.5.3",
     "koa-send": "^5.0.0",
+    "lodash.template": "^4.4.0",
     "prompts": "^1.1.1",
     "untildify": "^3.0.3"
   }
