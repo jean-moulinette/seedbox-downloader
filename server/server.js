@@ -4,7 +4,7 @@ const template = require('lodash.template');
 const dirTree = require('directory-tree');
 const Entities = require('html-entities').XmlEntities;
 
-const { getHtmlIndexAsString } = require('../helpers/index.js');
+const { getHtmlIndexAsString } = require('./helpers/index.js');
 const entities = new Entities();
 
 module.exports = function startServer({

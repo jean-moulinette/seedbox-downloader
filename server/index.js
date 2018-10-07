@@ -1,4 +1,4 @@
-const { getUserConfig } = require('../helpers/index.js');
+const { getUserConfig } = require('./helpers/index.js');
 const startServer = require('./server.js');
 
 module.exports = async function initServer() {
