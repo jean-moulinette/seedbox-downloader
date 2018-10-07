@@ -2,10 +2,8 @@ const Koa = require('koa');
 const send = require('koa-send');
 const template = require('lodash.template');
 const dirTree = require('directory-tree');
-const Entities = require('html-entities').XmlEntities;
 
 const { getHtmlIndexAsString } = require('./helpers/index.js');
-const entities = new Entities();
 
 module.exports = function startServer({
   hostingPort,
@@ -47,7 +45,7 @@ function setupAppMiddlewares(app, folderLocation) {
     if (path === '/index.html') return await next();
 
     try {
-      staticFile = await send(ctx, path, { root: __dirname + '/../web/public' });
+      staticFile = await send(ctx, path, { root: __dirname + '/../client/public' });
     } catch (e) {
       return await next();
     }
@@ -78,7 +76,7 @@ function setupAppMiddlewares(app, folderLocation) {
 
 function compileHtmlTemplate(folderLocation) {
   const seedboxDirTree = JSON.stringify(
-    getSeedboxDirectoryStructure(folderLocation)
+    getSeedboxDirectoryStructure(folderLocation),
   );
   const compiled = template(getHtmlIndexAsString());
 

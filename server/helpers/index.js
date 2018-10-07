@@ -9,7 +9,7 @@ exports.getUserConfig = function getUserConfig() {
   let file;
 
   try {
-    file = fs.readFileSync(userSettingsPath, { encoding: 'utf8'});
+    file = fs.readFileSync(userSettingsPath, { encoding: 'utf8' });
   } catch (err) {
     if (err && err.code === 'ENOENT') {
       throw new Error('You must run "seedbox-downloader config" before starting it !').message;
@@ -19,12 +19,12 @@ exports.getUserConfig = function getUserConfig() {
   }
 
   return JSON.parse(file);
-}
+};
 
 exports.getHtmlIndexAsString = function getHtmlIndexAsString() {
-  const htmlIndexPath = path.resolve('web/public/index.html');
+  const htmlIndexPath = path.resolve('client/public/index.html');
 
   const file = fs.readFileSync(htmlIndexPath);
 
   return decoder.write(Buffer.from(file));
-}
+};
