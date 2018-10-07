@@ -47,7 +47,7 @@ function setupAppMiddlewares(app, folderLocation) {
     if (path === '/index.html') return await next();
 
     try {
-      staticFile = await send(ctx, path, { root: __dirname + '/../public' });
+      staticFile = await send(ctx, path, { root: __dirname + '/../web/public' });
     } catch (e) {
       return await next();
     }

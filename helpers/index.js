@@ -22,7 +22,7 @@ exports.getUserConfig = function getUserConfig() {
 }
 
 exports.getHtmlIndexAsString = function getHtmlIndexAsString() {
-  const htmlIndexPath = path.resolve('public/index.html');
+  const htmlIndexPath = path.resolve('web/public/index.html');
 
   const file = fs.readFileSync(htmlIndexPath);
 
