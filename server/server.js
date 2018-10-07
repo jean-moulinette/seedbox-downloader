@@ -77,10 +77,8 @@ function setupAppMiddlewares(app, folderLocation) {
 }
 
 function compileHtmlTemplate(folderLocation) {
-  const seedboxDirTree = entities.encode(
-    JSON.stringify(
-      getSeedboxDirectoryStructure(folderLocation)
-    )
+  const seedboxDirTree = JSON.stringify(
+    getSeedboxDirectoryStructure(folderLocation)
   );
   const compiled = template(getHtmlIndexAsString());
 

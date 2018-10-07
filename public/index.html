@@ -21,7 +21,9 @@
   <![endif]-->
 
   <p>Hello world! This is HTML5 Boilerplate.</p>
-  <div data-seedbox-directory-structure="<%= directoryStructure %>"></div>
+  <script>
+    const directoryStructure = JSON.parse('<%= directoryStructure %>');
+  </script>
 </body>
 
 </html>
