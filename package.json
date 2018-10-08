@@ -5,6 +5,11 @@
   "bin": {
     "seedbox-downloader": "./cli.js"
   },
+  "scripts": {
+    "lint": "eslint client/src; exit 0;",
+    "start": "npm run watch;",
+    "watch": "webpack --watch --config client/config/webpack.dev.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fanghornn/seedbox-downloader.git"
@@ -17,11 +22,27 @@
   "homepage": "https://github.com/fanghornn/seedbox-downloader#readme",
   "dependencies": {
     "directory-tree": "^2.1.0",
-    "html-entities": "^1.2.1",
     "koa": "^2.5.3",
     "koa-send": "^5.0.0",
     "lodash.template": "^4.4.0",
     "prompts": "^1.1.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "styled-components": "^3.4.9",
     "untildify": "^3.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-loader": "^8.0.4",
+    "babel-plugin-styled-components": "^1.8.0",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }
