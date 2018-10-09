@@ -17,6 +17,12 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    alias: {
+      ui: path.resolve('client/src/ui/'),
+      bootstrap: path.resolve('client/src/bootstrap/'),
+    },
+  },
   output: {
     filename: 'main.js',
     path: path.resolve('client/public'),
