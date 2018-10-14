@@ -21,6 +21,7 @@ module.exports = {
     alias: {
       ui: path.resolve('client/src/ui/'),
       bootstrap: path.resolve('client/src/bootstrap/'),
+      business: path.resolve('client/src/business/'),
     },
   },
   output: {

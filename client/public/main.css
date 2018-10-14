@@ -7,11 +7,16 @@
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 html {
     color: #222;
     font-size: 1em;
     line-height: 1.4;
+}
+
+body {
+    background: #FAFAFA;
 }
 
 /*

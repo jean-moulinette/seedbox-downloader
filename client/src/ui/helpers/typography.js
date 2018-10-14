@@ -1,0 +1,36 @@
+import { SCALES } from './scales';
+import { APP_COLORS } from './colors';
+
+export const FAMILY = {
+  MONSTERRAT: '"Montserrat", sans serif',
+};
+
+export const FONT_STYLES = {
+  regular: `
+    font-family: ${FAMILY.MONSTERRAT};
+    font-style: normal;
+    font-weight: 400;
+  `,
+
+  regular_bold: `
+    font-family: ${FAMILY.MONSTERRAT};
+    font-style: normal;
+    font-weight: 700;
+  `,
+
+  regular_light: `
+    font-family: ${FAMILY.MONSTERRAT};
+    font-style: normal;
+    font-weight: 300;
+  `,
+};
+
+export const APP_FONT_STYLES = {
+  MENU: {
+    ITEM: `
+      ${FONT_STYLES.regular_bold}
+      font-size: ${SCALES.M}px;
+      color: ${APP_COLORS.TEXT_SECONDARY};
+    `,
+  },
+};

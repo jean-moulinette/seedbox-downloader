@@ -1,16 +1,13 @@
 import * as React from 'react';
-import styled from 'styled-components';
 
+import FileExplorer from 'business/file-explorer';
 
-export default function appBootstrapper() {
-  const HelloText = styled.p`
-    font-size: 1.5em;
-    color: orange;
-  `;
+import SeedboxDownloaderProvider from 'bootstrap/provider';
 
+export default function AppBootstrapper() {
   return (
-    <>
-      <HelloText>Hello from react</HelloText>
-    </>
+    <SeedboxDownloaderProvider>
+      <FileExplorer />
+    </SeedboxDownloaderProvider>
   );
 }
