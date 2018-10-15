@@ -29,8 +29,8 @@ export const APP_FONT_STYLES = {
   MENU: {
     ITEM: `
       ${FONT_STYLES.regular_bold}
-      font-size: ${SCALES.M}px;
-      color: ${APP_COLORS.TEXT_SECONDARY};
+      font-size: ${SCALES.XS}px;
+      color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
     `,
   },
 };

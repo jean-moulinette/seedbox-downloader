@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 // Use for imported Consumer component
-export const seedboxDownloaderCtx = React.createContext({});
+export const { Consumer, Provider } = React.createContext({});
 
 export default class SeedboxDownloaderProvider extends React.Component {
   constructor(props) {
@@ -12,9 +12,12 @@ export default class SeedboxDownloaderProvider extends React.Component {
       // eslint-disable-next-line no-undef
       directoryStructure,
       // eslint-disable-next-line react/no-unused-state
-      updateDirectoryStructure: function updateDirectoryStructure() {
-        const { directoryStructure } = this.state;
-        this.setState(directoryStructure);
+      updateDirectoryStructure: function updateDirectoryStructure(payload) {
+        const { state } = this;
+        this.setState({
+          ...state,
+          directoryStructure: payload,
+        });
       },
     };
   }
@@ -23,11 +26,11 @@ export default class SeedboxDownloaderProvider extends React.Component {
     const { children } = this.props;
 
     return (
-      <seedboxDownloaderCtx.Provider
+      <Provider
         value={this.state}
       >
         { children }
-      </seedboxDownloaderCtx.Provider>
+      </Provider>
     );
   }
 }

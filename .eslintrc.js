@@ -1,14 +1,19 @@
 const path = require('path');
 
 module.exports = {
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {
         "react/jsx-filename-extension": [1, { "extensions": [".js"] }],
         "import/prefer-default-export": [0],
+        "babel/semi": 0,
     },
     "env": {
         "browser": true,
     },
+    "plugins": [
+        "babel",
+    ],
     "settings": {
         "import/resolver": {
             "webpack": {

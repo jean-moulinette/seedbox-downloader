@@ -11,7 +11,11 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-react-jsx', 'babel-plugin-styled-components'],
+            plugins: [
+              '@babel/plugin-transform-react-jsx',
+              'babel-plugin-styled-components',
+              '@babel/plugin-proposal-class-properties',
+            ],
           },
         },
       },
