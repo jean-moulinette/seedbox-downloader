@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <style>.cls-1{fill:none;stroke:#000;stroke-linejoin:round;stroke-width:2px;}</style>
+    </defs>
+    <title/>
+    <g data-name="346-Document Picture" id="_346-Document_Picture">
+      <polygon class="cls-1" points="10 1 4 7 4 31 28 31 28 1 10 1"/>
+      <polyline class="cls-1" points="10 1 10 7 4 7"/>
+      <rect class="cls-1" height="10" width="14" x="9" y="15"/>
+      <polyline class="cls-1" points="9 25 14 20 19 25"/>
+      <polyline class="cls-1" points="16 22 18 20 23 25"/>
+    </g>
+  </svg>

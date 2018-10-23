@@ -55,26 +55,33 @@ export default function Menu({
     onClick,
     separator,
     active,
+    icon,
     level,
   }) => {
     const buttonBackgroundColor = active ? APP_COLORS.MENU.ACTIVE : 'none';
     const liBorderLeft = level > 0
       ? `border-left: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};`
-      : 'border-left: none';
+      : 'border-left: none;';
 
     const Li = separator
       ? styled(MenuLi)`
+          margin-left: calc(${APP_SCALES.MENU.ITEM_MARGIN_LEFT} * ${level});
           border-top: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
           padding-left: calc(${APP_SCALES.MENU.LEVEL_PADDING} * ${level});
           ${liBorderLeft}
         `
       : styled(MenuLi)`
+          margin-left: calc(${APP_SCALES.MENU.ITEM_MARGIN_LEFT} * ${level});
           padding-left: calc(${APP_SCALES.MENU.LEVEL_PADDING} * ${level});
           ${liBorderLeft}
       `;
 
     const Button = styled(MenuButton)`
       background: ${buttonBackgroundColor};
+    `;
+    const ButtonLabel = styled.span`
+      margin-left: ${APP_SCALES.MENU.BUTTON_MARGIN_ICON};
+      vertical-align: bottom;
     `;
 
     return (
@@ -83,7 +90,10 @@ export default function Menu({
           title={label}
           onClick={onClick}
         >
-          {label}
+          { icon }
+          <ButtonLabel>
+            {label}
+          </ButtonLabel>
         </Button>
       </Li>
     );
@@ -102,7 +112,7 @@ Menu.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
     icon: PropTypes.element.isRequired,
     level: PropTypes.number.isRequired,
     separator: PropTypes.boolean,

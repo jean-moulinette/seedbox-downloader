@@ -26,12 +26,13 @@ module.exports = {
       ui: path.resolve('client/src/ui/'),
       bootstrap: path.resolve('client/src/bootstrap/'),
       business: path.resolve('client/src/business/'),
+      icons: path.resolve('client/src/icons'),
     },
   },
   output: {
     filename: 'main.js',
     path: path.resolve('client/public'),
   },
-  devtool: 'eval-source-map',
+  devtool: 'source-map',
   mode: 'development',
 };
