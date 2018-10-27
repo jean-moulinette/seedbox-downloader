@@ -10,6 +10,7 @@ export const SCALES = {
 export const APP_SCALES = {
   GLOBAL: {
     SIDE_BAR_WIDTH: '280px',
+    APP_PADDING: `${SCALES.XL}px`,
   },
   MENU: {
     SEPARATOR: '2px',

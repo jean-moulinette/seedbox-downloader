@@ -1,13 +1,20 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import { APP_SCALES } from 'ui/helpers';
 
 export default function MainContent({
   children,
 }) {
+  const Main = styled.main`
+    padding: ${APP_SCALES.GLOBAL.APP_PADDING};
+  `;
+
   return (
-    <main>
+    <Main>
       { children }
-    </main>
+    </Main>
   );
 }
 
