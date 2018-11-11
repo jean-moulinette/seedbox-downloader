@@ -2,7 +2,7 @@ export const COLORS = {
   black: '#212121',
   blackLight: '#616161',
   white: '#FAFAFA',
-  whiteDark: '#E0E0E0',
+  whiteDark: '#ededed',
 };
 
 export const APP_COLORS = {

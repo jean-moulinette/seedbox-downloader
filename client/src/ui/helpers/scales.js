@@ -14,6 +14,7 @@ export const APP_SCALES = {
   },
   MENU: {
     SEPARATOR: '2px',
+    SEPARATOR_LIGHT: '1px',
     CONTENT_PADDING: `${SCALES.M}px`,
     ITEM_PADDING: `${SCALES.XXS}px`,
     ITEM_MARGIN_LEFT: `${SCALES.S}px`,

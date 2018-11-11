@@ -55,7 +55,7 @@ export default class SideMenu extends React.Component {
     };
   }
 
-  deleteFile = () => {
+  addFolder = () => {
     console.log(this.state);
   }
 
@@ -90,14 +90,14 @@ export default class SideMenu extends React.Component {
   generateActionsItems() {
     return [
       {
-        label: 'Delete action',
+        label: 'Add Folder +',
         icon: (
           <span />
         ),
         separator: true,
         active: false,
         level: 0,
-        onClick: this.deleteFile,
+        onClick: this.addFolder,
       },
     ];
   }

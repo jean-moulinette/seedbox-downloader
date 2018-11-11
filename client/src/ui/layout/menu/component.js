@@ -66,7 +66,7 @@ export default function Menu({
     const Li = separator
       ? styled(MenuLi)`
           margin-left: calc(${APP_SCALES.MENU.ITEM_MARGIN_LEFT} * ${level});
-          border-top: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
+          border-top: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR_LIGHT};
           padding-left: calc(${APP_SCALES.MENU.LEVEL_PADDING} * ${level});
           ${liBorderLeft}
         `
