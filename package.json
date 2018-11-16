@@ -10,6 +10,7 @@
     "start": "npm run watch;",
     "watch": "webpack --watch --config client/config/webpack.dev.js"
   },
+  "eslintIgnore": ["server"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fanghornn/seedbox-downloader.git"
