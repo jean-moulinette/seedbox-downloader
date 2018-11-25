@@ -7,6 +7,12 @@ import File from 'icons/file/component';
 
 import { findRecursiveStructure } from '../services';
 
+function renderMenuItems(items) {
+  return items.map(itemProps => (
+    <Layout.Menu.Item {...itemProps} />
+  ));
+}
+
 export default class SideMenu extends React.Component {
   getNavigationItems() {
     const navigationItems = this.generateNavigationItems();
@@ -155,11 +161,12 @@ export default class SideMenu extends React.Component {
     const menuItems = rootDirectory !== null
       ? this.getNavigationItems()
       : [];
+    const loading = menuItems.length === 0;
 
     return (
-      <Layout.Menu
-        items={menuItems}
-      />
+      <Layout.Menu.Nav loading={loading}>
+        { renderMenuItems(menuItems) }
+      </Layout.Menu.Nav>
     );
   }
 }
@@ -182,3 +189,4 @@ SideMenu.propTypes = {
   }),
   updateSelectedDirectory: PropTypes.func.isRequired,
 };
+
