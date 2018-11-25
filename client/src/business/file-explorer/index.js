@@ -10,16 +10,24 @@ export default function FileExplorer() {
   return (
     <Layout.MainContent>
       <Consumer>
-        {({ directoryStructure }) => (
-          <React.Fragment>
-            <SideMenu
-              rootDirectory={directoryStructure}
-            />
-            <FileWindow
-              rootDirectory={directoryStructure}
-            />
-          </React.Fragment>
-        )}
+        {
+          ({
+            directoryTree,
+            selectedDirectory,
+            updateSelectedDirectory,
+          }) => (
+            <React.Fragment>
+              <SideMenu
+                rootDirectory={directoryTree}
+                selectedDirectory={selectedDirectory}
+                updateSelectedDirectory={updateSelectedDirectory}
+              />
+              <FileWindow
+                rootDirectory={directoryTree}
+              />
+            </React.Fragment>
+          )
+        }
       </Consumer>
     </Layout.MainContent>
   );

@@ -5,86 +5,48 @@ import { Layout } from 'ui';
 import Folder from 'icons/folder/component';
 import File from 'icons/file/component';
 
-function findRecursiveStructure(selectedStructure, rootStructure) {
-  const { path } = selectedStructure;
-  let structureFounded = null;
-
-  if (path === rootStructure.path) {
-    return rootStructure;
-  }
-
-  if (rootStructure.children) {
-    // eslint-disable-next-line consistent-return
-    rootStructure.children.some((file) => {
-      if (file.type === 'directory') {
-        if (file.path === path) {
-          structureFounded = rootStructure;
-          return true;
-        }
-
-        if (file.children) {
-          file.children.some((childrenFile) => {
-            const testPassedForChildren = findRecursiveStructure(selectedStructure, childrenFile);
-
-            if (testPassedForChildren) {
-              structureFounded = file;
-              return true;
-            }
-
-            return false;
-          });
-        }
-      }
-
-      return false;
-    });
-  }
-
-  return structureFounded;
-}
+import { findRecursiveStructure } from '../services';
 
 export default class SideMenu extends React.Component {
-  constructor(props) {
-    super(props);
+  getNavigationItems() {
+    const navigationItems = this.generateNavigationItems();
+    const filesItems = this.generateDirectoryItems();
+    const [firstFile, ...restOfFiles] = filesItems;
 
-    this.state = {
-      structure: props.rootDirectory,
-      selectedStructure: props.rootDirectory,
-      topDirectoryPath: props.rootDirectory.path,
-      selectedItem: null,
-    };
-  }
-
-  addFolder = () => {
-    console.log(this.state);
+    return [
+      ...this.generateActionsItems(),
+      firstFile,
+      ...navigationItems,
+      ...restOfFiles,
+    ];
   }
 
   goToParentDirectory = () => {
-    const { state } = this;
-    const { structure, selectedStructure } = state;
+    const {
+      rootDirectory,
+      selectedDirectory,
+      updateSelectedDirectory,
+    } = this.props;
+
     const newSelectedStructure = findRecursiveStructure(
-      selectedStructure,
-      structure,
+      selectedDirectory,
+      rootDirectory,
     );
 
-    this.setState({
-      ...state,
-      selectedStructure: newSelectedStructure || selectedStructure,
-      selectedItem: null,
-    });
+    updateSelectedDirectory(newSelectedStructure || selectedDirectory);
   }
 
   updateSelection(selectedItem) {
-    const { state, selectedStructure } = this.state;
+    const { updateSelectedDirectory, selectedDirectory } = this.props;
     const newSelectedStructure = selectedItem.children
       ? selectedItem
-      : selectedStructure;
+      : selectedDirectory;
 
-    this.setState({
-      ...state,
-      selectedItem,
-      selectedStructure: newSelectedStructure,
-    });
+    updateSelectedDirectory(newSelectedStructure);
+  }
+
+  addFolder() {
+    console.log(this.props);
   }
 
   generateActionsItems() {
@@ -97,15 +59,18 @@ export default class SideMenu extends React.Component {
         separator: true,
         active: false,
         level: 0,
-        onClick: this.addFolder,
+        onClick: () => this.addFolder,
       },
     ];
   }
 
   generateNavigationItems() {
-    const { topDirectoryPath, selectedStructure: { path } } = this.state;
+    const {
+      rootDirectory: { path: rootDirectoryPath },
+      selectedDirectory: { path: selectedDirectoryPath },
+    } = this.props;
 
-    if (topDirectoryPath === path) {
+    if (rootDirectoryPath === selectedDirectoryPath) {
       return [];
     }
 
@@ -142,13 +107,14 @@ export default class SideMenu extends React.Component {
   }
 
   generateDirectoryItems() {
-    const { selectedItem, selectedStructure } = this.state;
+    const { selectedDirectory, updateSelectedDirectory } = this.props;
 
-    const { children } = selectedStructure;
+    const { children, path: selectedDirectoryPath } = selectedDirectory;
 
     // Filter out items that are not directories
     // we want to diplay only directories the navigation menu
     const directoriesItems = children.filter(childrenItem => childrenItem.type === 'directory');
+
     const directoryItems = directoriesItems.map(directoryItem => ({
       label: directoryItem.name,
       icon: (
@@ -159,15 +125,15 @@ export default class SideMenu extends React.Component {
       ),
       level: 1,
       separator: false,
-      active: selectedItem !== null && selectedItem.path === directoryItem.path,
+      active: selectedDirectoryPath === directoryItem.path,
       onClick: () => {
-        this.updateSelection(directoryItem);
+        updateSelectedDirectory(directoryItem);
       },
     }));
 
     return [
       {
-        label: selectedStructure.name,
+        label: selectedDirectory.name,
         icon: (
           <Folder
             width="16"
@@ -177,38 +143,42 @@ export default class SideMenu extends React.Component {
         separator: true,
         level: 0,
         active: false,
-        onClick: () => this.updateSelection(selectedStructure),
+        onClick: () => this.updateSelection(selectedDirectory),
       },
       ...directoryItems,
     ];
   }
 
   render() {
-    const navigationItems = this.generateNavigationItems();
-    const filesItems = this.generateDirectoryItems();
+    const { rootDirectory } = this.props;
 
-    const [firstFile, ...restOfFiles] = filesItems;
-    const fileItemsWithNav = [
-      firstFile,
-      ...navigationItems,
-      ...restOfFiles,
-    ];
+    const menuItems = rootDirectory !== null
+      ? this.getNavigationItems()
+      : [];
 
     return (
       <Layout.Menu
-        items={[
-          ...this.generateActionsItems(),
-          ...fileItemsWithNav,
-        ]}
+        items={menuItems}
       />
     );
   }
 }
+
+SideMenu.defaultProps = {
+  rootDirectory: null,
+  selectedDirectory: null,
+};
 
 SideMenu.propTypes = {
   rootDirectory: PropTypes.shape({
     path: PropTypes.string.isRequired,
     children: PropTypes.arrayOf(PropTypes.shape({})),
     type: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
+  selectedDirectory: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+    children: PropTypes.arrayOf(PropTypes.shape({})),
+    type: PropTypes.string.isRequired,
+  }),
+  updateSelectedDirectory: PropTypes.func.isRequired,
 };

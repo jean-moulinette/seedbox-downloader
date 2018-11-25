@@ -10,18 +10,29 @@ import FolderCard from './components/folder-card';
 const fileWindow = function fileWindow({
   rootDirectory,
 }) {
-  console.log('file window rootdirectory', rootDirectory);
+  const shouldDisplayLoader = rootDirectory === null;
+  const content = shouldDisplayLoader
+    ? (
+      <span>
+        loading...
+      </span>
+    )
+    : (
+      <React.Fragment>
+        <Layout.BreadCrumb />
+        <FilesGrid>
+          <FileCard />
+          <FolderCard />
+          <span>File Window</span>
+        </FilesGrid>
+      </React.Fragment>
+    );
 
-  return (
-    <React.Fragment>
-      <Layout.BreadCrumb />
-      <FilesGrid>
-        <FileCard />
-        <FolderCard />
-        <span>File Window</span>
-      </FilesGrid>
-    </React.Fragment>
-  );
+  return content;
+};
+
+fileWindow.defaultProps = {
+  rootDirectory: null,
 };
 
 fileWindow.propTypes = {
@@ -29,7 +40,7 @@ fileWindow.propTypes = {
     path: PropTypes.string.isRequired,
     children: PropTypes.arrayOf(PropTypes.shape({})),
     type: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
 
 export default fileWindow;

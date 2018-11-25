@@ -47,10 +47,8 @@ const MenuButton = styled.button`
   }
 `;
 
-export default function Menu({
-  items,
-}) {
-  const menuItems = items.map(({
+function generateListItems(items) {
+  return items.map(({
     label,
     onClick,
     separator,
@@ -98,12 +96,27 @@ export default function Menu({
       </Li>
     );
   });
+}
+
+export default function Menu({
+  items,
+}) {
+  const shouldDisplayLoader = items.length === 0;
+  const listContent = shouldDisplayLoader
+    ? (
+      <span>
+        loading...
+      </span>
+    )
+    : (
+      <Ul>
+        { generateListItems(items) }
+      </Ul>
+    );
 
   return (
     <Nav>
-      <Ul>
-        { menuItems }
-      </Ul>
+      { listContent }
     </Nav>
   );
 }

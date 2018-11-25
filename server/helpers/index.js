@@ -1,8 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const { StringDecoder } = require('string_decoder');
-
-const decoder = new StringDecoder('utf8');
 
 exports.getUserConfig = function getUserConfig() {
   const userSettingsPath = path.resolve('settings.json');
@@ -19,12 +16,4 @@ exports.getUserConfig = function getUserConfig() {
   }
 
   return JSON.parse(file);
-};
-
-exports.getHtmlIndexAsString = function getHtmlIndexAsString() {
-  const htmlIndexPath = path.resolve('client/public/index.html');
-
-  const file = fs.readFileSync(htmlIndexPath);
-
-  return decoder.write(Buffer.from(file));
 };
