@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 import { Layout } from 'ui';
+import { APP_COLORS } from 'ui/helpers';
 import Folder from 'icons/folder/component';
 import File from 'icons/file/component';
 
@@ -125,8 +126,9 @@ export default class SideMenu extends React.Component {
       label: directoryItem.name,
       icon: (
         <Folder
-          width="16"
-          height="16"
+          color={APP_COLORS.MENU.ICON}
+          width="22"
+          height="22"
         />
       ),
       level: 1,
@@ -142,8 +144,9 @@ export default class SideMenu extends React.Component {
         label: selectedDirectory.name,
         icon: (
           <Folder
-            width="16"
-            height="16"
+            color={APP_COLORS.MENU.ICON}
+            width="22"
+            height="22"
           />
         ),
         separator: true,

@@ -12,6 +12,7 @@ export const APP_COLORS = {
     BACKGROUND: COLORS.white,
   },
   MENU: {
+    ICON: COLORS.blackLight,
     SEPARATOR: COLORS.whiteDark,
     ACTIVE: COLORS.whiteDark,
   },

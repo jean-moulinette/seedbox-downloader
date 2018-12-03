@@ -65,7 +65,7 @@ export default function MenuItem({
   `;
   const ButtonLabel = styled.span`
     margin-left: ${APP_SCALES.MENU.BUTTON_MARGIN_ICON};
-    vertical-align: bottom;
+    vertical-align: sub;
   `;
 
   return (
