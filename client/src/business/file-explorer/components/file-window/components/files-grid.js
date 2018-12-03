@@ -1,18 +1,17 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
-const filesGrid = function filesGrid(props) {
-  console.log(props);
+import { Layout } from 'ui';
+import FileCard from './file-card';
+import FolderCard from './folder-card';
 
+const filesGrid = function filesGrid() {
   return (
     <div>
-      <span>Files Grid</span>
+      <Layout.Loader active />
+      <FileCard />
+      <FolderCard />
     </div>
   );
-};
-
-filesGrid.propTypes = {
-
 };
 
 export default filesGrid;
