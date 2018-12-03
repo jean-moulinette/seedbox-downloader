@@ -2,24 +2,24 @@ import { SCALES } from './scales';
 import { APP_COLORS } from './colors';
 
 export const FAMILY = {
-  MONSTERRAT: '"Montserrat", sans serif',
+  ROBOTO: '"Roboto", sans-serif;',
 };
 
 export const FONT_STYLES = {
   regular: `
-    font-family: ${FAMILY.MONSTERRAT};
+    font-family: ${FAMILY.ROBOTO};
     font-style: normal;
     font-weight: 400;
   `,
 
   regular_bold: `
-    font-family: ${FAMILY.MONSTERRAT};
+    font-family: ${FAMILY.ROBOTO};
     font-style: normal;
     font-weight: 700;
   `,
 
   regular_light: `
-    font-family: ${FAMILY.MONSTERRAT};
+    font-family: ${FAMILY.ROBOTO};
     font-style: normal;
     font-weight: 300;
   `,
