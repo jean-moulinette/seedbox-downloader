@@ -9,7 +9,7 @@ import { findRecursiveStructure } from '../services';
 
 function renderMenuItems(items) {
   return items.map(itemProps => (
-    <Layout.Menu.Item {...itemProps} />
+    <Layout.Menu.Item key={itemProps.label} {...itemProps} />
   ));
 }
 
@@ -189,4 +189,3 @@ SideMenu.propTypes = {
   }),
   updateSelectedDirectory: PropTypes.func.isRequired,
 };
-
