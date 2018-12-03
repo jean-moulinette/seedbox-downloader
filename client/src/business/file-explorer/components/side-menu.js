@@ -83,11 +83,12 @@ export default class SideMenu extends React.Component {
 
     return [
       {
-        label: './',
+        label: '. /',
         icon: (
           <File
-            width="16"
-            height="16"
+            color={APP_COLORS.MENU.ICON}
+            width="22"
+            height="22"
           />
         ),
         level: 1,
@@ -96,11 +97,12 @@ export default class SideMenu extends React.Component {
         onClick: null,
       },
       {
-        label: '../',
+        label: '.. /',
         icon: (
           <File
-            width="16"
-            height="16"
+            color={APP_COLORS.MENU.ICON}
+            width="22"
+            height="22"
           />
         ),
         level: 1,

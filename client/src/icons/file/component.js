@@ -1,17 +1,9 @@
 import * as React from 'react';
 
-const File = props => (
-  <svg viewBox="0 0 32 32" {...props}>
-    <defs>
-      <style>
-        {'.cls-1{fill:none;stroke:#000;stroke-linejoin:round;stroke-width:2px}'}
-      </style>
-    </defs>
-    <title />
-    <g data-name="322-Document" id="_322-Document">
-      <path className="cls-1" d="M10 1L4 7v24h24V1H10z" />
-      <path className="cls-1" d="M10 1v6H4" />
-    </g>
+const File = ({ color = '#aaaaaa', ...rest }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" {...rest} viewBox="0 0 24 24">
+    <path fill="none" d="M0 0h24v24H0V0z" />
+    <path fill={color} d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" />
   </svg>
 );
 
