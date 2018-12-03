@@ -2,6 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Layout } from 'ui';
 import { APP_COLORS, APP_SCALES } from 'ui/helpers';
 
 const Nav = styled.nav`
@@ -22,13 +23,8 @@ export default function Menu({
   children,
   loading,
 }) {
-  const shouldDisplayLoader = loading === true;
-  const listContent = shouldDisplayLoader
-    ? (
-      <span>
-        loading...
-      </span>
-    )
+  const listContent = loading
+    ? null
     : (
       <Ul>
         { children }
@@ -37,6 +33,7 @@ export default function Menu({
 
   return (
     <Nav>
+      <Layout.Loader active={loading} />
       { listContent }
     </Nav>
   );

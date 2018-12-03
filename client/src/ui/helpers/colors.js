@@ -3,6 +3,7 @@ export const COLORS = {
   blackLight: '#989898',
   white: '#FAFAFA',
   whiteDark: '#ededed',
+  color: '#9880dd',
 };
 
 export const APP_COLORS = {
@@ -15,5 +16,8 @@ export const APP_COLORS = {
     ICON: COLORS.blackLight,
     SEPARATOR: COLORS.whiteDark,
     ACTIVE: COLORS.whiteDark,
+  },
+  LOADER: {
+    PRIMARY: COLORS.color,
   },
 };
