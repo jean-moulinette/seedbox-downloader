@@ -10,7 +10,7 @@ export default class SeedboxDownloaderProvider extends React.Component {
     super(props);
 
     this.state = {
-      directoryStructure: null,
+      directoryTree: null,
       selectedDirectory: null,
       // eslint-disable-next-line react/no-unused-state
       updateSelectedDirectory: (payload) => {
