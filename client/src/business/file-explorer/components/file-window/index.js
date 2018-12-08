@@ -6,10 +6,10 @@ import FilesGrid from './components/files-grid';
 
 const fileWindow = function fileWindow() {
   return (
-    <React.Fragment>
+    <Layout.SideWindow>
       <Layout.BreadCrumb />
       <FilesGrid />
-    </React.Fragment>
+    </Layout.SideWindow>
   );
 };
 

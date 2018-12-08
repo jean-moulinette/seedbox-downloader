@@ -11,6 +11,7 @@ export const APP_SCALES = {
   GLOBAL: {
     SIDE_BAR_WIDTH: '280px',
     APP_PADDING: `${SCALES.XL}px`,
+    MAIN_CONTENT_HEIGHT: `calc(100vh - ${SCALES.M}px)`,
   },
   MENU: {
     SEPARATOR: '2px',

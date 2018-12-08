@@ -7,8 +7,8 @@ import { APP_COLORS, APP_SCALES } from 'ui/helpers';
 
 const Nav = styled.nav`
   width: ${APP_SCALES.GLOBAL.SIDE_BAR_WIDTH};
-  height: calc(70vh);
-  padding: ${APP_SCALES.MENU.CONTENT_PADDING};
+  height: ${APP_SCALES.GLOBAL.MAIN_CONTENT_HEIGHT};
+  padding: ${APP_SCALES.MENU.CONTENT_PADDING} ${APP_SCALES.MENU.CONTENT_PADDING} 0 ${APP_SCALES.MENU.CONTENT_PADDING};
   border-right: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
   overflow: scroll;
   overflow-x: hidden;

@@ -8,7 +8,8 @@ export default function MainContent({
   children,
 }) {
   const Main = styled.main`
-    padding: ${APP_SCALES.GLOBAL.APP_PADDING};
+    display: flex;
+    padding: 0 ${APP_SCALES.GLOBAL.APP_PADDING};
   `;
 
   return (
