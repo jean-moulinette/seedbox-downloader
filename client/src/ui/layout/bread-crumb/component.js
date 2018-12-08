@@ -1,7 +1,6 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
-const breadCrumb = function breadCrumb(props) {
+const breadCrumb = function breadCrumb() {
   return (
     <div>
       <span>Bread Crumb</span>
@@ -9,8 +8,5 @@ const breadCrumb = function breadCrumb(props) {
   );
 };
 
-breadCrumb.propTypes = {
-
-};
 
 export default breadCrumb;

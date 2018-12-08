@@ -1,10 +1,10 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 import { Layout } from 'ui';
 import { APP_COLORS } from 'ui/helpers';
 import Folder from 'icons/folder/component';
 import File from 'icons/file/component';
+import { AppContext } from 'bootstrap/provider';
 
 import { findRecursiveStructure } from '../services';
 
@@ -30,21 +30,21 @@ export default class SideMenu extends React.Component {
 
   goToParentDirectory = () => {
     const {
-      rootDirectory,
+      directoryTree,
       selectedDirectory,
       updateSelectedDirectory,
-    } = this.props;
+    } = this.context;
 
     const newSelectedStructure = findRecursiveStructure(
       selectedDirectory,
-      rootDirectory,
+      directoryTree,
     );
 
     updateSelectedDirectory(newSelectedStructure || selectedDirectory);
   }
 
   updateSelection(selectedItem) {
-    const { updateSelectedDirectory, selectedDirectory } = this.props;
+    const { updateSelectedDirectory, selectedDirectory } = this.context;
     const newSelectedStructure = selectedItem.children
       ? selectedItem
       : selectedDirectory;
@@ -53,7 +53,7 @@ export default class SideMenu extends React.Component {
   }
 
   addFolder() {
-    console.log(this.props);
+    console.log(this.context);
   }
 
   generateActionsItems() {
@@ -73,9 +73,9 @@ export default class SideMenu extends React.Component {
 
   generateNavigationItems() {
     const {
-      rootDirectory: { path: rootDirectoryPath },
+      directoryTree: { path: rootDirectoryPath },
       selectedDirectory: { path: selectedDirectoryPath },
-    } = this.props;
+    } = this.context;
 
     if (rootDirectoryPath === selectedDirectoryPath) {
       return [];
@@ -116,7 +116,7 @@ export default class SideMenu extends React.Component {
   }
 
   generateDirectoryItems() {
-    const { selectedDirectory, updateSelectedDirectory } = this.props;
+    const { selectedDirectory, updateSelectedDirectory } = this.context;
 
     const { children, path: selectedDirectoryPath } = selectedDirectory;
 
@@ -161,9 +161,9 @@ export default class SideMenu extends React.Component {
   }
 
   render() {
-    const { rootDirectory } = this.props;
-
-    const menuItems = rootDirectory !== null
+    const { directoryTree } = this.context;
+    console.log(this.context)
+    const menuItems = directoryTree !== null
       ? this.getNavigationItems()
       : [];
     const loading = menuItems.length === 0;
@@ -177,20 +177,22 @@ export default class SideMenu extends React.Component {
 }
 
 SideMenu.defaultProps = {
-  rootDirectory: null,
+  directoryTree: null,
   selectedDirectory: null,
 };
 
-SideMenu.propTypes = {
-  rootDirectory: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-    children: PropTypes.arrayOf(PropTypes.shape({})),
-    type: PropTypes.string.isRequired,
-  }),
-  selectedDirectory: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-    children: PropTypes.arrayOf(PropTypes.shape({})),
-    type: PropTypes.string.isRequired,
-  }),
-  updateSelectedDirectory: PropTypes.func.isRequired,
-};
+SideMenu.contextType = AppContext;
+
+// {
+//   directoryTree: PropTypes.shape({
+//     path: PropTypes.string.isRequired,
+//     children: PropTypes.arrayOf(PropTypes.shape({})),
+//     type: PropTypes.string.isRequired,
+//   }),
+//   selectedDirectory: PropTypes.shape({
+//     path: PropTypes.string.isRequired,
+//     children: PropTypes.arrayOf(PropTypes.shape({})),
+//     type: PropTypes.string.isRequired,
+//   }),
+//   updateSelectedDirectory: PropTypes.func.isRequired,
+// };

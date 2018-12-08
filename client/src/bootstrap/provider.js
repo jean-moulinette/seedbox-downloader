@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 // Use for imported Consumer component
-export const { Consumer, Provider } = React.createContext({});
+export const AppContext = React.createContext({});
+export const { Consumer } = AppContext;
 
 export default class SeedboxDownloaderProvider extends React.Component {
   constructor(props) {
@@ -44,11 +45,11 @@ export default class SeedboxDownloaderProvider extends React.Component {
     const { children } = this.props;
 
     return (
-      <Provider
+      <AppContext.Provider
         value={this.state}
       >
         { children }
-      </Provider>
+      </AppContext.Provider>
     );
   }
 }
