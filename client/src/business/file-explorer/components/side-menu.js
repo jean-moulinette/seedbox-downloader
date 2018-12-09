@@ -6,7 +6,7 @@ import Folder from 'icons/folder/component';
 import File from 'icons/file/component';
 import { AppContext } from 'bootstrap/provider';
 
-import { findRecursiveStructure } from '../services';
+import { findRecursiveStructure } from 'bootstrap/services';
 
 function renderMenuItems(items) {
   return items.map(itemProps => (
@@ -36,7 +36,7 @@ export default class SideMenu extends React.Component {
     } = this.context;
 
     const newSelectedStructure = findRecursiveStructure(
-      selectedDirectory,
+      selectedDirectory.path,
       directoryTree,
     );
 
@@ -162,7 +162,7 @@ export default class SideMenu extends React.Component {
 
   render() {
     const { directoryTree } = this.context;
-    console.log(this.context)
+
     const menuItems = directoryTree !== null
       ? this.getNavigationItems()
       : [];
