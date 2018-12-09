@@ -176,23 +176,4 @@ export default class SideMenu extends React.Component {
   }
 }
 
-SideMenu.defaultProps = {
-  directoryTree: null,
-  selectedDirectory: null,
-};
-
 SideMenu.contextType = AppContext;
-
-// {
-//   directoryTree: PropTypes.shape({
-//     path: PropTypes.string.isRequired,
-//     children: PropTypes.arrayOf(PropTypes.shape({})),
-//     type: PropTypes.string.isRequired,
-//   }),
-//   selectedDirectory: PropTypes.shape({
-//     path: PropTypes.string.isRequired,
-//     children: PropTypes.arrayOf(PropTypes.shape({})),
-//     type: PropTypes.string.isRequired,
-//   }),
-//   updateSelectedDirectory: PropTypes.func.isRequired,
-// };
