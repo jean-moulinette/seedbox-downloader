@@ -2,7 +2,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import { normalizeTree } from './services';
+import {
+  updateExplorerPathAfterSelection,
+} from './services';
 
 // Use for imported Consumer component
 export const AppContext = React.createContext({});
@@ -15,13 +17,16 @@ export default class SeedboxDownloaderProvider extends React.Component {
     this.state = {
       directoryTree: null,
       selectedDirectory: null,
+      explorerPath: [],
       // eslint-disable-next-line react/no-unused-state
       updateSelectedDirectory: (payload) => {
         const { state } = this;
+        const { explorerPath } = state;
 
         this.setState({
           ...state,
           selectedDirectory: payload,
+          explorerPath: updateExplorerPathAfterSelection(payload, explorerPath),
         });
       },
     };
@@ -32,11 +37,11 @@ export default class SeedboxDownloaderProvider extends React.Component {
       .then((response) => {
         const { state } = this;
         const { data } = response;
-        const treeNormalized = normalizeTree(data);
 
         this.setState({
           ...state,
-          directoryTree: treeNormalized,
+          explorerPath: [data],
+          directoryTree: data,
           selectedDirectory: data,
         });
       })

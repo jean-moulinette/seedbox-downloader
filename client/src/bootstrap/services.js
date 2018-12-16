@@ -1,33 +1,3 @@
-// Creates the map itterator callback for normalizeTree function
-function createNormalizedChildren(parentRef) {
-  return (currentChildren) => {
-    if (currentChildren.type === 'directory') {
-      if (currentChildren.children) {
-        return {
-          ...currentChildren,
-          parent: parentRef,
-          children: currentChildren.children.map(createNormalizedChildren(currentChildren)),
-        };
-      }
-
-      return {
-        ...currentChildren,
-        parent: parentRef,
-      };
-    }
-
-
-    return currentChildren;
-  };
-}
-
-// Itterate through a tree and add a reference to the parent directory in each children directories
-export function normalizeTree(directoryTree) {
-  return {
-    ...directoryTree,
-    children: directoryTree.children.map(createNormalizedChildren(directoryTree)),
-  };
-}
 
 // Deeply search a directory through a directory tree
 export function findRecursiveStructure(selectedDirectoryPath, rootStructure) {
@@ -68,4 +38,20 @@ export function findRecursiveStructure(selectedDirectoryPath, rootStructure) {
   }
 
   return structureFounded;
+}
+
+export function updateExplorerPathAfterSelection(selectedDirectory, explorerPath) {
+  const selectedPathsArray = [...explorerPath];
+  const lastDirectorySelected = selectedPathsArray[selectedPathsArray.length - 1];
+  const isChildrenOfCurrentSelection = lastDirectorySelected.children.some(
+    directoryChildren => directoryChildren.path === selectedDirectory.path,
+  );
+
+  if (isChildrenOfCurrentSelection) {
+    selectedPathsArray.push(selectedDirectory);
+  } else if (selectedPathsArray.length !== 1) {
+    selectedPathsArray.pop();
+  }
+
+  return selectedPathsArray;
 }
