@@ -25,4 +25,8 @@ export const APP_SCALES = {
     BUTTON_MARGIN_ICON: `${SCALES.XXS}px`,
     LEVEL_PADDING: `${SCALES.XXS}px`,
   },
+  BREADCRUMB: {
+    CONTENT_PADDING: `${SCALES.M}px`,
+    ITEM_MARGIN: `${SCALES.XXS}px`,
+  },
 };

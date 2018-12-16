@@ -18,7 +18,6 @@ export default class SeedboxDownloaderProvider extends React.Component {
       directoryTree: null,
       selectedDirectory: null,
       explorerPath: [],
-      // eslint-disable-next-line react/no-unused-state
       updateSelectedDirectory: (payload) => {
         const { state } = this;
         const { explorerPath } = state;
@@ -27,6 +26,33 @@ export default class SeedboxDownloaderProvider extends React.Component {
           ...state,
           selectedDirectory: payload,
           explorerPath: updateExplorerPathAfterSelection(payload, explorerPath),
+        });
+      },
+      updateDirectoryByExplorer: (explorerItem) => {
+        const { state } = this;
+        const { explorerPath } = state;
+
+        const selectedItemIndex = explorerPath.findIndex(item => item.path === explorerItem.path);
+
+        this.setState({
+          ...state,
+          selectedDirectory: explorerItem,
+          explorerPath: explorerPath.slice(0, selectedItemIndex + 1),
+        });
+      },
+      goToParentDirectory: () => {
+        const { state } = this;
+        const { explorerPath } = state;
+        const explorerPathCopy = [...explorerPath];
+
+        explorerPathCopy.pop();
+
+        const selectedDirectory = explorerPathCopy[explorerPathCopy.length - 1];
+
+        this.setState({
+          ...state,
+          selectedDirectory,
+          explorerPath: explorerPathCopy,
         });
       },
     };

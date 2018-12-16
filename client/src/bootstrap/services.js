@@ -47,10 +47,12 @@ export function updateExplorerPathAfterSelection(selectedDirectory, explorerPath
     directoryChildren => directoryChildren.path === selectedDirectory.path,
   );
 
-  if (isChildrenOfCurrentSelection) {
-    selectedPathsArray.push(selectedDirectory);
-  } else if (selectedPathsArray.length !== 1) {
-    selectedPathsArray.pop();
+  if (lastDirectorySelected.path !== selectedDirectory.path) {
+    if (isChildrenOfCurrentSelection) {
+      selectedPathsArray.push(selectedDirectory);
+    } else if (selectedPathsArray.length !== 1) {
+      selectedPathsArray.pop();
+    }
   }
 
   return selectedPathsArray;

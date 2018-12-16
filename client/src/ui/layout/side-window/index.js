@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { APP_SCALES } from 'ui/helpers';
 
 const Section = styled.section`
-  width: 100%;
+  width: calc(100vw - ${APP_SCALES.GLOBAL.SIDE_BAR_WIDTH});
   height: ${APP_SCALES.GLOBAL.MAIN_CONTENT_HEIGHT};
   padding: ${APP_SCALES.MENU.CONTENT_PADDING} ${APP_SCALES.MENU.CONTENT_PADDING} 0 ${APP_SCALES.MENU.CONTENT_PADDING};
 `;

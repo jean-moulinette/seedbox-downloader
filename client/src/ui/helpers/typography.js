@@ -33,4 +33,16 @@ export const APP_FONT_STYLES = {
       color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
     `,
   },
+  BREADCRUMB: {
+    ITEM: `
+      ${FONT_STYLES.regular}
+      font-size: ${SCALES.M}px;
+      color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
+    `,
+    ITEM_ACTIVE: `
+      ${FONT_STYLES.regular}
+      font-size: ${SCALES.M}px;
+      color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+    `,
+  },
 };
