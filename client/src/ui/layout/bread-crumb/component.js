@@ -6,13 +6,14 @@ import { APP_SCALES } from 'ui/helpers/scales';
 import { APP_FONT_STYLES } from 'ui/helpers/typography';
 
 const BreadCrumbContainer = styled.div`
-  display: flex;
-  align-items: stretch;
   white-space: nowrap;
   overflow-x: auto;
+  overflow-y: hidden;
+  padding: ${APP_SCALES.BREADCRUMB.PADDING} 0;
 `;
 const CrumbItem = styled.span`
   ${APP_FONT_STYLES.BREADCRUMB.ITEM}
+  vertical-align: sub;
   padding: ${APP_SCALES.BREADCRUMB.CONTENT_PADDING};
   cursor: pointer;
   margin-right: ${APP_SCALES.BREADCRUMB.ITEM_MARGIN};
@@ -26,9 +27,7 @@ const CrumbItemArrowed = styled(CrumbItem)`
       height: 0.25em;
       left: 1em;
       position: relative;
-      top: .5em;
       transform: rotate(45deg);
-      vertical-align: top;
       width: 0.25em;
     }
 `;

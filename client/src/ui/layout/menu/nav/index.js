@@ -12,6 +12,7 @@ const Nav = styled.nav`
   border-right: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
   overflow-y: auto;
   overflow-x: hidden;
+  flex-shrink: 0;
 `;
 const Ul = styled.ul`
   list-style: none;

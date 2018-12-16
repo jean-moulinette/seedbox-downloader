@@ -28,5 +28,6 @@ export const APP_SCALES = {
   BREADCRUMB: {
     CONTENT_PADDING: `${SCALES.M}px`,
     ITEM_MARGIN: `${SCALES.XXS}px`,
+    PADDING: `${SCALES.XXS}px`,
   },
 };
