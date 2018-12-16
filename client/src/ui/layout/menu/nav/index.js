@@ -10,7 +10,7 @@ const Nav = styled.nav`
   height: ${APP_SCALES.GLOBAL.MAIN_CONTENT_HEIGHT};
   padding: ${APP_SCALES.MENU.CONTENT_PADDING} ${APP_SCALES.MENU.CONTENT_PADDING} 0 ${APP_SCALES.MENU.CONTENT_PADDING};
   border-right: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
-  overflow: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 `;
 const Ul = styled.ul`
