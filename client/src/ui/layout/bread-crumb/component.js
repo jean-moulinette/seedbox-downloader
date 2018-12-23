@@ -5,10 +5,13 @@ import styled from 'styled-components';
 import { APP_SCALES } from 'ui/helpers/scales';
 import { APP_FONT_STYLES } from 'ui/helpers/typography';
 
-const BreadCrumbContainer = styled.div`
+const BreadCrumbContainer = styled.nav`
+  box-sizing: border-box;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
+  height: ${APP_SCALES.BREADCRUMB.HEIGHT};
+  max-height: ${APP_SCALES.BREADCRUMB.HEIGHT};
   padding: ${APP_SCALES.BREADCRUMB.PADDING} 0;
 `;
 const CrumbItem = styled.span`
