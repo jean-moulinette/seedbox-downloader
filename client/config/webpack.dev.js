@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: path.resolve('client/src/index.js'),
@@ -30,9 +31,15 @@ module.exports = {
     },
   },
   output: {
-    filename: 'main.js',
-    path: path.resolve('client/public'),
+    filename: '[hash].js',
+    path: path.resolve('client/public/build'),
   },
   devtool: 'source-map',
   mode: 'development',
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: `${path.resolve('client/public')}/index.html`,
+      template: `${path.resolve('client/public')}/index-template.html`,
+    }),
+  ],
 };

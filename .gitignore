@@ -64,3 +64,7 @@ typings/
 .next
 
 .DS_Store
+
+# Client build files
+client/public/build
+client/public/index.html
