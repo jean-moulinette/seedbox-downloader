@@ -26,9 +26,12 @@ export const APP_SCALES = {
     LEVEL_PADDING: `${SCALES.XXS}px`,
   },
   BREADCRUMB: {
-    HEIGHT: `${SCALES.L}px`,
+    MIN_HEIGHT: `${SCALES.L}px`,
     CONTENT_PADDING: `${SCALES.M}px`,
     ITEM_MARGIN: `${SCALES.XXS}px`,
-    PADDING: `${SCALES.XXS}px`,
+    PADDING: `${SCALES.M}px`,
+  },
+  WINDOW_CONTENT: {
+    PADDING: `${SCALES.M}px`,
   },
 };

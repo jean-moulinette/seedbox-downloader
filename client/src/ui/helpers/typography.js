@@ -29,19 +29,19 @@ export const APP_FONT_STYLES = {
   MENU: {
     ITEM: `
       ${FONT_STYLES.regular_bold}
-      font-size: ${SCALES.XS}px;
+      font-size: .8em;
       color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
     `,
   },
   BREADCRUMB: {
     ITEM: `
       ${FONT_STYLES.regular}
-      font-size: ${SCALES.M}px;
+      font-size: 1.15em;
       color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
     `,
     ITEM_ACTIVE: `
       ${FONT_STYLES.regular}
-      font-size: ${SCALES.M}px;
+      font-size: 1.15em;
       color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
     `,
   },

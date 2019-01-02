@@ -10,13 +10,11 @@ const BreadCrumbContainer = styled.nav`
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  height: ${APP_SCALES.BREADCRUMB.HEIGHT};
-  max-height: ${APP_SCALES.BREADCRUMB.HEIGHT};
+  min-height: ${APP_SCALES.BREADCRUMB.MIN_HEIGHT};
   padding: ${APP_SCALES.BREADCRUMB.PADDING} 0;
 `;
 const CrumbItem = styled.span`
   ${APP_FONT_STYLES.BREADCRUMB.ITEM}
-  vertical-align: sub;
   padding: ${APP_SCALES.BREADCRUMB.CONTENT_PADDING};
   cursor: pointer;
   margin-right: ${APP_SCALES.BREADCRUMB.ITEM_MARGIN};
