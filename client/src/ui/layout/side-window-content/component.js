@@ -7,8 +7,8 @@ import { APP_SCALES } from 'ui/helpers';
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: stretch;
   box-sizing: border-box;
   height: calc(100% - ${APP_SCALES.BREADCRUMB.MIN_HEIGHT});
   overflow-y: auto;

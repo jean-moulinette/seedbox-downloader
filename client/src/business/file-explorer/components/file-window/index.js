@@ -39,7 +39,7 @@ export default class FileWindow extends React.Component {
     return (
       <Layout.SideWindow>
         <Layout.BreadCrumb items={breadCrumbItems} />
-        <FilesGrid />
+        <FilesGrid selectedDirectory={selectedDirectory} />
       </Layout.SideWindow>
     );
   }
