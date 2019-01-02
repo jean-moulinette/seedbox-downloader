@@ -22,7 +22,28 @@ class FilesGrid extends React.Component {
     },
   );
 
+  generateNavigationItems() {
+    const {
+      goToParentDirectory,
+      directoryTree: { path: rootDirectoryPath },
+      selectedDirectory: { path: selectedDirectoryPath },
+    } = this.context;
+
+    if (rootDirectoryPath === selectedDirectoryPath) {
+      return null;
+    }
+
+    return (
+      <Blocks.FileCard
+        key="../"
+        label="../"
+        onClick={() => goToParentDirectory()}
+      />
+    );
+  }
+
   generateItems() {
+    const { updateSelectedDirectory } = this.context;
     const { selectedDirectory } = this.props;
 
     const childrenSorted = selectedDirectory.children.sort((fileA, fileB) => {
@@ -42,16 +63,28 @@ class FilesGrid extends React.Component {
 
     const childrenElements = {
       files: childrenOfFiles.map(
-        ({ name, path }) => <Blocks.FileCard key={path} label={name} onClick={() => { }} />,
+        ({ name, path }) => (
+          <Blocks.FileCard
+            key={path}
+            label={name}
+            onClick={() => { }}
+          />
+        ),
       ),
       directories: childrenOfDirectories.map(
-        ({ name, path }) => <Blocks.FileCard key={path} label={name} onClick={() => { }} />,
+        directory => (
+          <Blocks.DirectoryCard
+            key={directory.path}
+            label={directory.name}
+            onClick={() => updateSelectedDirectory(directory)}
+          />
+        ),
       ),
     };
 
     return (
       <React.Fragment>
-        { childrenElements.directories }
+        { [this.generateNavigationItems(), ...childrenElements.directories] }
         <Separator />
         { childrenElements.files }
       </React.Fragment>
