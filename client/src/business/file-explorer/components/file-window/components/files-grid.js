@@ -63,10 +63,11 @@ class FilesGrid extends React.Component {
 
     const childrenElements = {
       files: childrenOfFiles.map(
-        ({ name, path }) => (
+        ({ name, path, size }) => (
           <Blocks.FileCard
             key={path}
             label={name}
+            size={size}
             onClick={() => { }}
           />
         ),
@@ -76,6 +77,7 @@ class FilesGrid extends React.Component {
           <Blocks.DirectoryCard
             key={directory.path}
             label={directory.name}
+            size={directory.size}
             onClick={() => updateSelectedDirectory(directory)}
           />
         ),

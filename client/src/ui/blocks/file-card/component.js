@@ -5,7 +5,6 @@ import styled from 'styled-components';
 const Container = styled.button`
   box-sizing: border-box;
   background: transparent;
-  padding: 36px 24px;
   margin: 10px;
   width: 200px;
   text-overflow: ellipsis;
@@ -20,15 +19,46 @@ const Container = styled.button`
   }
 `;
 
-export default function FileCard({ label, onClick }) {
+const InformationsContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding-top: 20px;
+  text-align: left;
+`;
+const LabelContainer = styled.div`
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+const SizeContainer = styled.div`
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+const DecoratorContainer = styled.div`
+  width: 100%;
+  height: 50px;
+`;
+export default function FileCard({ label, onClick, size }) {
   return (
     <Container onClick={onClick} type="button">
-      { label }
+      <DecoratorContainer />
+      <InformationsContainer>
+        <LabelContainer>
+          { label }
+        </LabelContainer>
+        <SizeContainer>
+          { size }
+        </SizeContainer>
+      </InformationsContainer>
     </Container>
   );
 }
 
 FileCard.propTypes = {
   label: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
