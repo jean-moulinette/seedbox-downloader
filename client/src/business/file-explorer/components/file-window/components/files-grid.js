@@ -1,6 +1,7 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 import styled from 'styled-components';
+import filesize from 'filesize';
 
 import { Layout, Blocks } from 'ui';
 import { AppContext } from 'bootstrap/provider';
@@ -43,7 +44,7 @@ class FilesGrid extends React.Component {
   }
 
   generateItems() {
-    const { updateSelectedDirectory } = this.context;
+    const { updateSelectedDirectory, downloadFile } = this.context;
     const { selectedDirectory } = this.props;
 
     const childrenSorted = selectedDirectory.children.sort((fileA, fileB) => {
@@ -67,8 +68,8 @@ class FilesGrid extends React.Component {
           <Blocks.FileCard
             key={path}
             label={name}
-            size={size}
-            onClick={() => { }}
+            size={filesize(size)}
+            onClick={() => { downloadFile(path) }}
           />
         ),
       ),
@@ -77,7 +78,7 @@ class FilesGrid extends React.Component {
           <Blocks.DirectoryCard
             key={directory.path}
             label={directory.name}
-            size={directory.size}
+            size={filesize(directory.size)}
             onClick={() => updateSelectedDirectory(directory)}
           />
         ),

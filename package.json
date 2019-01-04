@@ -26,6 +26,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "directory-tree": "^2.1.0",
+    "filesize": "^3.6.1",
     "koa": "^2.5.3",
     "koa-send": "^5.0.0",
     "memoize-one": "^5.0.0",

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.button`
+  cursor: pointer;
   box-sizing: border-box;
   background: transparent;
   margin: 10px;
@@ -22,7 +23,7 @@ const Container = styled.button`
 const InformationsContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  padding-top: 20px;
+  padding: 10px 0;
   text-align: left;
 `;
 const LabelContainer = styled.div`
@@ -30,17 +31,20 @@ const LabelContainer = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  padding-top: 5px;
 `;
 const SizeContainer = styled.div`
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-top: 5px;
   overflow: hidden;
 `;
 const DecoratorContainer = styled.div`
   width: 100%;
   height: 50px;
 `;
+
 export default function FileCard({ label, onClick, size }) {
   return (
     <Container onClick={onClick} type="button">
