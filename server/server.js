@@ -86,5 +86,7 @@ function setupAppMiddlewares(app, folderLocation) {
 }
 
 function getSeedboxDirectoryStructure(folderLocation) {
-  return dirTree(folderLocation);
+  return dirTree(folderLocation, {}, (file) => {
+    file.path = file.path.slice(folderLocation.length, file.path.length);
+  });
 }
