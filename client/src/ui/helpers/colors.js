@@ -20,4 +20,7 @@ export const APP_COLORS = {
   LOADER: {
     PRIMARY: COLORS.color,
   },
+  FILE_WINDOW: {
+    DIRECTORY_LABEL: COLORS.whiteDark,
+  },
 };

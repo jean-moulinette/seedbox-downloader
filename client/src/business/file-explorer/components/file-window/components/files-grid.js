@@ -37,7 +37,7 @@ class FilesGrid extends React.Component {
     }
 
     return (
-      <Blocks.FileCard
+      <Blocks.DirectoryCard
         key="../"
         label="../"
         onClick={() => goToParentDirectory()}

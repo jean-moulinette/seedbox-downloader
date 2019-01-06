@@ -1,12 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import filesize from 'filesize';
 
 import { Blocks } from 'ui';
 import { Consumer } from 'bootstrap/provider';
 
 const folderCard = function folderCard({ directory }) {
-  const { path, size, name } = directory;
+  const { path, name } = directory;
 
   return (
     <Consumer>
@@ -15,7 +14,6 @@ const folderCard = function folderCard({ directory }) {
           <Blocks.DirectoryCard
             key={path}
             label={name}
-            size={filesize(size)}
             onClick={() => updateSelectedDirectory(directory)}
           />
         )
@@ -28,7 +26,6 @@ folderCard.propTypes = {
   directory: PropTypes.shape({
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
   }).isRequired,
 };
 

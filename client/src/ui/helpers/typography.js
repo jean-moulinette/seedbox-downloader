@@ -1,4 +1,3 @@
-import { SCALES } from './scales';
 import { APP_COLORS } from './colors';
 
 export const FAMILY = {
@@ -43,6 +42,13 @@ export const APP_FONT_STYLES = {
       ${FONT_STYLES.regular}
       font-size: 1.15em;
       color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+    `,
+  },
+  FILE_WINDOW: {
+    DIRECTORY_LABEL: `
+      ${FONT_STYLES.regular};
+      color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+      font-size: 1.35em;
     `,
   },
 };
