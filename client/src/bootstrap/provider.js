@@ -56,7 +56,7 @@ export default class SeedboxDownloaderProvider extends React.Component {
         });
       },
       downloadFile: (filePath) => {
-        axios.get(`/file${filePath}`);
+        window.open(`/file${filePath}`);
       },
     };
   }

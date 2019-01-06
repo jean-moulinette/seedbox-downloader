@@ -22,8 +22,22 @@ function setupAppMiddlewares(app, folderLocation) {
     if (!path.startsWith('/file') || method !== 'GET') return await next();
 
     try {
-      const filePath = path.split('/file')[1];
-      seedboxFile = await send(ctx, folderLocation + filePath, { root: '/'});
+      const slashSplit = path.split('/');
+      const fileName = slashSplit[slashSplit.length - 1];
+      const pathFromRequest = path.split('/file')[1];
+      const filePath = folderLocation + pathFromRequest;
+
+      // Set headers to promp the user to download the file and name the file
+      ctx.set('Content-Disposition', `attachment; filename="${fileName}"`);
+
+      seedboxFile = await send(
+        ctx,
+        filePath,
+        {
+          root: '/',
+          hidden: true,
+        }
+      );
     } catch (e) {
       return await next();
     }

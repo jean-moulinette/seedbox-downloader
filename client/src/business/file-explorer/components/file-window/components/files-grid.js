@@ -69,7 +69,7 @@ class FilesGrid extends React.Component {
             key={path}
             label={name}
             size={filesize(size)}
-            onClick={() => { downloadFile(path) }}
+            onClick={() => { downloadFile(path); }}
           />
         ),
       ),
