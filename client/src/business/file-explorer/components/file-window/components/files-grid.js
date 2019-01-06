@@ -1,11 +1,13 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 import styled from 'styled-components';
-import filesize from 'filesize';
 
 import { Layout, Blocks } from 'ui';
 import { AppContext } from 'bootstrap/provider';
 import { Directory } from 'bootstrap/types';
+
+import FileCard from './file-card';
+import FolderCard from './folder-card';
 
 const Separator = styled.div`
   flex-basis: 100%;
@@ -44,7 +46,6 @@ class FilesGrid extends React.Component {
   }
 
   generateItems() {
-    const { updateSelectedDirectory, downloadFile } = this.context;
     const { selectedDirectory } = this.props;
 
     const childrenSorted = selectedDirectory.children.sort((fileA, fileB) => {
@@ -63,26 +64,10 @@ class FilesGrid extends React.Component {
     const childrenOfDirectories = childrenSortedAlpha.filter(children => children.type !== 'file');
 
     const childrenElements = {
-      files: childrenOfFiles.map(
-        ({ name, path, size }) => (
-          <Blocks.FileCard
-            key={path}
-            label={name}
-            size={filesize(size)}
-            onClick={() => { downloadFile(path); }}
-          />
-        ),
-      ),
-      directories: childrenOfDirectories.map(
-        directory => (
-          <Blocks.DirectoryCard
-            key={directory.path}
-            label={directory.name}
-            size={filesize(directory.size)}
-            onClick={() => updateSelectedDirectory(directory)}
-          />
-        ),
-      ),
+      files: childrenOfFiles.map(file => <FileCard file={file} key={file.path} />),
+      directories: childrenOfDirectories.map(directory => (
+        <FolderCard directory={directory} key={directory.path} />
+      )),
     };
 
     return (
