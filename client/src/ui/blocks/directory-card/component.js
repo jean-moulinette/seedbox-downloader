@@ -46,12 +46,12 @@ const LabelContainer = styled.span`
 
 export default function DirectoryCard({ label, onClick }) {
   return (
-    <Container onClick={onClick} type="button">
+    <Container onClick={onClick} type="button" title={label}>
       <Icon
         width={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_WIDTH}
-        height={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_WIDTH}
+        height={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_HEIGHT}
       />
-      <LabelContainer title={label}>{ label }</LabelContainer>
+      <LabelContainer>{ label }</LabelContainer>
     </Container>
   );
 }
