@@ -15,11 +15,19 @@ function main(command) {
 
       - seedbox-downloader start
         Once you have configured seedbox-downloader, you can run the server by running this command.
+
+      - seedbox-downloader start-dev
+        for starting the project when in developing mode
   `;
 
   switch (command) {
     case 'config':
       config()
+        .catch((err) => console.log(err));
+      break;
+
+    case 'start-dev':
+      initServer(true)
         .catch((err) => console.log(err));
       break;
 
@@ -30,7 +38,7 @@ function main(command) {
 
     case undefined:
       console.log(noCommandMsg);
-      break
+      break;
 
     default:
       console.error('Unknown command, only "config" and "start" are valid commands');

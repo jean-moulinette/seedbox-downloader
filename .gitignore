@@ -67,4 +67,4 @@ typings/
 
 # Client build files
 client/public/build
-client/public/index.html
+client/public/index-dev.html

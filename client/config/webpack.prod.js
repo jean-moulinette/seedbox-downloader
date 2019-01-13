@@ -31,14 +31,13 @@ module.exports = {
     },
   },
   output: {
-    filename: '[hash].js',
-    path: path.resolve('client/public/build'),
+    filename: 'build.js',
+    path: path.resolve('client/public/build-prod'),
   },
-  devtool: 'source-map',
-  mode: 'development',
+  mode: 'production',
   plugins: [
     new HtmlWebpackPlugin({
-      filename: `${path.resolve('client/public')}/index-dev.html`,
+      filename: `${path.resolve('client/public')}/index.html`,
       template: `${path.resolve('client/public')}/index-template.html`,
     }),
   ],

@@ -29,3 +29,7 @@ Once you got everything configured, you can start it by using
 ```
 seedbox-downloader start
 ```
+
+## Contribute
+
+  If you want to work on the project, you need to use `seedbox-downloader start-dev` instead of the `seedbox-downloader start` command, then, you need to start webpack bundler watcher by using `yarn start`.

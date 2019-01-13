@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "eslint client/src; exit 0;",
     "start": "npm run watch;",
+    "build": "webpack --config client/config/webpack.prod.js",
     "watch": "webpack --watch --config client/config/webpack.dev.js"
   },
   "eslintIgnore": [

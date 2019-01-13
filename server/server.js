@@ -5,15 +5,19 @@ const dirTree = require('directory-tree');
 module.exports = function startServer({
   hostingPort,
   folderLocation,
-}) {
+}, devMode) {
   const app = new Koa();
 
-  setupAppMiddlewares(app, folderLocation);
+  const htmlIndex = devMode
+    ? 'index-dev.html'
+    : 'index.html';
+
+  setupAppMiddlewares(app, folderLocation, htmlIndex);
 
   app.listen(hostingPort);
 }
 
-function setupAppMiddlewares(app, folderLocation) {
+function setupAppMiddlewares(app, folderLocation, htmlIndex) {
   // Serve files
   app.use(async (ctx, next) => {
     const { path, method } = ctx;
@@ -87,7 +91,7 @@ function setupAppMiddlewares(app, folderLocation) {
 
     if (method !== 'GET' || !rootPaths.some(allowedPath => allowedPath === path)) return await next();
 
-    await send(ctx, 'client/public/index.html');
+    await send(ctx, `client/public/${htmlIndex}`);
   });
 
   // 404
