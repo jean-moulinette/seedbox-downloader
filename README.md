@@ -6,8 +6,7 @@ Typically, you would want to use this package to host the files downloaded by yo
 
 Here is what it looks like
 
-![seedbox-downloader_preview](https://i.imgur.com/rj0Cp2x)
-
+![seedbox-downloader_preview](https://raw.githubusercontent.com/Fanghornn/seedbox-downloader/master/seedbox-downloader-preview.png)
 ## Installation
 
 Install the npm package globaly with your favorite package manager
