@@ -12,6 +12,7 @@ const Container = styled.button`
   background: transparent;
   margin: ${APP_SCALES.WINDOW_CONTENT.FILE_CARD_MARGIN};
   width: ${APP_SCALES.WINDOW_CONTENT.FILE_CARD_WIDTH};
+  height: ${APP_SCALES.WINDOW_CONTENT.FILE_CARD_HEIGHT};
   text-overflow: ellipsis;
   overflow: hidden;
   border: none;
@@ -19,6 +20,10 @@ const Container = styled.button`
 
   &:hover {
     transform: scale(1.3)
+  }
+
+  &:focus {
+    outline: 0;
   }
 `;
 

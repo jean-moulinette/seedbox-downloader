@@ -9,9 +9,18 @@ import { Directory } from 'bootstrap/types';
 import FileCard from './file-card';
 import FolderCard from './folder-card';
 
-const Separator = styled.div`
-  flex-basis: 100%;
-  margin: 16px 0;
+const DirectoriesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+`;
+
+const FilesContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: stretch;
 `;
 
 class FilesGrid extends React.Component {
@@ -72,9 +81,12 @@ class FilesGrid extends React.Component {
 
     return (
       <React.Fragment>
-        { [this.generateNavigationItems(), ...childrenElements.directories] }
-        <Separator />
-        { childrenElements.files }
+        <DirectoriesContainer>
+          { [this.generateNavigationItems(), ...childrenElements.directories] }
+        </DirectoriesContainer>
+        <FilesContainer>
+          { childrenElements.files }
+        </FilesContainer>
       </React.Fragment>
     );
   }
