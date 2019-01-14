@@ -15,6 +15,8 @@ module.exports = function startServer({
   setupAppMiddlewares(app, folderLocation, htmlIndex);
 
   app.listen(hostingPort);
+
+  console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
 }
 
 function setupAppMiddlewares(app, folderLocation, htmlIndex) {
@@ -91,13 +93,11 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex) {
 
     if (method !== 'GET' || !rootPaths.some(allowedPath => allowedPath === path)) return await next();
 
-    await send(ctx, `client/public/${htmlIndex}`);
+    await send(ctx, htmlIndex, { root: __dirname + '/../client/public'});
   });
 
   // 404
   app.use(async (ctx) => {
-    const { path } = ctx;
-
     ctx.status = 404;
     ctx.body = 'Not found';
   });

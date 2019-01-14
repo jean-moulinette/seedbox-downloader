@@ -4,14 +4,11 @@ const initServer = require('./server/index.js');
 
 main(process.argv[2]);
 
-function main(command) {
+async function main(command) {
   const noCommandMsg = `
     Welcome to the seedbox-downloader
 
     To start using this CLI tool, you must provide a command, here is a list of valid commands:
-
-      - seedbox-downloader config
-        Use this to configure how the seedbox-downloader should be configured.
 
       - seedbox-downloader start
         Once you have configured seedbox-downloader, you can run the server by running this command.
@@ -19,20 +16,16 @@ function main(command) {
       - seedbox-downloader start-dev
         for starting the project when in developing mode
   `;
+  const userConfig = await config();
 
   switch (command) {
-    case 'config':
-      config()
-        .catch((err) => console.log(err));
-      break;
-
     case 'start-dev':
-      initServer(true)
+      initServer(true, userConfig)
         .catch((err) => console.log(err));
       break;
 
     case 'start':
-      initServer()
+      initServer(false, userConfig)
         .catch((err) => console.log(err));
       break;
 

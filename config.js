@@ -1,4 +1,3 @@
-const util  = require('util');
 const fs = require('fs');
 const path = require('path');
 const prompts = require('prompts');
@@ -12,9 +11,10 @@ const configurationFieldNames = {
 module.exports = async function config() {
   const configuration = await getConfiguration();
 
-  saveConfiguration(configuration);
-
   console.log(`\nConfiguration sucessfully registered.\n`);
+
+  return configuration;
+
 }
 
 async function getConfiguration() {
@@ -62,18 +62,4 @@ function validateFolderAnswer(folder) {
   }
 
   return true;
-}
-
-async function saveConfiguration(configuration) {
-  const writeFile = util.promisify(fs.writeFile);
-  const settingsFileName = 'settings.json';
-
-  await writeFile(
-    settingsFileName,
-    JSON.stringify(
-      configuration,
-      null,
-      2,
-    ),
-  );
 }
