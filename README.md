@@ -15,20 +15,14 @@ Install the npm package globaly with your favorite package manager
 npm install -g seedbox-downloader
 ```
 
-Then you can start configuring how seedbox-downloader should behave.
-
-```
-seedbox-downloader config
-```
-
-The configuration allows you to choose on which internal port you want to use, then you have to specify which directory should be served.
-(Note that you can use the `~` home alias)
-
-Once you got everything configured, you can start it by using
+Then you can start the seedbox-downloader by using the command:
 
 ```
 seedbox-downloader start
 ```
+
+The configuration asked first allows you to choose on which internal port you want to use, then you have to specify which directory should be served.
+(Note that you can use the `~` home alias)
 
 ## Contribute
 
