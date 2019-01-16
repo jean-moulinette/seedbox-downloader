@@ -16,15 +16,17 @@ async function main(command) {
       - seedbox-downloader start-dev
         for starting the project when in developing mode
   `;
-  const userConfig = await config();
+  let userConfig;
 
   switch (command) {
     case 'start-dev':
+      userConfig = await config();
       initServer(true, userConfig)
         .catch((err) => console.log(err));
       break;
 
     case 'start':
+      userConfig = await config();
       initServer(false, userConfig)
         .catch((err) => console.log(err));
       break;
@@ -34,6 +36,6 @@ async function main(command) {
       break;
 
     default:
-      console.error('Unknown command, only "config" and "start" are valid commands');
+      console.error('Unknown command, only "start" and "start-dev" are valid commands');
   }
 }
