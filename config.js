@@ -6,6 +6,7 @@ const untildify = require('untildify');
 const configurationFieldNames = {
   hostingPort: 'hostingPort',
   folderLocation: 'folderLocation',
+  htpasswd: 'htpasswd',
 };
 
 module.exports = async function config() {
@@ -14,19 +15,18 @@ module.exports = async function config() {
   console.log(`\nConfiguration sucessfully registered.\n`);
 
   return configuration;
-
-}
+};
 
 async function getConfiguration() {
   const answers = await promptUserForConfiguration();
 
   return {
-    ...answers
+    ...answers,
   };
 }
 
 async function promptUserForConfiguration() {
-  const { hostingPort, folderLocation } = configurationFieldNames;
+  const { hostingPort, folderLocation, htpasswd } = configurationFieldNames;
 
   const questions = [
     {
@@ -42,23 +42,56 @@ async function promptUserForConfiguration() {
       validate: answer => validateFolderAnswer(untildify(answer)),
       format: answer => path.resolve(untildify(answer)),
     },
+    {
+      type: 'text',
+      name: htpasswd,
+      message: 'Should the seedbox-downloader use an .htpasswd (if no, leave blank)',
+      validate: answer => validatePasswdAnswer(untildify(answer)),
+      format: (answer) => {
+        if (!answer) {
+          return false;
+        }
+
+        return path.resolve(untildify(answer));
+      },
+    },
   ];
 
-  return await prompts(questions, {
+  const answers = await prompts(questions, {
     // Gracefully exit process if user canceled prompts
-    onCancel: () => process.exit(1)
+    onCancel: () => process.exit(1),
   });
+
+  return answers;
 }
 
 function validateFolderAnswer(folder) {
   try {
-    fs.accessSync(folder, fs.constants.R_OK | fs.constants.W_OK)
+    fs.accessSync(folder, fs.constants.R_OK || fs.constants.W_OK);
   } catch (err) {
     return 'No such file or directory.';
   }
 
   if (!fs.lstatSync(folder).isDirectory()) {
     return 'You must specify a directory and not a file, my friend.';
+  }
+
+  return true;
+}
+
+function validatePasswdAnswer(htpasswdPath) {
+  if (!htpasswdPath) {
+    return true;
+  }
+
+  try {
+    fs.accessSync(htpasswdPath, fs.constants.R_OK);
+  } catch (err) {
+    return 'No such file or directory.';
+  }
+
+  if (fs.lstatSync(htpasswdPath).isDirectory()) {
+    return 'You must specify a file and not a directory.';
   }
 
   return true;

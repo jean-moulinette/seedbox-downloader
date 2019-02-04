@@ -1,10 +1,12 @@
 const Koa = require('koa');
 const send = require('koa-send');
+const auth = require('http-auth');
 const dirTree = require('directory-tree');
 
 module.exports = function startServer({
   hostingPort,
   folderLocation,
+  htpasswd,
 }, devMode) {
   const app = new Koa();
 
@@ -12,14 +14,25 @@ module.exports = function startServer({
     ? 'index-dev.html'
     : 'index.html';
 
-  setupAppMiddlewares(app, folderLocation, htmlIndex);
+  setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd);
 
   app.listen(hostingPort);
 
   console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
 }
 
-function setupAppMiddlewares(app, folderLocation, htmlIndex) {
+function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
+  // Auth
+  if (htpasswd) {
+    const basic = auth.basic({
+      realm: "Seedbox-downloader.",
+      file: htpasswd,
+    });
+
+    // Setup auth.
+    app.use(auth.koa(basic));
+  }
+
   // Serve files
   app.use(async (ctx, next) => {
     const { path, method } = ctx;
