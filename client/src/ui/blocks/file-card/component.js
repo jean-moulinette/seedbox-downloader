@@ -19,7 +19,7 @@ const Container = styled.button`
   transition:  transform 0.3s cubic-bezier(.25,.8,.25,1);
 
   &:hover {
-    transform: scale(1.3)
+    transform: scale(1.1)
   }
 
   &:focus {
@@ -59,7 +59,7 @@ const DecoratorContainer = styled.div`
 
 export default function FileCard({ label, onClick, size }) {
   return (
-    <Container onClick={onClick} title={label} type="button">
+    <Container onClick={onClick} type="button">
       <DecoratorContainer>
         <FileFlatIcon
           width={APP_SCALES.WINDOW_CONTENT.FILE_ICON_WIDTH}
