@@ -2,6 +2,7 @@ const Koa = require('koa');
 const send = require('koa-send');
 const auth = require('http-auth');
 const dirTree = require('directory-tree');
+const zipdir = require('zip-dir');
 
 module.exports = function startServer({
   hostingPort,
@@ -32,6 +33,45 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
     // Setup auth.
     app.use(auth.koa(basic));
   }
+
+  // Zip folder
+  app.use(async (ctx, next) => {
+    const { path, method } = ctx;
+    let archiveFile;
+
+    if (!path.startsWith('/zip-folder') || method !== 'GET') return await next();
+
+    try {
+      const slashSplit = path.split('/');
+      const folderName = slashSplit[slashSplit.length - 1];
+      const pathFromRequest = path.split('/zip-folder')[1];
+      const folderPath = folderLocation + pathFromRequest + '.zip';
+
+      // Set headers to promp the user to download the file and name the file
+      ctx.set('Content-Disposition', `attachment; filename="${folderName}.zip"`);
+      console.log('generation');
+      const generatedZipPath = await generateZipOnSeedbox({
+        outputPath: folderPath,
+        inputFolder: `${folderLocation}${pathFromRequest}`,
+      });
+      console.log('result', generatedZipPath);
+      archiveFile = await send(
+        ctx,
+        generatedZipPath,
+        {
+          root: '/',
+          hidden: true,
+        }
+      );
+    } catch (e) {
+      console.log(e);
+      return await next();
+    }
+
+    if (!archiveFile) {
+      return await next();
+    }
+  });
 
   // Serve files
   app.use(async (ctx, next) => {
@@ -113,6 +153,18 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
   app.use(async (ctx) => {
     ctx.status = 404;
     ctx.body = 'Not found';
+  });
+}
+
+function generateZipOnSeedbox(options) {
+  return new Promise((resolve, reject) => {
+    try {
+      zipdir(options.inputFolder, { saveTo: options.outputPath }, () => {
+        resolve(options.outputPath)
+      });
+    } catch (e) {
+      return reject(e.message);
+    }
   });
 }
 
