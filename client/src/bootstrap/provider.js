@@ -1,7 +1,7 @@
 import * as React from 'react';
+
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
 import {
   updateExplorerPathAfterSelection,
 } from './services';
@@ -54,9 +54,6 @@ export default class SeedboxDownloaderProvider extends React.Component {
           selectedDirectory,
           explorerPath: explorerPathCopy,
         });
-      },
-      downloadFile: (filePath) => {
-        window.open(`/file${filePath}`);
       },
     };
   }

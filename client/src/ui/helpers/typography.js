@@ -9,18 +9,21 @@ export const FONT_STYLES = {
     font-family: ${FAMILY.ROBOTO};
     font-style: normal;
     font-weight: 400;
+    text-decoration: none;
   `,
 
   regular_bold: `
     font-family: ${FAMILY.ROBOTO};
     font-style: normal;
     font-weight: 700;
+    text-decoration: none;
   `,
 
   regular_light: `
     font-family: ${FAMILY.ROBOTO};
     font-style: normal;
     font-weight: 300;
+    text-decoration: none;
   `,
 };
 
@@ -48,7 +51,12 @@ export const APP_FONT_STYLES = {
     DIRECTORY_LABEL: `
       ${FONT_STYLES.regular};
       color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
-      font-size: 1.35em;
+      font-size: 1em;
     `,
+    FILE_LABEL: `
+      ${FONT_STYLES.regular};
+      color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+      font-size: .8em;
+  `,
   },
 };

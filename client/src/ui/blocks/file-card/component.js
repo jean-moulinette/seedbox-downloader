@@ -1,22 +1,23 @@
 import * as React from 'react';
+
+import { APP_COLORS } from 'ui/helpers/colors';
+import { APP_FONT_STYLES } from 'ui/helpers/typography';
+import { APP_SCALES } from 'ui/helpers/scales';
+import FileFlatIcon from 'icons/file-flat/component';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import FileFlatIcon from 'icons/file-flat/component';
-import { APP_SCALES } from 'ui/helpers/scales';
-import { APP_COLORS } from 'ui/helpers/colors';
-
-const Container = styled.button`
-  cursor: pointer;
+const Container = styled.a`
   box-sizing: border-box;
   background: transparent;
   margin: ${APP_SCALES.WINDOW_CONTENT.FILE_CARD_MARGIN};
   width: ${APP_SCALES.WINDOW_CONTENT.FILE_CARD_WIDTH};
   height: ${APP_SCALES.WINDOW_CONTENT.FILE_CARD_HEIGHT};
-  text-overflow: ellipsis;
-  overflow: hidden;
   border: none;
   transition:  transform 0.3s cubic-bezier(.25,.8,.25,1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${APP_FONT_STYLES.FILE_WINDOW.FILE_LABEL}
 
   &:hover {
     transform: scale(1.1)
@@ -57,9 +58,9 @@ const DecoratorContainer = styled.div`
   border-radius: 5px;
 `;
 
-export default function FileCard({ label, onClick, size }) {
+export default function FileCard({ label, href, size }) {
   return (
-    <Container onClick={onClick} type="button">
+    <Container href={href} title={label}>
       <DecoratorContainer>
         <FileFlatIcon
           width={APP_SCALES.WINDOW_CONTENT.FILE_ICON_WIDTH}
@@ -81,5 +82,5 @@ export default function FileCard({ label, onClick, size }) {
 FileCard.propTypes = {
   label: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  href: PropTypes.string.isRequired,
 };

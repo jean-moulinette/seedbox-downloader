@@ -1,11 +1,20 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 
 import { Blocks } from 'ui';
 import { Consumer } from 'bootstrap/provider';
+import PropTypes from 'prop-types';
 
 const folderCard = function folderCard({ directory }) {
   const { path, name } = directory;
+  const innerMenuOptions = [
+    <Blocks.DownloadOption
+      key={`download-${name}-option`}
+      title={`Download ${name} as zip file`}
+      downloadFunction={() => {
+        alert('hello');
+      }}
+    />,
+  ];
 
   return (
     <Consumer>
@@ -15,6 +24,7 @@ const folderCard = function folderCard({ directory }) {
             key={path}
             label={name}
             onClick={() => updateSelectedDirectory(directory)}
+            innerMenuOptions={innerMenuOptions}
           />
         )
       }

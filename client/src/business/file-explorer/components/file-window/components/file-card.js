@@ -1,26 +1,19 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import filesize from 'filesize';
 
 import { Blocks } from 'ui';
-import { Consumer } from 'bootstrap/provider';
+import PropTypes from 'prop-types';
+import filesize from 'filesize';
 
 const fileCard = function fileCard({ file }) {
   const { path, name, size } = file;
 
   return (
-    <Consumer>
-      {
-        ({ downloadFile }) => (
-          <Blocks.FileCard
-            key={path}
-            label={name}
-            size={filesize(size)}
-            onClick={() => { downloadFile(path); }}
-          />
-        )
-      }
-    </Consumer>
+    <Blocks.FileCard
+      key={path}
+      label={name}
+      size={filesize(size)}
+      href={`/file${path}`}
+    />
   );
 };
 

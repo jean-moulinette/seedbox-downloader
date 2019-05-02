@@ -1,5 +1,4 @@
 import * as React from 'react';
-// #3498db
 
 export default function FileFlat({ ...rest }) {
   return (
