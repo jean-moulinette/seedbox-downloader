@@ -46,12 +46,13 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
       const folderName = slashSplit[slashSplit.length - 1];
       const pathFromRequest = path.split('/zip-folder')[1];
       const folderPath = folderLocation + pathFromRequest + '.zip';
+      const uriDecodedFolderPath = decodeURIComponent(folderPath);
 
       // Set headers to promp the user to download the file and name the file
       ctx.set('Content-Disposition', `attachment; filename="${folderName}.zip"`);
 
       const generatedZipPath = await generateZipOnSeedbox({
-        outputPath: folderPath,
+        outputPath: uriDecodedFolderPath,
         inputFolder: `${folderLocation}${pathFromRequest}`,
       });
 
