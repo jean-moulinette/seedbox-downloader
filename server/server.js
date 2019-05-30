@@ -49,12 +49,12 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
 
       // Set headers to promp the user to download the file and name the file
       ctx.set('Content-Disposition', `attachment; filename="${folderName}.zip"`);
-      console.log('generation');
+
       const generatedZipPath = await generateZipOnSeedbox({
         outputPath: folderPath,
         inputFolder: `${folderLocation}${pathFromRequest}`,
       });
-      console.log('result', generatedZipPath);
+
       archiveFile = await send(
         ctx,
         generatedZipPath,
@@ -136,6 +136,7 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
     );
 
     ctx.status = 200;
+    ctx.set('Content-Type', 'application/json');
     ctx.body = seedboxDirTree;
   });
 
@@ -169,7 +170,47 @@ function generateZipOnSeedbox(options) {
 }
 
 function getSeedboxDirectoryStructure(folderLocation) {
-  return dirTree(folderLocation, {}, (file) => {
+  const directoryStructure = dirTree(folderLocation, {}, (file) => {
     file.path = file.path.slice(folderLocation.length, file.path.length);
   });
+
+  const sanitizedChildrens = directoryStructure.children.map((treeNode) => {
+    if (treeNode.type === 'directory') {
+      return sanitizeFolderPath(folderLocation, treeNode);
+    }
+
+    return treeNode;
+  });
+
+  return {
+    ...directoryStructure,
+    children: sanitizedChildrens,
+  };
+}
+
+function sanitizeFolderPath(folderLocation, folder) {
+  const { path: directoryPath, children: directoryChildrens } = folder;
+
+  const newPath = folder.path.slice(folderLocation.length, folder.path.length);
+
+  if (directoryChildrens && directoryChildrens.length) {
+
+    const newChildrens = directoryChildrens.map((folderChild) => {
+      if (folderChild.type === 'directory') {
+        return sanitizeFolderPath(folderLocation, folderChild);
+      }
+
+      return folderChild;
+    });
+
+    return {
+      ...folder,
+      children: newChildrens,
+      path: newPath,
+    };
+  }
+  return {
+    ...folder,
+    path: newPath,
+  };
 }
