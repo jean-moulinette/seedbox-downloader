@@ -10,28 +10,21 @@ const Container = styled.div`
   height: 16px;
   padding: 5px;
   border-radius: 50%;
-  background-color: ${APP_COLORS.DIRECTORY_OPTION_BUTTON_BACKGROUND};
-  border: 1px ${APP_COLORS.DIRECTORY_OPTION_BUTTON_BORDER} solid;
+  background: ${APP_COLORS.FILE_WINDOW.DIRECTORY_OPTION_BUTTON_BACKGROUND};
+  border: 1px ${APP_COLORS.FILE_WINDOW.DIRECTORY_OPTION_BUTTON_BORDER} solid;
 `;
 
-const OptionButton = styled.button`
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  padding: 0;
-`;
-
-export default function DownloadOption({ title, downloadFunction }) {
+export default function DownloadOption({ title, href }) {
   return (
     <Container>
-      <OptionButton type="button" title={title} onClick={downloadFunction}>
+      <a title={title} href={href}>
         <DownloadFolderIcon width="16px" height="16px" />
-      </OptionButton>
+      </a>
     </Container>
   );
 }
 
 DownloadOption.propTypes = {
   title: PropTypes.string.isRequired,
-  downloadFunction: PropTypes.func.isRequired,
+  href: PropTypes.string.isRequired,
 };

@@ -51,7 +51,7 @@ export const APP_FONT_STYLES = {
     DIRECTORY_LABEL: `
       ${FONT_STYLES.regular};
       color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
-      font-size: 1em;
+      font-size: .85em;
     `,
     FILE_LABEL: `
       ${FONT_STYLES.regular};

@@ -6,13 +6,14 @@ import PropTypes from 'prop-types';
 
 const folderCard = function folderCard({ directory }) {
   const { path, name } = directory;
+
+  const downloadFolderLink = `/zip-folder${directory.path}`;
+
   const innerMenuOptions = [
     <Blocks.DownloadOption
       key={`download-${name}-option`}
       title={`Download ${name} as zip file`}
-      downloadFunction={() => {
-        alert('hello');
-      }}
+      href={downloadFolderLink}
     />,
   ];
 
