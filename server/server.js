@@ -2,11 +2,12 @@ const Koa = require('koa');
 const send = require('koa-send');
 const auth = require('http-auth');
 const dirTree = require('directory-tree');
-const zipdir = require('zip-dir');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 module.exports = function startServer({
   hostingPort,
-  folderLocation,
+  configuredDownloadFolder,
   htpasswd,
 }, devMode) {
   const app = new Koa();
@@ -15,14 +16,14 @@ module.exports = function startServer({
     ? 'index-dev.html'
     : 'index.html';
 
-  setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd);
+  setupAppMiddlewares(app, configuredDownloadFolder, htmlIndex, htpasswd);
 
   app.listen(hostingPort);
 
   console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
 }
 
-function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
+function setupAppMiddlewares(app, configuredDownloadFolder, htmlIndex, htpasswd) {
   // Auth
   if (htpasswd) {
     const basic = auth.basic({
@@ -43,29 +44,33 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
 
     try {
       const slashSplit = path.split('/');
-      const folderName = slashSplit[slashSplit.length - 1];
+      const lastSplittedPath = slashSplit[slashSplit.length - 1];
+      const folderName = decodeURIComponent(lastSplittedPath);
+
       const pathFromRequest = path.split('/zip-folder')[1];
-      const folderPath = folderLocation + pathFromRequest + '.zip';
-      const uriDecodedFolderPath = decodeURIComponent(folderPath);
+      const inputFolder = `${configuredDownloadFolder}${pathFromRequest}`;
+
+      const outputZipName = `${folderName}.zip`;
+      const outputZipPath = `${inputFolder}.zip`
 
       // Set headers to promp the user to download the file and name the file
       ctx.set('Content-Disposition', `attachment; filename="${folderName}.zip"`);
 
-      const generatedZipPath = await generateZipOnSeedbox({
-        outputPath: uriDecodedFolderPath,
-        inputFolder: `${folderLocation}${pathFromRequest}`,
+      await generateZipOnSeedbox({
+        outputZipName,
+        inputFolder,
       });
 
       archiveFile = await send(
         ctx,
-        generatedZipPath,
+        outputZipPath,
         {
           root: '/',
           hidden: true,
         }
       );
     } catch (e) {
-      console.log(e);
+      console.log(`Error while sending ziped folder : ${e.message}`);
       return await next();
     }
 
@@ -85,7 +90,7 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
       const slashSplit = path.split('/');
       const fileName = slashSplit[slashSplit.length - 1];
       const pathFromRequest = path.split('/file')[1];
-      const filePath = folderLocation + pathFromRequest;
+      const filePath = configuredDownloadFolder + pathFromRequest;
 
       // Set headers to promp the user to download the file and name the file
       ctx.set('Content-Disposition', `attachment; filename="${fileName}"`);
@@ -133,7 +138,7 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
     if (method !== 'GET' || path !== '/get-tree') return await next();
 
     const seedboxDirTree = JSON.stringify(
-      getSeedboxDirectoryStructure(folderLocation),
+      getSeedboxDirectoryStructure(configuredDownloadFolder),
     );
 
     ctx.status = 200;
@@ -158,26 +163,27 @@ function setupAppMiddlewares(app, folderLocation, htmlIndex, htpasswd) {
   });
 }
 
-function generateZipOnSeedbox(options) {
-  return new Promise((resolve, reject) => {
-    try {
-      zipdir(options.inputFolder, { saveTo: options.outputPath }, () => {
-        resolve(options.outputPath)
-      });
-    } catch (e) {
-      return reject(e.message);
-    }
-  });
+async function generateZipOnSeedbox({outputZipName, inputFolder}) {
+  try {
+    const execCommand = `\
+      cd ${inputFolder} && \
+      zip -r ${outputZipName} *
+    `;
+    const { stdout, stderr } = await exec(execCommand);
+  } catch (e) {
+    console.log(stdout, stderr)
+    throw e;
+  }
 }
 
-function getSeedboxDirectoryStructure(folderLocation) {
-  const directoryStructure = dirTree(folderLocation, {}, (file) => {
-    file.path = file.path.slice(folderLocation.length, file.path.length);
+function getSeedboxDirectoryStructure(configuredDownloadFolder) {
+  const directoryStructure = dirTree(configuredDownloadFolder, {}, (file) => {
+    file.path = file.path.slice(configuredDownloadFolder.length, file.path.length);
   });
 
   const sanitizedChildrens = directoryStructure.children.map((treeNode) => {
     if (treeNode.type === 'directory') {
-      return sanitizeFolderPath(folderLocation, treeNode);
+      return sanitizeFolderPath(configuredDownloadFolder, treeNode);
     }
 
     return treeNode;
@@ -189,16 +195,16 @@ function getSeedboxDirectoryStructure(folderLocation) {
   };
 }
 
-function sanitizeFolderPath(folderLocation, folder) {
+function sanitizeFolderPath(configuredDownloadFolder, folder) {
   const { path: directoryPath, children: directoryChildrens } = folder;
 
-  const newPath = folder.path.slice(folderLocation.length, folder.path.length);
+  const newPath = folder.path.slice(configuredDownloadFolder.length, folder.path.length);
 
   if (directoryChildrens && directoryChildrens.length) {
 
     const newChildrens = directoryChildrens.map((folderChild) => {
       if (folderChild.type === 'directory') {
-        return sanitizeFolderPath(folderLocation, folderChild);
+        return sanitizeFolderPath(configuredDownloadFolder, folderChild);
       }
 
       return folderChild;

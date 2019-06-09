@@ -5,7 +5,7 @@ const untildify = require('untildify');
 
 const configurationFieldNames = {
   hostingPort: 'hostingPort',
-  folderLocation: 'folderLocation',
+  configuredDownloadFolder: 'configuredDownloadFolder',
   htpasswd: 'htpasswd',
 };
 
@@ -26,7 +26,7 @@ async function getConfiguration() {
 }
 
 async function promptUserForConfiguration() {
-  const { hostingPort, folderLocation, htpasswd } = configurationFieldNames;
+  const { hostingPort, configuredDownloadFolder, htpasswd } = configurationFieldNames;
 
   const questions = [
     {
@@ -37,7 +37,7 @@ async function promptUserForConfiguration() {
     },
     {
       type: 'text',
-      name: folderLocation,
+      name: configuredDownloadFolder,
       message: 'The directory where your files are stored ?',
       validate: answer => validateFolderAnswer(untildify(answer)),
       format: answer => path.resolve(untildify(answer)),
