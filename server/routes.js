@@ -1,4 +1,5 @@
 const send = require('koa-send');
+const contentDisposition = require('content-disposition')
 
 const {
   generateZipOnSeedbox,
@@ -18,19 +19,21 @@ const createZipFolderRoute = ({
   if (!path.startsWith('/zip-folder') || method !== 'GET') return await next();
 
   try {
-    const slashSplit = path.split('/');
-    const lastSplittedPath = slashSplit[slashSplit.length - 1];
-    const folderName = decodeURIComponent(lastSplittedPath);
+    const decodedPath = decodeURI(path);
+    const slashSplit = decodedPath.split('/');
+    const folderName = slashSplit[slashSplit.length - 1];
 
-    const pathFromRequest = path.split('/zip-folder')[1];
-    const decodedPathFromRequest = decodeURIComponent(pathFromRequest);
-    const inputFolder = `${configuredDownloadFolder}${decodedPathFromRequest}`;
+    const pathFromRequest = decodedPath.split('/zip-folder')[1];
+    const inputFolder = `${configuredDownloadFolder}${pathFromRequest}`;
 
     const outputZipName = `${folderName}.zip`;
-    const outputZipPath = `${inputFolder}.zip`
+    const outputZipPath = `${inputFolder}.zip`;
+
+    // Use third party to handle forbidden chars
+    const contentDispositionValue = contentDisposition(outputZipName);
 
     // Set headers to promp the user to download the file and name the file
-    ctx.set('Content-Disposition', `attachment; filename="${folderName}.zip"`);
+    ctx.set('Content-Disposition', contentDispositionValue);
 
     await generateZipOnSeedbox({
       outputZipName,
@@ -68,9 +71,10 @@ const createServeFilesRoute = ({
   if (!path.startsWith('/file') || method !== 'GET') return await next();
 
   try {
-    const slashSplit = path.split('/');
+    const decodedPath = decodeURI(path);
+    const slashSplit = decodedPath.split('/');
     const fileName = slashSplit[slashSplit.length - 1];
-    const pathFromRequest = path.split('/file')[1];
+    const pathFromRequest = decodedPath.split('/file')[1];
     const filePath = configuredDownloadFolder + pathFromRequest;
 
     // Set headers to promp the user to download the file and name the file

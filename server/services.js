@@ -9,18 +9,14 @@ exports.generateZipOnSeedbox = async function generateZipOnSeedbox({
   folderName,
 }) {
   try {
-    const normalizedFolderPath = replaceSpacesWithEscapedSpaces(inputFolder);
-    const normalizedOutputZipName = replaceSpacesWithEscapedSpaces(outputZipName);
-    const normalizedFolderName = replaceSpacesWithEscapedSpaces(folderName);
-
     if (checkIfZipExists(`${inputFolder}/../${folderName}.zip`)) {
       return;
     }
 
     const execCommand = `\
-      cd ${normalizedFolderPath} && \
+      cd "${inputFolder}" && \
       cd .. && \
-      zip -Z store -r ${normalizedOutputZipName} ${normalizedFolderName} && \
+      zip -Z store -r "${outputZipName}" "${folderName}" && \
       exit
     `;
 
