@@ -3,7 +3,33 @@ const fs = require('fs');
 const util = require('util');
 const { spawn } = require('child_process');
 
-exports.generateZipOnSeedbox = async function generateZipOnSeedbox({
+const readDir = util.promisify(fs.readdir);
+
+exports.zipDirectoriesFromDirectory = async function zipDirectoriesFromDirectory(directory) {
+  try {
+    const files = await readDir(directory, {
+      withFileTypes: true,
+    });
+    const directories = files.filter(file => file.isDirectory());
+
+    const promisesOfZipping = directories.map((directoryToZip) => {
+      const outputZipName = `${directoryToZip.name}.zip`;
+      const inputFolder = `${directory}/${directoryToZip.name}`;
+
+      return generateZipOnSeedbox({
+        outputZipName,
+        inputFolder,
+        folderName: directoryToZip.name,
+      });
+    });
+
+    await Promise.all(promisesOfZipping);
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function generateZipOnSeedbox({
   outputZipName,
   inputFolder,
   folderName,
@@ -22,12 +48,19 @@ exports.generateZipOnSeedbox = async function generateZipOnSeedbox({
 
     const zipChildProcess = spawn(execCommand, { shell: true });
 
+    console.log(`Start zipping of directory ${inputFolder}\n`);
+
     await waitForChildProcessToExit(zipChildProcess);
 
+    console.log(`\n Zip of ${inputFolder} done.\n`);
+
   } catch (e) {
+    console.log(`\n Zip of ${inputFolder} failed.\n`);
     throw e;
   }
 }
+
+exports.generateZipOnSeedbox = generateZipOnSeedbox;
 
 function waitForChildProcessToExit(childProcess) {
   return new Promise((resolve, reject) => {

@@ -2,6 +2,7 @@ const Koa = require('koa');
 const auth = require('http-auth');
 
 const routes = require('./routes');
+const { zipDirectoriesFromDirectory } = require('./services');
 
 module.exports = function startServer({
   hostingPort,
@@ -26,6 +27,10 @@ module.exports = function startServer({
   app.listen(hostingPort);
 
   console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
+
+  zipRootDirectories(configuredDownloadFolder)
+    .then(() => {})
+    .catch(() => {});
 }
 
 function setupAppMiddlewares(serverOptions) {
@@ -47,4 +52,18 @@ function setupAppMiddlewares(serverOptions) {
   configuredRoutes.forEach(
     configuredRoute => app.use(configuredRoute)
   );
+}
+
+async function zipRootDirectories(configuredRootDirectory) {
+  console.log('Start zipping root directories.\n');
+
+  try {
+    await zipDirectoriesFromDirectory(configuredRootDirectory);
+  } catch (e) {
+    console.log('Failed to zip rootDirectories for reason: \n');
+    console.log(e.message);
+    return;
+  }
+
+  console.log('All root directories has been successfully zipped.\n')
 }
