@@ -53,10 +53,29 @@ exports.getSeedboxDirectoryStructure = function getSeedboxDirectoryStructure(
     return treeNode;
   });
 
+  const sanitizedChildrensZipFiltered = sanitizedChildrens.filter(
+    (children) => filterOutZippedFolderFiles(children, configuredDownloadFolder),
+  );
+
   return {
     ...directoryStructure,
-    children: sanitizedChildrens,
+    children: sanitizedChildrensZipFiltered,
   };
+}
+
+function filterOutZippedFolderFiles(treeNode, configuredDownloadFolder) {
+  const { extension, path } = treeNode;
+
+  if (extension && extension === '.zip') {
+    const correspondingDirectoryPath = path.split('.zip')[0];
+    const absolutePathDirectoryPath = configuredDownloadFolder + correspondingDirectoryPath;
+
+    if (checkIfFileIsDirectory(absolutePathDirectoryPath)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function sanitizeFolderPath(
@@ -100,6 +119,14 @@ function checkIfZipExists(zipPath) {
   try {
     fs.accessSync(zipPath, fs.constants.R_OK);
     return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function checkIfFileIsDirectory(path) {
+  try {
+    return fs.lstatSync(path).isDirectory();
   } catch (e) {
     return false;
   }
