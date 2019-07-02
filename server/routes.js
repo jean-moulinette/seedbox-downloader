@@ -3,8 +3,7 @@ const contentDisposition = require('content-disposition')
 
 const {
   generateZipOnSeedbox,
-  getSeedboxDirectoryStructure,
-  sanitizeFolderPath,
+  getSeedboxDirectoryTreeJsonFile,
 } = require('./services');
 
 const createZipFolderRoute = ({
@@ -125,13 +124,23 @@ const createServeDirectoryStructureRoute = ({
 
   if (method !== 'GET' || path !== '/get-tree') return await next();
 
-  const seedboxDirTree = JSON.stringify(
-    getSeedboxDirectoryStructure(configuredDownloadFolder),
-  );
+  let jsonTree;
+
+  try {
+    jsonTree = getSeedboxDirectoryTreeJsonFile();
+  } catch (e) {
+    console.log('Unable to serve directory tree json file');
+    console.log(`Error : ${e.message}`);
+
+    ctx.status = 500;
+    ctx.body = 'Internal server error :(';
+
+    return;
+  }
 
   ctx.status = 200;
   ctx.set('Content-Type', 'application/json');
-  ctx.body = seedboxDirTree;
+  ctx.body = jsonTree;
 };
 
 const createHtmlIndexRoute = ({

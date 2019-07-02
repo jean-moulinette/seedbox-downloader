@@ -2,7 +2,10 @@ const Koa = require('koa');
 const auth = require('http-auth');
 
 const routes = require('./routes');
-const { zipDirectoriesFromDirectory } = require('./services');
+const {
+  zipDirectoriesFromDirectory,
+  generateDownloaderFolderTreeJsonFile,
+} = require('./services');
 
 module.exports = function startServer({
   hostingPort,
@@ -25,6 +28,18 @@ module.exports = function startServer({
   setupAppMiddlewares(serverOptions);
 
   app.listen(hostingPort);
+
+  console.log('\n Seedbox-downloader is now generating the file tree from the directory :');
+  console.log(`\n ${configuredDownloadFolder}`);
+
+  try {
+    generateDownloaderFolderTreeJsonFile(configuredDownloadFolder);
+  } catch (e) {
+    console.log('\n Generation of file tree failed, seedbox-downloader can not start');
+    console.log(`Error : ${e.message}`);
+
+    return;
+  }
 
   console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
 

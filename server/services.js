@@ -3,7 +3,48 @@ const fs = require('fs');
 const util = require('util');
 const { spawn } = require('child_process');
 
+const {
+  SEEDBOX_DOWNLOADER_TREE_FILE_PATH
+} = require('./constants');
+
 const readDir = util.promisify(fs.readdir);
+
+exports.generateZipOnSeedbox = generateZipOnSeedbox;
+
+exports.sanitizeFolderPath = sanitizeFolderPath;
+
+exports.generateDownloaderFolderTreeJsonFile = function generateDownloaderFolderTreeJsonFile(
+  configuredDownloadFolder,
+) {
+  try {
+    const tree = getSeedboxDirectoryStructure(configuredDownloadFolder);
+    const jsonTree = JSON.stringify(tree);
+
+    const tmpFile = fs.writeFileSync(
+      SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
+      jsonTree,
+    );
+  } catch (e) {
+    console.log('\n Download folder tree file generation failed');
+    throw e;
+  }
+};
+
+exports.getSeedboxDirectoryTreeJsonFile = function getSeedboxDirectoryTreeJsonFile() {
+  let file;
+  const readOptions = {
+    encoding: 'utf8',
+  };
+
+  try {
+    file = fs.readFileSync(SEEDBOX_DOWNLOADER_TREE_FILE_PATH, readOptions);
+  } catch (e) {
+    console.log('\n Fetching downloader folder tree file failed');
+    throw e;
+  }
+
+  return file;
+};
 
 exports.zipDirectoriesFromDirectory = async function zipDirectoriesFromDirectory(directory) {
   try {
@@ -27,7 +68,7 @@ exports.zipDirectoriesFromDirectory = async function zipDirectoriesFromDirectory
   } catch (e) {
     throw e;
   }
-}
+};
 
 async function generateZipOnSeedbox({
   outputZipName,
@@ -60,8 +101,6 @@ async function generateZipOnSeedbox({
   }
 }
 
-exports.generateZipOnSeedbox = generateZipOnSeedbox;
-
 function waitForChildProcessToExit(childProcess) {
   return new Promise((resolve, reject) => {
     childProcess.on('exit', resolve);
@@ -71,7 +110,7 @@ function waitForChildProcessToExit(childProcess) {
   })
 }
 
-exports.getSeedboxDirectoryStructure = function getSeedboxDirectoryStructure(
+function getSeedboxDirectoryStructure(
   configuredDownloadFolder,
 ) {
   const directoryStructure = dirTree(configuredDownloadFolder, {}, (file) => {
@@ -140,8 +179,6 @@ function sanitizeFolderPath(
     path: newPath,
   };
 }
-
-exports.sanitizeFolderPath = sanitizeFolderPath;
 
 function replaceSpacesWithEscapedSpaces(inputString) {
   const findSpacesRegex = /(\s+)/g;
