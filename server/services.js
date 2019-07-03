@@ -1,10 +1,12 @@
+const chokidar = require('chokidar');
 const dirTree = require('directory-tree');
 const fs = require('fs');
 const util = require('util');
 const { spawn } = require('child_process');
 
 const {
-  SEEDBOX_DOWNLOADER_TREE_FILE_PATH
+  SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
+  WATCHER_EVENTS,
 } = require('./constants');
 
 const readDir = util.promisify(fs.readdir);
@@ -13,22 +15,51 @@ exports.generateZipOnSeedbox = generateZipOnSeedbox;
 
 exports.sanitizeFolderPath = sanitizeFolderPath;
 
-exports.generateDownloadFolderTreeJsonFile = function generateDownloadFolderTreeJsonFile(
+exports.zipDirectoriesFromDirectory = zipDirectoriesFromDirectory;
+
+exports.generateDownloadFolderTreeJsonFile = generateDownloadFolderTreeJsonFile;
+
+exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
   configuredDownloadFolder,
 ) {
-  try {
-    const tree = getSeedboxDirectoryStructure(configuredDownloadFolder);
-    const jsonTree = JSON.stringify(tree);
+  const { ADD, ADD_DIR, CHANGE, UNLINK, UNLINK_DIR, ERROR } = WATCHER_EVENTS;
 
-    const tmpFile = fs.writeFileSync(
-      SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
-      jsonTree,
+  let downloadFolderWatcher;
+
+  try {
+    downloadFolderWatcher = chokidar.watch(
+      configuredDownloadFolder,
+      {
+        persistent: true,
+        ignoreInitial: true,
+        ignored: '.DS_STORE'
+      },
     );
   } catch (e) {
-    console.log('\n Download folder tree file generation failed');
     throw e;
   }
-};
+
+  downloadFolderWatcher.on(
+    ADD,
+    createOnFileWatcherAdd(configuredDownloadFolder),
+  );
+  downloadFolderWatcher.on(
+    ADD_DIR,
+    createOnFileWatcherAddDir(configuredDownloadFolder),
+  );
+  downloadFolderWatcher.on(
+    UNLINK,
+    createOnFileWatcherUnlink(configuredDownloadFolder),
+  );
+  downloadFolderWatcher.on(
+    UNLINK_DIR,
+    createOnFileWatcherUnlinkDir(configuredDownloadFolder),
+  );
+  downloadFolderWatcher.on(
+    ERROR,
+    onFileWatcherError,
+  );
+}
 
 exports.getSeedboxDirectoryTreeJsonFile = function getSeedboxDirectoryTreeJsonFile() {
   let file;
@@ -46,7 +77,7 @@ exports.getSeedboxDirectoryTreeJsonFile = function getSeedboxDirectoryTreeJsonFi
   return file;
 };
 
-exports.zipDirectoriesFromDirectory = async function zipDirectoriesFromDirectory(directory) {
+async function zipDirectoriesFromDirectory(directory) {
   try {
     const files = await readDir(directory, {
       withFileTypes: true,
@@ -68,7 +99,98 @@ exports.zipDirectoriesFromDirectory = async function zipDirectoriesFromDirectory
   } catch (e) {
     throw e;
   }
-};
+}
+
+function createOnFileWatcherAdd(configuredDownloadFolder) {
+  return function onFileWatcherAdd(path) {
+    const dotZipLastIndex = path.lastIndexOf('.zip');
+    const dotPartLastIndex = path.lastIndexOf('.part');
+    const isZipFile = dotZipLastIndex !== -1;
+    const isPartFile = dotPartLastIndex !== -1;
+
+    // Skip tree generation if file is temporary .part file generated due to zip command
+    if (isPartFile) {
+      return;
+    }
+
+    // Skip tree generation if zip file has been generated for downloading zipped folder purpose
+    if (isZipFile) {
+      const zippedDirectoryPath = path.slice(0, dotZipLastIndex);
+      const zipFileMatchWithExistingDirectory = checkIfDownloadFileOrFolderExists(
+        zippedDirectoryPath,
+      );
+
+      if (zipFileMatchWithExistingDirectory) {
+        return;
+      }
+    }
+
+    generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
+
+    console.log('\n FileWatcherAdd event : ', path);
+  }
+}
+
+function createOnFileWatcherAddDir(configuredDownloadFolder) {
+  return async function onFileWatcherAddDir(path) {
+    try {
+      await zipDirectoriesFromDirectory(configuredDownloadFolder);
+    } catch (e) {
+      console.log('\n Error occured on AddDir event while zipping again directories from root');
+      console.log(`\n Error : ${e.message}`);
+    }
+
+    generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
+
+    console.log('\n FileWatcherAddDir event : ', path);
+  }
+}
+
+function createOnFileWatcherUnlink(configuredDownloadFolder) {
+  return function onFileWatcherUnlink(path) {
+    const dotPartLastIndex = path.lastIndexOf('.part');
+    const isPartFile = dotPartLastIndex !== -1;
+
+    // Skip tree file generation if unlink is due to zipping process
+    if (isPartFile) {
+      return;
+    }
+
+    generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
+
+    console.log('\n FileWatcherUnlink event : ', path);
+  }
+}
+
+function createOnFileWatcherUnlinkDir(configuredDownloadFolder) {
+  return function onFileWatcherUnlinkDir(path) {
+    generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
+
+    console.log('\n FileWatcherUnlinkDir event : ', path);
+  }
+}
+
+function onFileWatcherError(error) {
+  console.log('\n Error occured in file watch events');
+  console.log(`\n Error : ${error}`);
+}
+
+function generateDownloadFolderTreeJsonFile(
+  configuredDownloadFolder,
+) {
+  try {
+    const tree = getSeedboxDirectoryStructure(configuredDownloadFolder);
+    const jsonTree = JSON.stringify(tree);
+
+    const tmpFile = fs.writeFileSync(
+      SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
+      jsonTree,
+    );
+  } catch (e) {
+    console.log('\n Download folder tree file generation failed');
+    throw e;
+  }
+}
 
 async function generateZipOnSeedbox({
   outputZipName,
@@ -76,7 +198,7 @@ async function generateZipOnSeedbox({
   folderName,
 }) {
   try {
-    if (checkIfZipExists(`${inputFolder}/../${folderName}.zip`)) {
+    if (checkIfDownloadFileOrFolderExists(`${inputFolder}/../${folderName}.zip`)) {
       return;
     }
 
@@ -89,7 +211,7 @@ async function generateZipOnSeedbox({
 
     const zipChildProcess = spawn(execCommand, { shell: true });
 
-    console.log(`Start zipping of directory ${inputFolder}\n`);
+    console.log(`\n Start zipping of directory ${inputFolder}\n`);
 
     await waitForChildProcessToExit(zipChildProcess);
 
@@ -185,9 +307,9 @@ function replaceSpacesWithEscapedSpaces(inputString) {
   return inputString.replace(findSpacesRegex, '\\ ');
 }
 
-function checkIfZipExists(zipPath) {
+function checkIfDownloadFileOrFolderExists(path) {
   try {
-    fs.accessSync(zipPath, fs.constants.R_OK);
+    fs.accessSync(path, fs.constants.R_OK);
     return true;
   } catch (e) {
     return false;

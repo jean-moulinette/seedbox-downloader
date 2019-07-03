@@ -5,6 +5,7 @@ const routes = require('./routes');
 const {
   zipDirectoriesFromDirectory,
   generateDownloadFolderTreeJsonFile,
+  initDownloadFolderWatchers,
 } = require('./services');
 
 module.exports = function startServer({
@@ -36,9 +37,17 @@ module.exports = function startServer({
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
   } catch (e) {
     console.log('\n Generation of file tree failed, seedbox-downloader can not start');
-    console.log(`Error : ${e.message}`);
+    console.log(` Error : ${e.message}`);
 
     return;
+  }
+
+  try {
+    console.log(`\n Seedbox will now start watching downloader folder for changes`);
+    initDownloadFolderWatchers(configuredDownloadFolder);
+  } catch (e) {
+    console.log('\n Watching downloader folder failed');
+    console.log(` Error : ${e.message}`);
   }
 
   console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
@@ -70,15 +79,15 @@ function setupAppMiddlewares(serverOptions) {
 }
 
 async function zipRootDirectories(configuredRootDirectory) {
-  console.log('Start zipping root directories.\n');
+  console.log('\n Start zipping root directories.\n');
 
   try {
     await zipDirectoriesFromDirectory(configuredRootDirectory);
   } catch (e) {
-    console.log('Failed to zip rootDirectories for reason: \n');
+    console.log('\n Failed to zip rootDirectories for reason: \n');
     console.log(e.message);
     return;
   }
 
-  console.log('All root directories has been successfully zipped.\n')
+  console.log('\n All root directories has been successfully zipped.\n')
 }
