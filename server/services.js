@@ -13,7 +13,7 @@ exports.generateZipOnSeedbox = generateZipOnSeedbox;
 
 exports.sanitizeFolderPath = sanitizeFolderPath;
 
-exports.generateDownloaderFolderTreeJsonFile = function generateDownloaderFolderTreeJsonFile(
+exports.generateDownloadFolderTreeJsonFile = function generateDownloadFolderTreeJsonFile(
   configuredDownloadFolder,
 ) {
   try {

@@ -4,7 +4,7 @@ const auth = require('http-auth');
 const routes = require('./routes');
 const {
   zipDirectoriesFromDirectory,
-  generateDownloaderFolderTreeJsonFile,
+  generateDownloadFolderTreeJsonFile,
 } = require('./services');
 
 module.exports = function startServer({
@@ -33,7 +33,7 @@ module.exports = function startServer({
   console.log(`\n ${configuredDownloadFolder}`);
 
   try {
-    generateDownloaderFolderTreeJsonFile(configuredDownloadFolder);
+    generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
   } catch (e) {
     console.log('\n Generation of file tree failed, seedbox-downloader can not start');
     console.log(`Error : ${e.message}`);
