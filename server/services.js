@@ -164,6 +164,17 @@ function createOnFileWatcherUnlink(configuredDownloadFolder) {
 
 function createOnFileWatcherUnlinkDir(configuredDownloadFolder) {
   return function onFileWatcherUnlinkDir(path) {
+    try {
+      const potentialZippedDirectoryPath = `${path}.zip`;
+
+      if (checkIfDownloadFileOrFolderExists(potentialZippedDirectoryPath)) {
+        fs.unlinkSync(potentialZippedDirectoryPath);
+      }
+    } catch (e) {
+      console.log('\n Error occured while trying to unlink zip of deleted directory');
+      console.log(`\n Error : ${e.message}`);
+    }
+
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
 
     console.log('\n FileWatcherUnlinkDir event : ', path);
