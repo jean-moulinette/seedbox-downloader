@@ -15,6 +15,11 @@ const folderCard = function folderCard({ directory }) {
       title={`Download ${name} as zip file`}
       href={downloadFolderLink}
     />,
+    <Blocks.DownloadOption
+    key={`downloadsssss-${name}-option`}
+    title={`Download ${name} as zip file`}
+    href={downloadFolderLink}
+    />,
   ];
 
   return (

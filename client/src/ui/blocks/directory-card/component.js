@@ -7,46 +7,36 @@ import { APP_SCALES } from 'ui/helpers/scales';
 import FolderFlatIcon from 'icons/folder-flat/component';
 import PropTypes from 'prop-types';
 
-const Container = styled.div`
+const FolderContainer = styled.div`
   position: relative;
-`;
-
-const FolderAnchor = styled.a`
   cursor: pointer;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  padding: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_PADDING};
-  background: transparent;
   margin: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_MARGIN};
   width: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_WIDTH};
   height: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_HEIGHT};
-  text-overflow: ellipsis;
-  overflow: hidden;
-  border: none;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition:  box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+  transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
   border-radius: 3px;
 
-  /* Little hack to target the button instead of it's container */
-  &+div.inner-menu-container>div {
-    transform: rotate(180deg);
-    opacity: 0;
-    transition: all 1s cubic-bezier(.25,.8,.25,1);
-    transition-property: transform, opacity;
+  &>.floating-container {
+    &>div {
+      transition: transform 1.2s cubic-bezier(.25,.8,.25,1);
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover {
+    &>.floating-container {
+      opacity: 1;
+      transform: translateY(0);
+
+      &>div {
+        transform: rotate(0deg);
+      }
+    }
   }
 
   &:hover {
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
-    &+div {
-      transform: translateY(-60px);
-
-      &.inner-menu-container>div {
-        opacity: 1;
-        transform: rotate(0deg);
-      }
-    }
   }
 
   &:focus {
@@ -54,23 +44,32 @@ const FolderAnchor = styled.a`
   }
 `;
 
-const InnerMenuContainer = styled.div`
+const FullWidthAnchor = styled.a`
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_PADDING};
+  background: transparent;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border: none;
+`;
+
+const InnerMenuFloatingContainer = styled.div`
   position: absolute;
-  right: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_INNER_MENU_RIGHT_MARGIN};
-  height: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_INNER_MENU_ICON_SIZE};
-  width: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_INNER_MENU_ICON_SIZE};
-  border-radius: 100%;
-  transition: transform 0.8s cubic-bezier(.25,.8,.25,1);
-
-  /* Little hack to keep the button container on the Card even while hovering it */
-  &:hover {
-    transform: translateY(-60px) scale(1.1);
-
-    &>div {
-      transform: rotate(0deg) !important;
-      opacity: 1 !important;
-    }
-  }
+  top: 20px;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: 1s cubic-bezier(.25,.8,.25,1);
+  transition-property: transform opacity;
+  transform: translateY(80px);
 `;
 
 const Icon = styled(FolderFlatIcon)`
@@ -88,23 +87,23 @@ const LabelContainer = styled.span`
 
 export default function DirectoryCard({ label, onClick, innerMenuOptions }) {
   return (
-    <Container>
-      <FolderAnchor onClick={onClick} title={label}>
+    <FolderContainer>
+      <FullWidthAnchor onClick={onClick} title={label}>
         <Icon
           width={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_WIDTH}
           height={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_HEIGHT}
         />
         <LabelContainer>{ label }</LabelContainer>
-      </FolderAnchor>
+      </FullWidthAnchor>
       {
         innerMenuOptions.length > 0 ? (
-          <InnerMenuContainer className="inner-menu-container">
+          <InnerMenuFloatingContainer className="floating-container">
             {/* eslint-disable-next-line react/no-array-index-key */}
             { innerMenuOptions }
-          </InnerMenuContainer>
+          </InnerMenuFloatingContainer>
         ) : null
       }
-    </Container>
+    </FolderContainer>
   );
 }
 
