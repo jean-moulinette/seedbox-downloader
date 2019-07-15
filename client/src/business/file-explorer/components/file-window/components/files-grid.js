@@ -49,12 +49,13 @@ class FilesGrid extends React.Component {
       <Blocks.DirectoryCard
         key="../"
         label="../"
-        onClick={() => goToParentDirectory()}
+        onClick={goToParentDirectory}
       />
     );
   }
 
   generateItems() {
+    const { askDeleteFile } = this.context;
     const { selectedDirectory } = this.props;
 
     const childrenSorted = selectedDirectory.children.sort((fileA, fileB) => {
@@ -75,7 +76,11 @@ class FilesGrid extends React.Component {
     const childrenElements = {
       files: childrenOfFiles.map(file => <FileCard file={file} key={file.path} />),
       directories: childrenOfDirectories.map(directory => (
-        <FolderCard directory={directory} key={directory.path} />
+        <FolderCard
+          directory={directory}
+          key={directory.path}
+          deleteFile={() => askDeleteFile(directory.path, directory.name)}
+        />
       )),
     };
 

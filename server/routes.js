@@ -4,6 +4,7 @@ const contentDisposition = require('content-disposition')
 const {
   generateZipOnSeedbox,
   getSeedboxDirectoryTreeJsonFile,
+  unlinkFileOnSeedbox,
 } = require('./services');
 
 const createZipFolderRoute = ({
@@ -49,14 +50,58 @@ const createZipFolderRoute = ({
       }
     );
   } catch (e) {
-    console.log(`Error while sending ziped folder : ${e.message}`);
-    return await next();
+    console.log(`\n Error while sending ziped folder : ${e.message}`);
+
+    ctx.status = 500;
+    ctx.body = 'Internal server error :(';
+
+    return;
   }
 
   if (!archiveFile) {
-    return await next();
+    ctx.status = 404;
+    ctx.body = 'Directory not found';
+
+    return;
   }
-}
+};
+
+const createDeleteFileRoute = ({ configuredDownloadFolder }) => async function createDeleteFileRoute(
+  ctx,
+  next,
+) {
+  const { path, method } = ctx;
+
+  if (!path.startsWith('/delete-file') || method !== 'DELETE') return await next();
+
+  try {
+    const decodedPath = decodeURI(path);
+    const slashSplit = decodedPath.split('/');
+    const folderName = slashSplit[slashSplit.length - 1];
+
+    const pathFromRequest = decodedPath.split('/delete-file')[1];
+
+    await unlinkFileOnSeedbox(pathFromRequest, configuredDownloadFolder);
+  } catch (e) {
+    console.log('\n Unable to delete file on /delete-file route');
+    console.log(`\n Error : ${e.message}`);
+
+    if (e.message === '404') {
+      ctx.status = 404;
+      ctx.body = 'Not found';
+
+      return;
+    } else {
+      ctx.status = 500;
+      ctx.body = 'Internal server error :(';
+
+      return;
+    }
+  }
+
+  ctx.status = 200;
+  ctx.body = 'deleted';
+};
 
 const createServeFilesRoute = ({
   configuredDownloadFolder,
@@ -94,7 +139,7 @@ const createServeFilesRoute = ({
   if (!seedboxFile) {
     return await next();
   }
-}
+};
 
 const createStaticResourcesRoute = ({}) => async function stasticResourcesRoute(
   ctx,
@@ -115,7 +160,7 @@ const createStaticResourcesRoute = ({}) => async function stasticResourcesRoute(
   if (!staticFile) {
     return await next();
   }
-}
+};
 
 const createServeDirectoryStructureRoute = ({
   configuredDownloadFolder,
@@ -129,8 +174,8 @@ const createServeDirectoryStructureRoute = ({
   try {
     jsonTree = getSeedboxDirectoryTreeJsonFile();
   } catch (e) {
-    console.log('Unable to serve directory tree json file');
-    console.log(`Error : ${e.message}`);
+    console.log('\n Unable to serve directory tree json file');
+    console.log(`\n Error : ${e.message}`);
 
     ctx.status = 500;
     ctx.body = 'Internal server error :(';
@@ -162,6 +207,7 @@ const createNotFoundRoute = ({}) => async function notFoundRoute(ctx) {
 module.exports = [
   createZipFolderRoute,
   createServeFilesRoute,
+  createDeleteFileRoute,
   createStaticResourcesRoute,
   createHtmlIndexRoute,
   createServeDirectoryStructureRoute,

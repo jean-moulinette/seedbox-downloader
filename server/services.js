@@ -3,6 +3,7 @@ const dirTree = require('directory-tree');
 const fs = require('fs');
 const util = require('util');
 const { spawn } = require('child_process');
+const fse = require('fs-extra');
 
 const {
   SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
@@ -60,6 +61,24 @@ exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
     onFileWatcherError,
   );
 }
+
+exports.unlinkFileOnSeedbox = async function unlinkFileOnSeedbox(filePath, configuredDownloadFolder) {
+  try {
+    const completeFilePath = configuredDownloadFolder + filePath;
+    console.log(completeFilePath);
+    if (!checkIfDownloadFileOrFolderExists(completeFilePath)) {
+      console.log(`\n File : ${completeFilePath}`);
+      console.log('\n not found for deletion');
+      throw new Error('404');
+    }
+
+    await fse.remove(completeFilePath);
+
+    generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
+  } catch (e) {
+    throw e;
+  }
+};
 
 exports.getSeedboxDirectoryTreeJsonFile = function getSeedboxDirectoryTreeJsonFile() {
   let file;

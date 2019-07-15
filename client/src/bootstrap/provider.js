@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import {
   updateExplorerPathAfterSelection,
+  askUserConfirmation,
+  getTreeFromServer,
+  deleteFileFromServer,
+  findRecursiveStructure,
 } from './services';
 
 // Use for imported Consumer component
@@ -18,31 +22,32 @@ export default class SeedboxDownloaderProvider extends React.Component {
       directoryTree: null,
       selectedDirectory: null,
       explorerPath: [],
+      askDeleteFile: (payload, fileName) => {
+        askUserConfirmation(
+          `Do you really want to delete ${fileName} ?`,
+          () => this.deleteFile(payload),
+        );
+      },
       updateSelectedDirectory: (payload) => {
-        const { state } = this;
-        const { explorerPath } = state;
+        const { state: { explorerPath } } = this;
 
         this.setState({
-          ...state,
           selectedDirectory: payload,
           explorerPath: updateExplorerPathAfterSelection(payload, explorerPath),
         });
       },
       updateDirectoryByExplorer: (explorerItem) => {
-        const { state } = this;
-        const { explorerPath } = state;
+        const { state: { explorerPath } } = this;
 
         const selectedItemIndex = explorerPath.findIndex(item => item.path === explorerItem.path);
 
         this.setState({
-          ...state,
           selectedDirectory: explorerItem,
           explorerPath: explorerPath.slice(0, selectedItemIndex + 1),
         });
       },
       goToParentDirectory: () => {
-        const { state } = this;
-        const { explorerPath } = state;
+        const { state: { explorerPath } } = this;
         const explorerPathCopy = [...explorerPath];
 
         explorerPathCopy.pop();
@@ -50,7 +55,6 @@ export default class SeedboxDownloaderProvider extends React.Component {
         const selectedDirectory = explorerPathCopy[explorerPathCopy.length - 1];
 
         this.setState({
-          ...state,
           selectedDirectory,
           explorerPath: explorerPathCopy,
         });
@@ -58,20 +62,46 @@ export default class SeedboxDownloaderProvider extends React.Component {
     };
   }
 
-  componentDidMount() {
-    axios.get('/get-tree')
-      .then((response) => {
-        const { state } = this;
-        const { data } = response;
+  async deleteFile(payload) {
+    const { selectedDirectory: { path: selectedDirectoryPath } } = this.state;
 
-        this.setState({
-          ...state,
-          explorerPath: [data],
-          directoryTree: data,
-          selectedDirectory: data,
-        });
-      })
-      .catch(() => global.console.log('Could not fetch directory tree from server'));
+    try {
+      const { status } = await deleteFileFromServer(payload);
+
+      if (status === 404) {
+        global.console.warn('Unable to find file to delete');
+        return;
+      }
+    } catch (e) {
+      global.console.warn('Error while trying to delete file from server');
+      global.console.error(e);
+      return;
+    }
+
+    try {
+      const updatedTree = await getTreeFromServer();
+
+      this.setState({
+        directoryTree: updatedTree,
+        selectedDirectory: findRecursiveStructure(selectedDirectoryPath, updatedTree),
+      });
+    } catch (e) {
+      global.console.warn('Error while refreshing tree from server after file deletion');
+      global.console.error(e.message);
+    }
+  }
+
+  async componentDidMount() {
+    const tree = await getTreeFromServer();
+
+    this.setState({
+      explorerPath: [tree],
+      directoryTree: tree,
+      selectedDirectory: tree,
+    });
+  } catch (e) {
+    global.console.warn('Error while trying to set the tree in state');
+    globale.console.error(e.message);
   }
 
   render() {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import 'regenerator-runtime/runtime';
 
 import FileExplorer from 'business/file-explorer';
 

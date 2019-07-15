@@ -8,6 +8,7 @@ import noop from 'lodash/noop';
 const Container = styled.div`
   position: relative;
   display: inline-block;
+  cursor: pointer;
   width: 16px;
   height: 16px;
   padding: 5px;
