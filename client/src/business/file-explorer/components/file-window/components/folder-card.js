@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Blocks } from 'ui';
 import { Consumer } from 'bootstrap/provider';
 import DownloadFolderIcon from 'icons/folder-download/component';
+import CrossIcon from 'icons/cross/component';
 
 const folderCard = function folderCard({ directory, deleteFile }) {
   const { path, name } = directory;
@@ -23,7 +24,7 @@ const folderCard = function folderCard({ directory, deleteFile }) {
       title={`Delete ${name} on seedbox`}
       onClick={deleteFile}
       type="button"
-      icon={<DownloadFolderIcon width="16px" height="16px" />}
+      icon={<CrossIcon width="16px" height="16px" />}
     />,
   ];
 
