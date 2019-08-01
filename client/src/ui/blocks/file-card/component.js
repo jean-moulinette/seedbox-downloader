@@ -34,14 +34,14 @@ const InformationsContainer = styled.div`
   padding: 10px 0;
   text-align: left;
 `;
-const LabelContainer = styled.div`
+const LabelContainer = styled.span`
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   padding-top: 5px;
 `;
-const SizeContainer = styled.div`
+const SizeContainer = styled.span`
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
