@@ -1,6 +1,6 @@
 {
   "name": "seedbox-downloader",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Seedbox downloader allows you to serve a directory and it's content from a server on a beautiful web interface.",
   "engines": {
     "node": "10.16.0"
