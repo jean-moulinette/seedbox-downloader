@@ -19,7 +19,6 @@ export default class SideMenu extends React.Component {
     const [firstFile, ...restOfFiles] = filesItems;
 
     return [
-      ...this.generateActionsItems(),
       firstFile,
       ...navigationItems,
       ...restOfFiles,
@@ -33,10 +32,6 @@ export default class SideMenu extends React.Component {
       : selectedDirectory;
 
     updateSelectedDirectory(newSelectedStructure);
-  }
-
-  addFolder() {
-    console.log(this.context);
   }
 
   generateActionsItems() {
