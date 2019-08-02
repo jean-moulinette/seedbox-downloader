@@ -74,7 +74,13 @@ class FilesGrid extends React.Component {
     const childrenOfDirectories = childrenSortedAlpha.filter(children => children.type !== 'file');
 
     const childrenElements = {
-      files: childrenOfFiles.map(file => <FileCard file={file} key={file.path} />),
+      files: childrenOfFiles.map(file => (
+        <FileCard
+          file={file}
+          key={file.path}
+          deleteFile={() => askDeleteFile(file.path, file.name)}
+        />
+      )),
       directories: childrenOfDirectories.map(directory => (
         <FolderCard
           directory={directory}

@@ -10,12 +10,12 @@ import PropTypes from 'prop-types';
 const FolderContainer = styled.div`
   position: relative;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   margin: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_MARGIN};
   width: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_WIDTH};
   height: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_HEIGHT};
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
   border-radius: 3px;
+  transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
 
   &>.floating-container {
     &>div {
@@ -96,12 +96,12 @@ export default function DirectoryCard({ label, onClick, innerMenuOptions }) {
         <LabelContainer>{ label }</LabelContainer>
       </FullWidthAnchor>
       {
-        innerMenuOptions.length > 0 ? (
+        innerMenuOptions.length > 0 && (
           <InnerMenuFloatingContainer className="floating-container">
             {/* eslint-disable-next-line react/no-array-index-key */}
             { innerMenuOptions }
           </InnerMenuFloatingContainer>
-        ) : null
+        )
       }
     </FolderContainer>
   );
