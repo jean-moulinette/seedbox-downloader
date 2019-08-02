@@ -65,7 +65,7 @@ exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
 exports.unlinkFileOnSeedbox = async function unlinkFileOnSeedbox(filePath, configuredDownloadFolder) {
   try {
     const completeFilePath = configuredDownloadFolder + filePath;
-    console.log(completeFilePath);
+
     if (!checkIfDownloadFileOrFolderExists(completeFilePath)) {
       console.log(`\n File : ${completeFilePath}`);
       console.log('\n not found for deletion');
