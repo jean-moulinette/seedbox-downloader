@@ -18,12 +18,16 @@ npm install -g seedbox-downloader
 Then you can start the seedbox-downloader by using the command:
 
 ```
-seedbox-downloader start
-```
+  // for starting the project in dev
+  seedbox-downloader start --dev -p 1337 -d ~/Downloads -a ~/.htpasswd
 
-The configuration asked first allows you to choose on which internal port you want to use, then you have to specify which directory should be served.
-(Note that you can use the `~` home alias)
+  options :
+    -p : port number
+    -d : seedbox directory path
+    -a : htpasswd file path (optional)
+    --dev : dev mode (optional)
+```
 
 ## Contribute
 
-  If you want to work on the project, you need to use `seedbox-downloader start-dev` instead of the `seedbox-downloader start` command, then, you need to start webpack bundler watcher by using `yarn start`.
+  If you want to work on the project, you need to use `./cli.js start --dev` instead of the `./cli.js start` command, then, you need to start webpack bundler watcher by using `yarn start`.

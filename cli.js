@@ -1,41 +1,68 @@
 #! /usr/bin/env node
-const config = require('./config.js');
+const commandLineArgs = require('command-line-args')
 const initServer = require('./server/index.js');
 
-main(process.argv[2]);
+const helpMsg = `
+Welcome to the seedbox-downloader
 
-async function main(command) {
-  const noCommandMsg = `
-    Welcome to the seedbox-downloader
+To start using this CLI tool, you must provide a command, here is a list of valid commands:
 
-    To start using this CLI tool, you must provide a command, here is a list of valid commands:
+  $ seedbox-downloader start
 
-      - seedbox-downloader start
-        Once you have configured seedbox-downloader, you can run the server by running this command.
+    options :
+    -p : port number
+    -d : seedbox directory path
+    -a : htpasswd file path (optional)
+    --dev : dev mode (optional)
+`;
+const OPTIONS_KEYS = {
+  hostingPort: 'hostingPort',
+  configuredDownloadFolder: 'configuredDownloadFolder',
+  htpasswd: 'htpasswd',
+  dev: 'dev',
+  help: 'help',
+};
+const optionsDefinitions = [
+  { name: 'command' },
+  { name: OPTIONS_KEYS.dev, type: Boolean },
+  { name: OPTIONS_KEYS.hostingPort, type: Number, alias: 'p' },
+  { name: OPTIONS_KEYS.configuredDownloadFolder, type: String, alias: 'd' },
+  { name: OPTIONS_KEYS.htpasswd, type: String, alias: 'a' },
+  { name: OPTIONS_KEYS.help, type: Boolean, alias: 'h' },
+];
 
-      - seedbox-downloader start-dev
-        for starting the project when in developing mode
-  `;
-  let userConfig;
+try {
+  const options = commandLineArgs(optionsDefinitions, { partial: true });
+  const command = options._unknown ? options._unknown[0] : ''
 
-  switch (command) {
-    case 'start-dev':
-      userConfig = await config();
-      initServer(true, userConfig)
-        .catch((err) => console.log(err));
-      break;
+  main({
+    command,
+    options,
+  });
+} catch (e) {
+  console.log(helpMsg);
+}
 
-    case 'start':
-      userConfig = await config();
-      initServer(false, userConfig)
-        .catch((err) => console.log(err));
-      break;
+function main({
+  command,
+  options: { hostingPort, configuredDownloadFolder, htpasswd, help, dev },
+}) {
+  if (!hostingPort || !configuredDownloadFolder) {
+    console.log(helpMsg)
+    return
+  }
 
-    case undefined:
-      console.log(noCommandMsg);
-      break;
+  if (help) {
+    console.log(helpMsg)
+    return
+  }
 
-    default:
-      console.error('Unknown command, only "start" and "start-dev" are valid commands');
+  if (command === 'start') {
+    initServer(dev, {
+      htpasswd,
+      configuredDownloadFolder,
+      hostingPort,
+    })
+    return
   }
 }
