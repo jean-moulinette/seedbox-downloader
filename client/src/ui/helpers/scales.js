@@ -13,6 +13,7 @@ export const APP_SCALES = {
     SIDE_BAR_WIDTH: '280px',
     APP_PADDING: `${SCALES.XL}px`,
     MAIN_CONTENT_HEIGHT: `calc(100vh - ${SCALES.M}px)`,
+    SIBEBAR_HEIGHT_OVERFLOW: '67px',
   },
   MENU: {
     SEPARATOR: '2px',
