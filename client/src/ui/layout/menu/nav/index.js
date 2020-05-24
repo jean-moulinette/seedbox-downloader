@@ -6,8 +6,8 @@ import Loader from 'ui/layout/loader/component';
 
 const Nav = styled.nav`
   width: ${APP_SCALES.GLOBAL.SIDE_BAR_WIDTH};
-  height: ${APP_SCALES.GLOBAL.MAIN_CONTENT_HEIGHT};
-  padding: ${APP_SCALES.MENU.CONTENT_PADDING} ${APP_SCALES.MENU.CONTENT_PADDING} 0 ${APP_SCALES.MENU.CONTENT_PADDING};
+  padding: 0 ${APP_SCALES.MENU.CONTENT_PADDING};
+  margin: ${APP_SCALES.MENU.CONTENT_PADDING} 0;
   border-right: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
   overflow-y: auto;
   overflow-x: hidden;
