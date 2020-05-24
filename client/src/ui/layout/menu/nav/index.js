@@ -1,9 +1,8 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
+import * as React from 'react';
 import styled from 'styled-components';
-
-import { Layout } from 'ui';
 import { APP_COLORS, APP_SCALES } from 'ui/helpers';
+import Loader from 'ui/layout/loader/component';
 
 const Nav = styled.nav`
   width: ${APP_SCALES.GLOBAL.SIDE_BAR_WIDTH};
@@ -34,7 +33,7 @@ export default function Menu({
 
   return (
     <Nav>
-      <Layout.Loader active={loading} />
+      <Loader active={loading} />
       { listContent }
     </Nav>
   );
