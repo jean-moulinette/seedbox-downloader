@@ -1,9 +1,8 @@
-import React from 'react';
-
-import { APP_COLORS } from 'ui/helpers/colors';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import noop from 'lodash/noop';
+import PropTypes from 'prop-types';
+import React from 'react';
+import styled from 'styled-components';
+import { APP_COLORS } from 'ui/helpers/colors';
 
 const Container = styled.div`
   position: relative;
@@ -33,8 +32,14 @@ const InteractibleButton = styled.button`
   outline: 0;
 `;
 
-export default function FileCardOptionButton({ title, href, onClick, icon, type }) {
-  const interactible = type === 'anchor'
+export default function FileCardOptionButton({
+  title,
+  href,
+  onClick,
+  icon,
+  type,
+}) {
+  const interactible = type === 'anchor' && href
     ? (
       <a title={title} href={href}>
         {icon}
@@ -42,7 +47,7 @@ export default function FileCardOptionButton({ title, href, onClick, icon, type 
     )
     : (
       <InteractibleButton title={title} onClick={onClick}>
-       {icon}
+        {icon}
       </InteractibleButton>
     );
 
@@ -51,4 +56,18 @@ export default function FileCardOptionButton({ title, href, onClick, icon, type 
       { interactible }
     </Container>
   );
+}
+
+FileCardOptionButton.propTypes = {
+  title: PropTypes.string.isRequired,
+  href: PropTypes.string,
+  onClick: PropTypes.func,
+  icon: PropTypes.node.isRequired,
+  type: PropTypes.oneOf('anchor', 'button'),
+};
+
+FileCardOptionButton.defaultProps = {
+  onClick: noop,
+  type: 'button',
+  href: null,
 };

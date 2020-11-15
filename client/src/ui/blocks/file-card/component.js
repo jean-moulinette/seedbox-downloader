@@ -1,11 +1,10 @@
-import * as React from 'react';
-
-import { APP_COLORS } from 'ui/helpers/colors';
-import { APP_FONT_STYLES } from 'ui/helpers/typography';
-import { APP_SCALES } from 'ui/helpers/scales';
 import FileFlatIcon from 'icons/file-flat/component';
 import PropTypes from 'prop-types';
+import * as React from 'react';
 import styled from 'styled-components';
+import { APP_COLORS } from 'ui/helpers/colors';
+import { APP_SCALES } from 'ui/helpers/scales';
+import { APP_FONT_STYLES } from 'ui/helpers/typography';
 
 const FileContainer = styled.div`
   position: relative;
@@ -94,7 +93,12 @@ const DecoratorContainer = styled.div`
   border-radius: 5px;
 `;
 
-export default function FileCard({ label, href, size, innerMenuOptions }) {
+export default function FileCard({
+  label,
+  href,
+  size,
+  innerMenuOptions,
+}) {
   return (
     <FileContainer>
       <AnchorContainer href={href} title={label}>

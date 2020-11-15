@@ -1,9 +1,8 @@
-import * as React from 'react';
-
-import { APP_COLORS } from 'ui/helpers/colors';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import noop from 'lodash/noop';
+import PropTypes from 'prop-types';
+import * as React from 'react';
+import styled from 'styled-components';
+import { APP_COLORS } from 'ui/helpers/colors';
 
 const Container = styled.div`
   position: relative;
@@ -33,8 +32,13 @@ const InteractibleButton = styled.button`
   outline: 0;
 `;
 
-export default function DirectoryCardOptionButton({ title, href, onClick, icon, type }) {
-
+export default function DirectoryCardOptionButton({
+  title,
+  href,
+  onClick,
+  icon,
+  type,
+}) {
   const interactible = type === 'anchor'
     ? (
       <a title={title} href={href}>
@@ -58,7 +62,7 @@ DirectoryCardOptionButton.defaultProps = {
   href: '#',
   onClick: noop,
   type: 'anchor',
-}
+};
 
 DirectoryCardOptionButton.propTypes = {
   title: PropTypes.string.isRequired,

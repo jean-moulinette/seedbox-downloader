@@ -1,10 +1,9 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-
-import { Blocks } from 'ui';
 import { Consumer } from 'bootstrap/provider';
-import DownloadFolderIcon from 'icons/folder-download/component';
 import CrossIcon from 'icons/cross/component';
+import DownloadFolderIcon from 'icons/folder-download/component';
+import PropTypes from 'prop-types';
+import * as React from 'react';
+import { Blocks } from 'ui';
 
 const folderCard = function folderCard({ directory, deleteFile }) {
   const { path, name } = directory;
@@ -49,6 +48,7 @@ folderCard.propTypes = {
     path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
+  deleteFile: PropTypes.func.isRequired,
 };
 
 export default folderCard;

@@ -1,8 +1,8 @@
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import axios from 'axios';
 import noop from 'lodash/noop';
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'
 
 export function askUserConfirmation(title, onConfirm) {
   confirmAlert({
@@ -18,7 +18,7 @@ export function askUserConfirmation(title, onConfirm) {
       {
         label: 'No',
         onClick: noop,
-      }
+      },
     ],
   });
 }
@@ -32,8 +32,8 @@ export async function getTreeFromServer() {
   }
 }
 
-export async function deleteFileFromServer(filePath) {
-  return await axios.delete(`/delete-file${filePath}`);
+export function deleteFileFromServer(filePath) {
+  return axios.delete(`/delete-file${filePath}`);
 }
 
 // Deeply search a directory through a directory tree

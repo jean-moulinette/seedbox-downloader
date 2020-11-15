@@ -1,16 +1,16 @@
+import PropTypes from 'prop-types';
 import * as React from 'react';
 
-import PropTypes from 'prop-types';
-import axios from 'axios';
 import {
-  updateExplorerPathAfterSelection,
   askUserConfirmation,
-  getTreeFromServer,
   deleteFileFromServer,
   findRecursiveStructure,
+  getTreeFromServer,
+  updateExplorerPathAfterSelection,
 } from './services';
 
-// Use for imported Consumer component
+/* eslint-disable react/no-unused-state */
+
 export const AppContext = React.createContext({});
 export const { Consumer } = AppContext;
 
@@ -62,6 +62,21 @@ export default class SeedboxDownloaderProvider extends React.Component {
     };
   }
 
+  async componentDidMount() {
+    try {
+      const tree = await getTreeFromServer();
+
+      this.setState({
+        explorerPath: [tree],
+        directoryTree: tree,
+        selectedDirectory: tree,
+      });
+    } catch (e) {
+      global.console.warn('Error while trying to set the tree in state');
+      global.console.error(e.message);
+    }
+  }
+
   async deleteFile(payload) {
     const { selectedDirectory: { path: selectedDirectoryPath } } = this.state;
 
@@ -89,19 +104,6 @@ export default class SeedboxDownloaderProvider extends React.Component {
       global.console.warn('Error while refreshing tree from server after file deletion');
       global.console.error(e.message);
     }
-  }
-
-  async componentDidMount() {
-    const tree = await getTreeFromServer();
-
-    this.setState({
-      explorerPath: [tree],
-      directoryTree: tree,
-      selectedDirectory: tree,
-    });
-  } catch (e) {
-    global.console.warn('Error while trying to set the tree in state');
-    globale.console.error(e.message);
   }
 
   render() {
