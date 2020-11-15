@@ -236,6 +236,7 @@ async function generateZipOnSeedbox({
       cd "${inputFolder}" && \
       cd .. && \
       zip -Z store -r "${outputZipName}" "${folderName}" && \
+      chmod -R g+w "${outputZipName}" && \
       exit
     `;
 
