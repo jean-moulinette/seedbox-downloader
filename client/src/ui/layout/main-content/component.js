@@ -1,7 +1,6 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
+import * as React from 'react';
 import styled from 'styled-components';
-
 import { APP_SCALES } from 'ui/helpers';
 
 export default function MainContent({
@@ -9,7 +8,7 @@ export default function MainContent({
 }) {
   const Main = styled.main`
     display: flex;
-    padding: 0 ${APP_SCALES.GLOBAL.APP_PADDING};
+    padding: 0 0 0 ${APP_SCALES.GLOBAL.APP_PADDING};
   `;
 
   return (

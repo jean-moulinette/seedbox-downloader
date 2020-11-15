@@ -8,7 +8,7 @@ const Container = styled.div`
   height: calc(100vh - ${APP_SCALES.GLOBAL.SIBEBAR_HEIGHT_OVERFLOW} - ${APP_SCALES.WINDOW_CONTENT.PADDING} - ${APP_SCALES.WINDOW_CONTENT.PADDING});
   overflow-y: auto;
   overflow-x: hidden;
-  margin: ${APP_SCALES.WINDOW_CONTENT.PADDING};
+  margin: ${APP_SCALES.WINDOW_CONTENT.PADDING} 0 ${APP_SCALES.WINDOW_CONTENT.PADDING} ${APP_SCALES.WINDOW_CONTENT.PADDING};
 `;
 
 const SideWindowContent = function SideWindowContent({ children }) {
