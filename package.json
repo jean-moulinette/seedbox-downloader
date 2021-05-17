@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/fanghornn/seedbox-downloader#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "chokidar": "^3.4.0",
     "command-line-args": "^5.1.1",
     "content-disposition": "^0.5.3",
