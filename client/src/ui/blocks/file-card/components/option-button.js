@@ -63,7 +63,7 @@ FileCardOptionButton.propTypes = {
   href: PropTypes.string,
   onClick: PropTypes.func,
   icon: PropTypes.node.isRequired,
-  type: PropTypes.oneOf('anchor', 'button'),
+  type: PropTypes.oneOf(['anchor', 'button']),
 };
 
 FileCardOptionButton.defaultProps = {
