@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-const commandLineArgs = require('command-line-args')
+const commandLineArgs = require('command-line-args');
 const initServer = require('./server/index.js');
 
 const helpMsg = `
@@ -31,30 +31,24 @@ const optionsDefinitions = [
   { name: OPTIONS_KEYS.help, type: Boolean, alias: 'h' },
 ];
 
-try {
-  const options = commandLineArgs(optionsDefinitions, { partial: true });
-  const command = options._unknown ? options._unknown[0] : ''
-
-  main({
-    command,
-    options,
-  });
-} catch (e) {
-  console.log(helpMsg);
-}
-
 function main({
   command,
-  options: { hostingPort, configuredDownloadFolder, htpasswd, help, dev },
+  options: {
+    hostingPort,
+    configuredDownloadFolder,
+    htpasswd,
+    help,
+    dev,
+  },
 }) {
   if (!hostingPort || !configuredDownloadFolder) {
-    console.log(helpMsg)
-    return
+    console.log(helpMsg);
+    return;
   }
 
   if (help) {
-    console.log(helpMsg)
-    return
+    console.log(helpMsg);
+    return;
   }
 
   if (command === 'start') {
@@ -62,7 +56,19 @@ function main({
       htpasswd,
       configuredDownloadFolder,
       hostingPort,
-    })
-    return
+    });
   }
+}
+
+try {
+  const options = commandLineArgs(optionsDefinitions, { partial: true });
+  // eslint-disable-next-line no-underscore-dangle
+  const command = options._unknown ? options._unknown[0] : '';
+
+  main({
+    command,
+    options,
+  });
+} catch (e) {
+  console.log(helpMsg);
 }
