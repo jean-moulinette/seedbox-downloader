@@ -34,21 +34,6 @@ export default class SideMenu extends React.Component {
     updateSelectedDirectory(newSelectedStructure);
   }
 
-  generateActionsItems() {
-    return [
-      {
-        label: 'Add Folder +',
-        icon: (
-          <span />
-        ),
-        separator: true,
-        active: false,
-        level: 0,
-        onClick: () => this.addFolder,
-      },
-    ];
-  }
-
   generateNavigationItems() {
     const {
       directoryTree: { path: rootDirectoryPath },
