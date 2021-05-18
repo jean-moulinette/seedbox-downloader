@@ -4,6 +4,11 @@ export const COLORS = {
   white: '#FAFAFA',
   whiteDark: '#ededed',
   color: '#9880dd',
+  colorLight: '#A48BF0',
+  colorDark: '#816DBD',
+  colorAccent: '#FF9800',
+  colorAccentLight: '#F2AE49',
+  colorAccentDark: '#F09000',
 };
 
 export const APP_COLORS = {
@@ -24,5 +29,10 @@ export const APP_COLORS = {
     DIRECTORY_LABEL: COLORS.whiteDark,
     DIRECTORY_OPTION_BUTTON_BACKGROUND: COLORS.whiteDark,
     DIRECTORY_OPTION_BUTTON_BORDER: COLORS.blackLight,
+    DIRECTORY_COLOR: COLORS.color,
+    DIRECTORY_COLOR_SECONDARY: COLORS.colorDark,
+    DIRECTORY_COLOR_NESTED_FILE: COLORS.whiteDark,
+    FILE_COLOR: COLORS.colorAccentLight,
+    FILE_COLOR_SECONDARY: COLORS.colorAccentDark,
   },
 };
