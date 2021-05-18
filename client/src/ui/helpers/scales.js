@@ -11,14 +11,14 @@ export const SCALES = {
 export const APP_SCALES = {
   GLOBAL: {
     SIDE_BAR_WIDTH: '280px',
-    APP_PADDING: `${SCALES.XL}px`,
     MAIN_CONTENT_HEIGHT: `calc(100vh - ${SCALES.M}px)`,
     SIBEBAR_HEIGHT_OVERFLOW: '67px',
   },
   MENU: {
     SEPARATOR: '2px',
     SEPARATOR_LIGHT: '1px',
-    CONTENT_PADDING: `${SCALES.M}px`,
+    CONTENT_MARGIN: `${SCALES.M}px`,
+    LEFT_MARGIN: `${SCALES.XL}px`,
     ITEM_PADDING: `${SCALES.XXS}px`,
     ITEM_MARGIN_LEFT: `${SCALES.S}px`,
     BUTTON_RADIUS: '3px',
