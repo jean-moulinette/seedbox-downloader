@@ -1,9 +1,9 @@
 import Menu from './menu';
-import MainContent from './main-content/component';
-import BreadCrumb from './bread-crumb/component';
-import SideWindowContent from './side-window-content/component';
-import SideWindow from './side-window/component';
-import Loader from './loader/component';
+import MainContent from './main-content';
+import BreadCrumb from './bread-crumb';
+import SideWindowContent from './side-window-content';
+import SideWindow from './side-window';
+import Loader from './loader';
 
 export default {
   Menu,

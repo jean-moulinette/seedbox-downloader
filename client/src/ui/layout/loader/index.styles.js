@@ -1,16 +1,18 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { APP_COLORS } from 'ui/helpers/colors';
 
-const OverLay = styled.div`
+export const OverLay = styled('div')`
   position: relative;
   width: 100%;
   height: 100%;
+
+  ${({ active }) => !active && `
+    display: none;
+  `}
 `;
 
-const LoaderContainer = styled.div`
+export const LoaderContainer = styled('div')`
   & {
     width: 40px;
     height: 40px;
@@ -51,19 +53,3 @@ const LoaderContainer = styled.div`
     }
   }
 `;
-
-export default function Loader({ active = true }) {
-  const className = active
-    ? ''
-    : 'hidden';
-
-  return (
-    <OverLay className={className}>
-      <LoaderContainer />
-    </OverLay>
-  );
-}
-
-Loader.propTypes = {
-  active: PropTypes.bool.isRequired,
-};

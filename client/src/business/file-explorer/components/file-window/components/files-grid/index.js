@@ -1,27 +1,13 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
-import styled from 'styled-components';
 
 import { Layout, Blocks } from 'ui';
 import { AppContext } from 'bootstrap/provider';
 import { Directory } from 'bootstrap/types';
 
-import FileCard from './file-card';
-import FolderCard from './folder-card';
-
-const DirectoriesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: stretch;
-`;
-
-const FilesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: stretch;
-`;
+import FileCard from '../file-card';
+import FolderCard from '../folder-card';
+import { DirectoriesContainer, FilesContainer } from './index.styles';
 
 class FilesGrid extends React.Component {
   items = memoize(

@@ -1,26 +1,9 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import styled from 'styled-components';
-import { APP_COLORS, APP_SCALES } from 'ui/helpers';
-import Loader from 'ui/layout/loader/component';
 
-const Nav = styled.nav`
-  box-sizing: border-box;
-  height: calc(100vh - (${APP_SCALES.MENU.CONTENT_MARGIN} * 2));
-  width: ${APP_SCALES.GLOBAL.SIDE_BAR_WIDTH};
-  margin: ${APP_SCALES.MENU.CONTENT_MARGIN} ${APP_SCALES.MENU.CONTENT_MARGIN} 0 ${APP_SCALES.MENU.LEFT_MARGIN};
-  padding-bottom: ${APP_SCALES.MENU.CONTENT_MARGIN};
-  padding-left: ;
-  border-right: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
-  overflow-y: auto;
-  overflow-x: hidden;
-  flex-shrink: 0;
-`;
-const Ul = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  `;
+import Loader from 'ui/layout/loader';
+
+import { Nav, Ul } from './index.styles';
 
 export default function Menu({
   children,
