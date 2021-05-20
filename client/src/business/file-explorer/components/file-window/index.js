@@ -10,7 +10,7 @@ function generateBreadCrumbsItemForDirectory(
   updateDirectoryByExplorer,
   currentDir,
 ) {
-  return explorerPath.map(directory => ({
+  return explorerPath.map((directory) => ({
     label: directory.name,
     key: `${directory.path}`,
     active: currentDir.path === directory.path,
@@ -34,7 +34,6 @@ export default class FileWindow extends React.Component {
         selectedDirectory,
       )
       : null;
-
 
     return (
       <Layout.SideWindow>

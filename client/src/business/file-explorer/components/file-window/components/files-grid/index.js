@@ -56,18 +56,18 @@ class FilesGrid extends React.Component {
       }
       return 0;
     });
-    const childrenOfFiles = childrenSortedAlpha.filter(children => children.type !== 'directory');
-    const childrenOfDirectories = childrenSortedAlpha.filter(children => children.type !== 'file');
+    const childrenOfFiles = childrenSortedAlpha.filter((children) => children.type !== 'directory');
+    const childrenOfDirectories = childrenSortedAlpha.filter((children) => children.type !== 'file');
 
     const childrenElements = {
-      files: childrenOfFiles.map(file => (
+      files: childrenOfFiles.map((file) => (
         <FileCard
           file={file}
           key={file.path}
           deleteFile={() => askDeleteFile(file.path, file.name)}
         />
       )),
-      directories: childrenOfDirectories.map(directory => (
+      directories: childrenOfDirectories.map((directory) => (
         <FolderCard
           directory={directory}
           key={directory.path}
@@ -77,14 +77,14 @@ class FilesGrid extends React.Component {
     };
 
     return (
-      <React.Fragment>
+      <>
         <DirectoriesContainer>
           { [this.generateNavigationItems(), ...childrenElements.directories] }
         </DirectoriesContainer>
         <FilesContainer>
           { childrenElements.files }
         </FilesContainer>
-      </React.Fragment>
+      </>
     );
   }
 

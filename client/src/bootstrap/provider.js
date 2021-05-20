@@ -39,7 +39,7 @@ export default class SeedboxDownloaderProvider extends React.Component {
       updateDirectoryByExplorer: (explorerItem) => {
         const { state: { explorerPath } } = this;
 
-        const selectedItemIndex = explorerPath.findIndex(item => item.path === explorerItem.path);
+        const selectedItemIndex = explorerPath.findIndex((item) => item.path === explorerItem.path);
 
         this.setState({
           selectedDirectory: explorerItem,

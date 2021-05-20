@@ -13,5 +13,5 @@ export const Directory = PropTypes.shape({
   path: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
-  children: PropTypes.array.isRequired,
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const MusicFile = props => (
+const MusicFile = (props) => (
   <svg viewBox="0 0 32 32" {...props}>
     <defs>
       <style>

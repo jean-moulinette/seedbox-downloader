@@ -24,12 +24,8 @@ export function askUserConfirmation(title, onConfirm) {
 }
 
 export async function getTreeFromServer() {
-  try {
-    const response = await axios.get('/get-tree');
-    return response.data;
-  } catch (e) {
-    throw e;
-  }
+  const response = await axios.get('/get-tree');
+  return response.data;
 }
 
 export function deleteFileFromServer(filePath) {
@@ -81,7 +77,7 @@ export function updateExplorerPathAfterSelection(selectedDirectory, explorerPath
   const selectedPathsArray = [...explorerPath];
   const lastDirectorySelected = selectedPathsArray[selectedPathsArray.length - 1];
   const isChildrenOfCurrentSelection = lastDirectorySelected.children.some(
-    directoryChildren => directoryChildren.path === selectedDirectory.path,
+    (directoryChildren) => directoryChildren.path === selectedDirectory.path,
   );
 
   if (lastDirectorySelected.path !== selectedDirectory.path) {
