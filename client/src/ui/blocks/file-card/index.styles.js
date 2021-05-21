@@ -1,8 +1,11 @@
 import styled from 'styled-components';
 
-import { APP_COLORS } from 'ui/helpers/colors';
-import { APP_FONT_STYLES } from 'ui/helpers/typography';
-import { APP_SCALES } from 'ui/helpers/scales';
+import {
+  APP_COLORS,
+  APP_FONT_STYLES,
+  APP_SCALES,
+  BREAKPOINTS,
+} from 'ui/helpers';
 
 export const FileContainer = styled('div')`
   position: relative;
@@ -15,6 +18,10 @@ export const FileContainer = styled('div')`
   text-overflow: ellipsis;
   transition:  transform 0.3s cubic-bezier(.25,.8,.25,1);
 
+  ${BREAKPOINTS.mobile`
+    width: auto;
+  `}
+
   &>.floating-container {
     &>div {
       transition: transform 1.2s cubic-bezier(.25,.8,.25,1);
@@ -24,6 +31,10 @@ export const FileContainer = styled('div')`
 
   &:hover {
     transform: scale(1.1);
+
+    ${BREAKPOINTS.mobile`
+      transform: none;
+    `}
 
     &>.floating-container {
       opacity: 1;

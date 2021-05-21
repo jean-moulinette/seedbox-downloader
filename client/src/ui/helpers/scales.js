@@ -1,3 +1,5 @@
+import { css } from 'styled-components';
+
 export const SCALES = {
   XXL: 80,
   XL: 40,
@@ -27,6 +29,7 @@ export const APP_SCALES = {
     SEPARATOR: '2px',
     SEPARATOR_LIGHT: '1px',
     LEFT_MARGIN: `${SCALES.XL}px`,
+    LEFT_MARGIN_MOBILE: `${SCALES.M}px`,
     ITEM_PADDING: `${SCALES.XXS}px`,
     ITEM_MARGIN_LEFT: `${SCALES.S}px`,
     BUTTON_RADIUS: '3px',
@@ -61,4 +64,17 @@ export const APP_SCALES = {
     FILE_ICON_HEIGHT: '64px',
     FILE_DECORATOR_HEIGHT: '140px',
   },
+};
+
+export const BREAKPOINTS = {
+  mobile: (...styles) => css`
+    @media only screen and (max-width: 640px) {
+      ${css(...styles)}
+    }
+  `,
+  desktop: (...styles) => css`
+    @media only screen and (min-width: 641px) {
+      ${css(...styles)}
+    }
+  `,
 };

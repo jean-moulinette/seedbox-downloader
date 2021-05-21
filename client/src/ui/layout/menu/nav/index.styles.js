@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { APP_SCALES } from 'ui/helpers';
+import { APP_SCALES, BREAKPOINTS } from 'ui/helpers';
 
 export const Nav = styled('nav')`
   box-sizing: border-box;
@@ -13,6 +13,10 @@ export const Nav = styled('nav')`
   overflow-y: auto;
   overflow-x: hidden;
   flex-shrink: 0;
+
+  ${BREAKPOINTS.mobile`
+    display: none;
+  `}
 `;
 
 export const Ul = styled('ul')`
