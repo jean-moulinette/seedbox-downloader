@@ -31,7 +31,7 @@ export const APP_SCALES = {
     LEFT_MARGIN: `${SCALES.XL}px`,
     LEFT_MARGIN_MOBILE: `${SCALES.M}px`,
     ITEM_PADDING: `${SCALES.XXS}px`,
-    ITEM_MARGIN_LEFT: `${SCALES.S}px`,
+    ITEM_MARGIN: `${SCALES.S}px`,
     BUTTON_RADIUS: '3px',
     BUTTON_WIDTH: '100%',
     BUTTON_PADDING: `${SCALES.XXS}px`,

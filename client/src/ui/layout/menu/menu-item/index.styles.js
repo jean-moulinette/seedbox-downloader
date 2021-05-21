@@ -6,10 +6,11 @@ export const MenuLi = styled('li')`
   padding-top: ${APP_SCALES.MENU.ITEM_PADDING};
   padding-bottom: ${APP_SCALES.MENU.ITEM_PADDING};
   transition: border-left 0.3s ease;
+  margin-right: ${APP_SCALES.MENU.ITEM_MARGIN};
 
   ${({ level }) => `
     padding-left: calc(${APP_SCALES.MENU.LEVEL_PADDING} * ${level});
-    margin-left: calc(${APP_SCALES.MENU.ITEM_MARGIN_LEFT} * ${level});
+    margin-left: calc(${APP_SCALES.MENU.ITEM_MARGIN} * ${level});
   `}
 
   ${({ level, theme }) => level > 0 && `

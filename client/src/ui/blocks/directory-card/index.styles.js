@@ -14,7 +14,7 @@ export const FolderContainer = styled('div')`
   transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
 
   ${BREAKPOINTS.mobile`
-    width: auto;
+    width: calc(100% - (${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_MARGIN} * 2));
   `}
 
   &>.floating-container {

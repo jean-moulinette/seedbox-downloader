@@ -19,7 +19,7 @@ export const FileContainer = styled('div')`
   transition:  transform 0.3s cubic-bezier(.25,.8,.25,1);
 
   ${BREAKPOINTS.mobile`
-    width: auto;
+    width: calc(100% - (${APP_SCALES.WINDOW_CONTENT.FILE_CARD_MARGIN} * 2));
   `}
 
   &>.floating-container {
