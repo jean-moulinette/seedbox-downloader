@@ -13,13 +13,13 @@ export const BreadCrumbContainer = styled('nav')`
 `;
 
 export const CrumbItem = styled('span')`
-  ${APP_FONT_STYLES.BREADCRUMB.ITEM}
+  ${({ theme }) => APP_FONT_STYLES.BREADCRUMB.ITEM(theme)}
   padding: ${APP_SCALES.BREADCRUMB.CONTENT_PADDING};
   cursor: pointer;
   margin-right: ${APP_SCALES.BREADCRUMB.ITEM_MARGIN};
 
-  ${({ active }) => active && `
-    ${APP_FONT_STYLES.BREADCRUMB.ITEM_ACTIVE}
+  ${({ active, theme }) => active && `
+    ${APP_FONT_STYLES.BREADCRUMB.ITEM_ACTIVE(theme)}
   `}
 
   ${({ active }) => !active && `

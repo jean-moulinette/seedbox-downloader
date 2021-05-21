@@ -32,6 +32,7 @@ module.exports = {
       bootstrap: path.resolve('client/src/bootstrap/'),
       business: path.resolve('client/src/business/'),
       icons: path.resolve('client/src/icons'),
+      hooks: path.resolve('client/src/hooks'),
     },
   },
   output: {

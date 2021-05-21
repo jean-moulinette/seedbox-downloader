@@ -9,10 +9,9 @@ export default function MenuItem({
   onClick,
   icon,
   level,
-  separator,
 }) {
   return (
-    <MenuLi separator={separator} level={level} key={label}>
+    <MenuLi level={level} key={label}>
       <MenuButton
         active={active}
         title={label}
@@ -29,7 +28,6 @@ export default function MenuItem({
 
 MenuItem.defaultProps = {
   onClick: () => {},
-  separator: false,
 };
 
 MenuItem.propTypes = {
@@ -38,5 +36,4 @@ MenuItem.propTypes = {
   onClick: PropTypes.func,
   icon: PropTypes.element.isRequired,
   level: PropTypes.number.isRequired,
-  separator: PropTypes.bool,
 };

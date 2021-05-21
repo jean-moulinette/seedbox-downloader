@@ -8,16 +8,24 @@ export const SCALES = {
   XXS: 8,
 };
 
+const globalHeaderHeight = '64px';
+const headerBottomMargin = `${SCALES.M}px`;
+const windowEdgeYMargin = `${SCALES.M}px`;
+
 export const APP_SCALES = {
   GLOBAL: {
     SIDE_BAR_WIDTH: '280px',
-    MAIN_CONTENT_HEIGHT: `calc(100vh - ${SCALES.M}px)`,
     SIBEBAR_HEIGHT_OVERFLOW: '67px',
+    HEADER_HEIGHT: globalHeaderHeight,
+    HEADER_BORDER: '2px',
+    HEADER_BOTTOM_MARGIN: headerBottomMargin,
+    WINDOW_EDGE_Y_MARGIN: windowEdgeYMargin,
+    HEADER_TOGGLE_ICON_MARGIN: `${SCALES.XXS}px`,
   },
   MENU: {
+    SIDE_MENU_HEIGHT: `calc(100vh - (${globalHeaderHeight} + ${headerBottomMargin}))`,
     SEPARATOR: '2px',
     SEPARATOR_LIGHT: '1px',
-    CONTENT_MARGIN: `${SCALES.M}px`,
     LEFT_MARGIN: `${SCALES.XL}px`,
     ITEM_PADDING: `${SCALES.XXS}px`,
     ITEM_MARGIN_LEFT: `${SCALES.S}px`,
@@ -34,6 +42,7 @@ export const APP_SCALES = {
     PADDING: `${SCALES.M}px`,
   },
   WINDOW_CONTENT: {
+    HEIGHT: `calc(100vh - (${globalHeaderHeight} + ${headerBottomMargin}))`,
     PADDING: `${SCALES.M}px`,
     DIRECTORY_LABEL_LEFT_MARG: `${SCALES.XS}px`,
     DIRECTORY_CARD_WIDTH: '215px',

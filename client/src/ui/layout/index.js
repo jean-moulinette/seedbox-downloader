@@ -4,6 +4,7 @@ import BreadCrumb from './bread-crumb';
 import SideWindowContent from './side-window-content';
 import SideWindow from './side-window';
 import Loader from './loader';
+import Header from './header';
 
 export default {
   Menu,
@@ -12,4 +13,5 @@ export default {
   MainContent,
   BreadCrumb,
   Loader,
+  Header,
 };

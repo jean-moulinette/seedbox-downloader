@@ -7,7 +7,9 @@ import FolderFlatIcon from 'icons/folder-flat/component';
 export const FolderContainer = styled('div')`
   position: relative;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
+
+  box-shadow: 0 1px 3px ${({ theme }) => theme.textPrimary}1A, 0 1px 2px ${({ theme }) => theme.textPrimary}3D;
   margin: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_MARGIN};
   width: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_WIDTH};
   height: ${APP_SCALES.WINDOW_CONTENT.DIRECTORY_CARD_HEIGHT};
@@ -33,7 +35,8 @@ export const FolderContainer = styled('div')`
   }
 
   &:hover {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    /* box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); */
+    box-shadow: 0 3px 6px ${({ theme }) => theme.textPrimary}29, 0 3px 6px ${({ theme }) => theme.textPrimary}3B;
   }
 
   &:focus {
@@ -74,7 +77,7 @@ export const Icon = styled(FolderFlatIcon)`
 `;
 
 export const LabelContainer = styled('span')`
-  ${APP_FONT_STYLES.FILE_WINDOW.DIRECTORY_LABEL}
+  ${({ theme }) => APP_FONT_STYLES.FILE_WINDOW.DIRECTORY_LABEL(theme)}
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

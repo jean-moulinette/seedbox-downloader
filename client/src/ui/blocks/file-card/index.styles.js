@@ -40,7 +40,7 @@ export const AnchorContainer = styled('a')`
   position: relative;
   background: transparent;
   border: none;
-  ${APP_FONT_STYLES.FILE_WINDOW.FILE_LABEL}
+  ${({ theme }) => APP_FONT_STYLES.FILE_WINDOW.FILE_LABEL(theme)}
 
   &:focus {
     outline: 0;

@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 
-import { Main } from './index.styles';
+import { Main, GlobalStyle } from './index.styles';
 
 export default function MainContent({
   children,
 }) {
   return (
-    <Main>
-      { children }
-    </Main>
+    <>
+      <GlobalStyle />
+      <Main>
+        { children }
+      </Main>
+    </>
   );
 }
 

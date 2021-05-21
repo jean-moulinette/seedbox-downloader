@@ -1,27 +1,24 @@
 import styled from 'styled-components';
 
-import { APP_FONT_STYLES, APP_COLORS, APP_SCALES } from 'ui/helpers';
+import { APP_FONT_STYLES, APP_SCALES } from 'ui/helpers';
 
 export const MenuLi = styled('li')`
   padding-top: ${APP_SCALES.MENU.ITEM_PADDING};
   padding-bottom: ${APP_SCALES.MENU.ITEM_PADDING};
+  transition: border-left 0.3s ease;
 
   ${({ level }) => `
     padding-left: calc(${APP_SCALES.MENU.LEVEL_PADDING} * ${level});
     margin-left: calc(${APP_SCALES.MENU.ITEM_MARGIN_LEFT} * ${level});
   `}
 
-  ${({ separator }) => separator && `
-    border-top: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR_LIGHT};
-  `}
-
-  ${({ level }) => level > 0 && `
-    border-left: solid ${APP_COLORS.MENU.SEPARATOR} ${APP_SCALES.MENU.SEPARATOR};
+  ${({ level, theme }) => level > 0 && `
+    border-left: solid ${theme.menu.separator} ${APP_SCALES.MENU.SEPARATOR};
   `}
 `;
 
 export const MenuButton = styled('button')`
-  ${APP_FONT_STYLES.MENU.ITEM}
+  ${({ theme }) => APP_FONT_STYLES.MENU.ITEM(theme)}
   width: ${APP_SCALES.MENU.BUTTON_WIDTH};
   height: 100%;
   padding: ${APP_SCALES.MENU.BUTTON_PADDING};
@@ -36,7 +33,7 @@ export const MenuButton = styled('button')`
   overflow: hidden;
 
   ${({ active }) => active && `
-    background-color: ${APP_COLORS.MENU.ACTIVE};
+    background-color: ${({ theme }) => theme.menu.active};
   `}
 
   &:active {
@@ -46,7 +43,7 @@ export const MenuButton = styled('button')`
     outline: none;
   }
   &:hover {
-    background: ${APP_COLORS.MENU.ACTIVE}
+    background: ${({ theme }) => theme.menu.active};
   }
 `;
 

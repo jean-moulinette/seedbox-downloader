@@ -1,5 +1,3 @@
-import { APP_COLORS } from './colors';
-
 export const FAMILY = {
   ROBOTO: '"Roboto", sans-serif;',
 };
@@ -28,34 +26,43 @@ export const FONT_STYLES = {
 };
 
 export const APP_FONT_STYLES = {
+  HEADER: {
+    THEME_SWITCH_ICON: `
+      font-size: 1.2em;
+    `,
+  },
   MENU: {
-    ITEM: `
-      ${FONT_STYLES.regular_bold}
+    ITEM: (theme) => `
+      ${FONT_STYLES.regular}
       font-size: .8em;
-      color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
+      transition: color 0.3s ease;
+      color: ${theme.textPrimary};
     `,
   },
   BREADCRUMB: {
-    ITEM: `
+    ITEM: (theme) => `
       ${FONT_STYLES.regular}
       font-size: 1.15em;
-      color: ${APP_COLORS.GLOBAL.TEXT_SECONDARY};
+      transition: color 0.3s ease;
+      color: ${theme.textSecondary};
     `,
-    ITEM_ACTIVE: `
+    ITEM_ACTIVE: (theme) => `
       ${FONT_STYLES.regular}
       font-size: 1.15em;
-      color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+      color: ${theme.textPrimary};
     `,
   },
   FILE_WINDOW: {
-    DIRECTORY_LABEL: `
+    DIRECTORY_LABEL: (theme) => `
       ${FONT_STYLES.regular};
-      color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+      transition: color 0.3s ease;
+      color: ${theme.textPrimary};
       font-size: .85em;
     `,
-    FILE_LABEL: `
+    FILE_LABEL: (theme) => `
       ${FONT_STYLES.regular};
-      color: ${APP_COLORS.GLOBAL.TEXT_PRIMARY};
+      transition: color 0.3s ease;
+      color: ${theme.textPrimary};
       font-size: .8em;
   `,
   },

@@ -12,21 +12,10 @@ export const COLORS = {
 };
 
 export const APP_COLORS = {
-  GLOBAL: {
-    TEXT_PRIMARY: COLORS.black,
-    TEXT_SECONDARY: COLORS.blackLight,
-    BACKGROUND: COLORS.white,
-  },
-  MENU: {
-    ICON: COLORS.blackLight,
-    SEPARATOR: COLORS.whiteDark,
-    ACTIVE: COLORS.whiteDark,
-  },
   LOADER: {
     PRIMARY: COLORS.color,
   },
   FILE_WINDOW: {
-    DIRECTORY_LABEL: COLORS.whiteDark,
     DIRECTORY_OPTION_BUTTON_BACKGROUND: COLORS.whiteDark,
     DIRECTORY_OPTION_BUTTON_BORDER: COLORS.blackLight,
     DIRECTORY_COLOR: COLORS.color,
@@ -34,5 +23,38 @@ export const APP_COLORS = {
     DIRECTORY_COLOR_NESTED_FILE: COLORS.whiteDark,
     FILE_COLOR: COLORS.colorAccentLight,
     FILE_COLOR_SECONDARY: COLORS.colorAccentDark,
+  },
+  HEADER: {
+    SWITCH_HANDLE: COLORS.whiteDark,
+    ON_BACKGROUND: COLORS.color,
+    OFF_BACKGROUND: COLORS.blackLight,
+  },
+};
+
+export const LightThemeSymbol = Symbol('light');
+export const DarkThemeSymbol = Symbol('dark');
+
+export const themes = {
+  [LightThemeSymbol]: {
+    textPrimary: COLORS.black,
+    textSecondary: COLORS.blackLight,
+    background: COLORS.white,
+    primaryColor: COLORS.color,
+    menu: {
+      icon: COLORS.colorDark,
+      separator: COLORS.whiteDark,
+      active: COLORS.whiteDark,
+    },
+  },
+  [DarkThemeSymbol]: {
+    textPrimary: COLORS.white,
+    textSecondary: COLORS.whiteDark,
+    background: COLORS.black,
+    primaryColor: COLORS.color,
+    menu: {
+      icon: COLORS.colorDark,
+      separator: COLORS.blackLight,
+      active: COLORS.blackLight,
+    },
   },
 };
