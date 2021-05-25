@@ -4,35 +4,24 @@ import { APP_SCALES } from 'ui/helpers/scales';
 import { APP_FONT_STYLES } from 'ui/helpers';
 
 export const BreadCrumbContainer = styled('nav')`
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
-  min-height: ${APP_SCALES.BREADCRUMB.MIN_HEIGHT};
-  padding: ${APP_SCALES.BREADCRUMB.PADDING} 0;
 `;
 
 export const CrumbItem = styled('span')`
   ${({ theme }) => APP_FONT_STYLES.BREADCRUMB.ITEM(theme)}
   padding: ${APP_SCALES.BREADCRUMB.CONTENT_PADDING};
   cursor: pointer;
-  margin-right: ${APP_SCALES.BREADCRUMB.ITEM_MARGIN};
 
   ${({ active, theme }) => active && `
     ${APP_FONT_STYLES.BREADCRUMB.ITEM_ACTIVE(theme)}
   `}
-
-  ${({ active }) => !active && `
-    &::after {
-        border-style: solid;
-        border-width: 0.15em 0.15em 0 0;
-        content: '';
-        display: inline-block;
-        height: 0.25em;
-        left: 1em;
-        position: relative;
-        transform: rotate(45deg);
-        width: 0.25em;
-      }
-  `}
 }`;
+
+export const ChevronContainer = styled('div')`
+  flex-shrink: 0;
+`;

@@ -41,7 +41,7 @@ export const APP_FONT_STYLES = {
   },
   BREADCRUMB: {
     ITEM: (theme) => `
-      ${FONT_STYLES.medium}
+      ${FONT_STYLES.regular}
       font-size: 1.15em;
       transition: color 0.3s ease;
       color: ${theme.textSecondary};

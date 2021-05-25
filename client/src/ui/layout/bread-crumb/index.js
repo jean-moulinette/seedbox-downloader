@@ -1,27 +1,37 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
+import Chevron from 'icons/chevron';
+
 import {
   BreadCrumbContainer,
   CrumbItem,
+  ChevronContainer,
 } from './index.styles';
-
-function createElementForItem(item) {
-  return (
-    <CrumbItem
-      active={item.active}
-      key={item.key}
-      onClick={item.onClick}
-    >
-      { item.label }
-    </CrumbItem>
-  );
-}
 
 const breadCrumb = function breadCrumb({
   items,
 }) {
-  const breadCrumbItems = items.map(createElementForItem);
+  const breadCrumbItems = items.map((item) => {
+    const shouldAppendChevron = !item.active;
+
+    return (
+      <>
+        <CrumbItem
+          active={item.active}
+          key={item.key}
+          onClick={item.onClick}
+        >
+          { item.label }
+        </CrumbItem>
+        {shouldAppendChevron && (
+          <ChevronContainer>
+            <Chevron role="img" aria-label="parent folder of" />
+          </ChevronContainer>
+        )}
+      </>
+    );
+  });
 
   return (
     <BreadCrumbContainer>
