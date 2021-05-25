@@ -91,14 +91,12 @@ class FilesGrid extends React.Component {
   render() {
     const { selectedDirectory } = this.props;
     const items = this.items(selectedDirectory);
-    const isLoading = items === null;
-    const itemsRendered = !isLoading
+    const itemsRendered = items !== null
       ? this.generateItems()
       : null;
 
     return (
       <Layout.SideWindowContent>
-        <Layout.Loader active={isLoading} />
         {itemsRendered}
       </Layout.SideWindowContent>
     );

@@ -16,10 +16,9 @@ const breadCrumb = function breadCrumb({
     const shouldAppendChevron = !item.active;
 
     return (
-      <>
+      <React.Fragment key={item.key}>
         <CrumbItem
           active={item.active}
-          key={item.key}
           onClick={item.onClick}
         >
           { item.label }
@@ -29,7 +28,7 @@ const breadCrumb = function breadCrumb({
             <Chevron role="img" aria-label="parent folder of" />
           </ChevronContainer>
         )}
-      </>
+      </React.Fragment>
     );
   });
 

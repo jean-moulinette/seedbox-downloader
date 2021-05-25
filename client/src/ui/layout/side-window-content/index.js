@@ -12,7 +12,11 @@ const SideWindowContent = function SideWindowContent({ children }) {
 };
 
 SideWindowContent.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
+};
+
+SideWindowContent.defaultProps = {
+  children: null,
 };
 
 export default SideWindowContent;

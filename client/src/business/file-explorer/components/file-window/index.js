@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 
 import { Layout } from 'ui';
 import { AppContext } from 'bootstrap/provider';
@@ -18,30 +18,27 @@ function generateBreadCrumbsItemForDirectory(
   }));
 }
 
-// eslint-disable-next-line react/prefer-stateless-function
-export default class FileWindow extends React.Component {
-  render() {
-    const {
+export default function FileWindow() {
+  const {
+    explorerPath,
+    updateDirectoryByExplorer,
+    selectedDirectory,
+    directoryTree,
+  } = useContext(AppContext);
+
+  const breadCrumbItems = explorerPath
+    ? generateBreadCrumbsItemForDirectory(
       explorerPath,
       updateDirectoryByExplorer,
       selectedDirectory,
-    } = this.context;
+    )
+    : null;
 
-    const breadCrumbItems = explorerPath
-      ? generateBreadCrumbsItemForDirectory(
-        explorerPath,
-        updateDirectoryByExplorer,
-        selectedDirectory,
-      )
-      : null;
-
-    return (
-      <Layout.SideWindow>
-        <Layout.BreadCrumb items={breadCrumbItems} />
-        <FilesGrid selectedDirectory={selectedDirectory} />
-      </Layout.SideWindow>
-    );
-  }
+  return (
+    <Layout.SideWindow>
+      <Layout.Loader active={directoryTree === null} />
+      <Layout.BreadCrumb items={breadCrumbItems} />
+      <FilesGrid selectedDirectory={selectedDirectory} />
+    </Layout.SideWindow>
+  );
 }
-
-FileWindow.contextType = AppContext;
