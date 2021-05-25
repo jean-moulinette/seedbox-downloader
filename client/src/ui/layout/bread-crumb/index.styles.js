@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { APP_SCALES } from 'ui/helpers/scales';
-import { APP_FONT_STYLES } from 'ui/helpers/typography';
+import { APP_FONT_STYLES } from 'ui/helpers';
 
 export const BreadCrumbContainer = styled('nav')`
   box-sizing: border-box;

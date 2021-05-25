@@ -10,17 +10,17 @@ export const FONT_STYLES = {
     text-decoration: none;
   `,
 
-  regular_bold: `
+  medium: `
     font-family: ${FAMILY.ROBOTO};
     font-style: normal;
-    font-weight: 700;
+    font-weight: 500;
     text-decoration: none;
   `,
 
-  regular_light: `
+  bold: `
     font-family: ${FAMILY.ROBOTO};
     font-style: normal;
-    font-weight: 300;
+    font-weight: 700;
     text-decoration: none;
   `,
 };
@@ -41,13 +41,13 @@ export const APP_FONT_STYLES = {
   },
   BREADCRUMB: {
     ITEM: (theme) => `
-      ${FONT_STYLES.regular}
+      ${FONT_STYLES.medium}
       font-size: 1.15em;
       transition: color 0.3s ease;
       color: ${theme.textSecondary};
     `,
     ITEM_ACTIVE: (theme) => `
-      ${FONT_STYLES.regular}
+      ${FONT_STYLES.bold}
       font-size: 1.15em;
       color: ${theme.textPrimary};
     `,
