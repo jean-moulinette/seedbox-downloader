@@ -33,7 +33,7 @@ exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
       {
         persistent: true,
         ignoreInitial: true,
-        ignored: '.DS_STORE'
+        ignored: '.DS_Store',
       },
     );
   } catch (e) {
