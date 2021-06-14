@@ -2,7 +2,7 @@ import noop from 'lodash/noop';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { Container, InteractibleButton } from './index.styles';
+import { InteractibleButton, Container } from 'ui/blocks/card-cta/index.styles';
 
 export default function FileCardOptionButton({
   title,

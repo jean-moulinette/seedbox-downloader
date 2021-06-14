@@ -42,7 +42,7 @@ export default function FileCard({
         innerMenuOptions.length > 0 && (
           <InnerMenuFloatingContainer className="floating-container">
             {/* eslint-disable-next-line react/no-array-index-key */}
-            { innerMenuOptions}
+            { innerMenuOptions }
           </InnerMenuFloatingContainer>
         )
       }

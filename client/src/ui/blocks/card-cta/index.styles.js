@@ -22,6 +22,9 @@ export const Container = styled('div')`
 `;
 
 export const InteractibleButton = styled('button')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   border: none;
   background: transparent;
