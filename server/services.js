@@ -235,7 +235,7 @@ async function generateZipOnSeedbox({
     const execCommand = `\
       cd "${inputFolder}" && \
       cd .. && \
-      zip -Z store -r "${outputZipName}" "${folderName}" && \
+      zip -b /tmp -Z store -r "${outputZipName}" "${folderName}" && \
       chmod -R g+w "${outputZipName}" && \
       exit
     `;
