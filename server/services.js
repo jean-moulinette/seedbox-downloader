@@ -33,7 +33,10 @@ exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
       {
         persistent: true,
         ignoreInitial: true,
-        ignored: '.DS_Store',
+        ignored: [
+          '.DS_Store',
+          `${configuredDownloadFolder}/*/**`,
+        ],
       },
     );
   } catch (e) {
@@ -122,6 +125,7 @@ async function zipDirectoriesFromDirectory(directory) {
 
 function createOnFileWatcherAdd(configuredDownloadFolder) {
   return function onFileWatcherAdd(path) {
+    console.log('\n File added : ', path);
     const dotZipLastIndex = path.lastIndexOf('.zip');
     const dotPartLastIndex = path.lastIndexOf('.part');
     const isZipFile = dotZipLastIndex !== -1;
@@ -145,13 +149,12 @@ function createOnFileWatcherAdd(configuredDownloadFolder) {
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-
-    console.log('\n FileWatcherAdd event : ', path);
   }
 }
 
 function createOnFileWatcherAddDir(configuredDownloadFolder) {
   return async function onFileWatcherAddDir(path) {
+    console.log('\n Directory added : ', path);
     try {
       await zipDirectoriesFromDirectory(configuredDownloadFolder);
     } catch (e) {
@@ -160,13 +163,12 @@ function createOnFileWatcherAddDir(configuredDownloadFolder) {
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-
-    console.log('\n FileWatcherAddDir event : ', path);
   }
 }
 
 function createOnFileWatcherUnlink(configuredDownloadFolder) {
   return function onFileWatcherUnlink(path) {
+    console.log('\n File removed : ', path);
     const dotPartLastIndex = path.lastIndexOf('.part');
     const isPartFile = dotPartLastIndex !== -1;
 
@@ -176,14 +178,13 @@ function createOnFileWatcherUnlink(configuredDownloadFolder) {
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-
-    console.log('\n FileWatcherUnlink event : ', path);
   }
 }
 
 function createOnFileWatcherUnlinkDir(configuredDownloadFolder) {
   return function onFileWatcherUnlinkDir(path) {
     try {
+      console.log('\n Directory removed : ', path);
       const potentialZippedDirectoryPath = `${path}.zip`;
 
       if (checkIfDownloadFileOrFolderExists(potentialZippedDirectoryPath)) {
@@ -195,8 +196,6 @@ function createOnFileWatcherUnlinkDir(configuredDownloadFolder) {
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-
-    console.log('\n FileWatcherUnlinkDir event : ', path);
   }
 }
 
