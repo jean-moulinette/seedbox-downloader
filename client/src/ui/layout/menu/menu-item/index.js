@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { MenuLi, MenuButton, ButtonLabel } from './index.styles';
+import { MenuLi, MenuButton, ButtonLabel, IconContainer } from './index.styles';
 
 export default function MenuItem({
   label,
@@ -17,7 +17,9 @@ export default function MenuItem({
         title={label}
         onClick={onClick}
       >
-        { icon }
+        <IconContainer>
+          { icon }
+        </IconContainer>
         <ButtonLabel>
           {label}
         </ButtonLabel>

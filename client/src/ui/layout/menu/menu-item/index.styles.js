@@ -19,6 +19,8 @@ export const MenuLi = styled('li')`
 `;
 
 export const MenuButton = styled('button')`
+  display: flex;
+  align-items: center;
   ${({ theme }) => APP_FONT_STYLES.MENU.ITEM(theme)}
   width: ${APP_SCALES.MENU.BUTTON_WIDTH};
   height: 100%;
@@ -26,12 +28,8 @@ export const MenuButton = styled('button')`
   border: none;
   border-radius: ${APP_SCALES.MENU.BUTTON_RADIUS};
   background: none;
-  text-align: left;
   transition: background 100ms cubic-bezier(0.4, 0.0, 0.2, 1);
   cursor: pointer;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
 
   ${({ active }) => active && `
     background-color: ${({ theme }) => theme.menu.active};
@@ -49,6 +47,13 @@ export const MenuButton = styled('button')`
 `;
 
 export const ButtonLabel = styled('span')`
+  overflow: hidden;
   margin-left: ${APP_SCALES.MENU.BUTTON_MARGIN_ICON};
-  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+export const IconContainer = styled('span')`
+  flex-shrink: 0;
+  display: flex;
 `;
