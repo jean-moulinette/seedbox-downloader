@@ -24,7 +24,7 @@ export function askUserConfirmation(title, onConfirm) {
 }
 
 export async function getTreeFromServer() {
-  const response = await axios.get('/get-tree');
+  const response = await axios.get('/api/tree');
   return response.data;
 }
 

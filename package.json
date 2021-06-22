@@ -9,10 +9,10 @@
     "seedbox-downloader": "./cli.js"
   },
   "scripts": {
-    "lint": "eslint client/src; exit 0;",
-    "start": "npm run watch;",
-    "build": "webpack --config client/config/webpack.prod.js",
-    "watch": "webpack --watch --config client/config/webpack.dev.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "eslintIgnore": [
     "server"
@@ -36,38 +36,24 @@
     "filesize": "^3.6.1",
     "fs-extra": "^8.1.0",
     "http-auth": "^3.2.4",
-    "koa": "^2.12.0",
-    "koa-send": "^5.0.0",
     "lodash": "^4.17.20",
     "memoize-one": "^5.1.1",
+    "next": "11.0.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
+    "react": "17.0.2",
     "react-confirm-alert": "^2.6.1",
-    "react-dom": "^17.0.2",
+    "react-dom": "17.0.2",
     "react-is": "^17.0.2",
     "react-switch": "^6.0.0",
-    "regenerator-runtime": "^0.13.5",
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-transform-react-jsx": "^7.14.3",
-    "@babel/preset-env": "^7.9.6",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^8.1.0",
+    "@types/fs-extra": "^9.0.11",
+    "@types/react": "17.0.11",
+    "@types/styled-components": "^5.1.10",
     "babel-plugin-styled-components": "^1.12.0",
-    "css-loader": "^3.5.3",
-    "eslint": "^7.26.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-import-resolver-webpack": "^0.13.1",
-    "eslint-plugin-babel": "^5.3.1",
-    "eslint-plugin-import": "^2.23.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.23.2",
-    "html-webpack-plugin": "^4.5.2",
-    "style-loader": "^0.23.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "eslint": "7.29.0",
+    "eslint-config-next": "11.0.0",
+    "typescript": "4.3.4"
   }
 }

@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 const commandLineArgs = require('command-line-args');
-const initServer = require('./server/index.js');
+const initServer = require('./src/server/index');
 
 const helpMsg = `
 Welcome to the seedbox-downloader

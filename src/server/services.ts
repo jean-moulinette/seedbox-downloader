@@ -1,9 +1,12 @@
-const chokidar = require('chokidar');
-const dirTree = require('directory-tree');
-const fs = require('fs');
-const util = require('util');
-const { spawn } = require('child_process');
-const fse = require('fs-extra');
+import { spawn } from 'child_process';
+import type { ChildProcessWithoutNullStreams } from 'child_process';
+import fs from 'fs';
+import util from 'util';
+
+import chokidar from 'chokidar';
+import dirTree from 'directory-tree';
+import type { DirectoryTree } from 'directory-tree';
+import fse from 'fs-extra';
 
 const {
   SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
@@ -12,16 +15,8 @@ const {
 
 const readDir = util.promisify(fs.readdir);
 
-exports.generateZipOnSeedbox = generateZipOnSeedbox;
-
-exports.sanitizeFolderPath = sanitizeFolderPath;
-
-exports.zipDirectoriesFromDirectory = zipDirectoriesFromDirectory;
-
-exports.generateDownloadFolderTreeJsonFile = generateDownloadFolderTreeJsonFile;
-
-exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
-  configuredDownloadFolder,
+export function initDownloadFolderWatchers(
+  configuredDownloadFolder: string
 ) {
   const { ADD, ADD_DIR, CHANGE, UNLINK, UNLINK_DIR, ERROR } = WATCHER_EVENTS;
 
@@ -65,7 +60,10 @@ exports.initDownloadFolderWatchers = function initDownloadFolderWatchers(
   );
 }
 
-exports.unlinkFileOnSeedbox = async function unlinkFileOnSeedbox(filePath, configuredDownloadFolder) {
+export async function unlinkFileOnSeedbox(
+  filePath: string,
+  configuredDownloadFolder: string
+) {
   try {
     const completeFilePath = configuredDownloadFolder + filePath;
 
@@ -83,23 +81,18 @@ exports.unlinkFileOnSeedbox = async function unlinkFileOnSeedbox(filePath, confi
   }
 };
 
-exports.getSeedboxDirectoryTreeJsonFile = function getSeedboxDirectoryTreeJsonFile() {
-  let file;
-  const readOptions = {
-    encoding: 'utf8',
-  };
-
+export function getSeedboxDirectoryTreeJsonFile() {
   try {
-    file = fs.readFileSync(SEEDBOX_DOWNLOADER_TREE_FILE_PATH, readOptions);
+    return fs.readFileSync(SEEDBOX_DOWNLOADER_TREE_FILE_PATH, { encoding: 'utf8' });
   } catch (e) {
     console.log('\n Fetching downloader folder tree file failed');
     throw e;
   }
-
-  return file;
 };
 
-async function zipDirectoriesFromDirectory(directory) {
+export async function zipDirectoriesFromDirectory(
+  directory: string
+) {
   try {
     const files = await readDir(directory, {
       withFileTypes: true,
@@ -123,8 +116,10 @@ async function zipDirectoriesFromDirectory(directory) {
   }
 }
 
-function createOnFileWatcherAdd(configuredDownloadFolder) {
-  return function onFileWatcherAdd(path) {
+function createOnFileWatcherAdd(
+  configuredDownloadFolder: string
+) {
+  return function onFileWatcherAdd(path: string) {
     console.log('\n File added : ', path);
     const dotZipLastIndex = path.lastIndexOf('.zip');
     const dotPartLastIndex = path.lastIndexOf('.part');
@@ -152,8 +147,10 @@ function createOnFileWatcherAdd(configuredDownloadFolder) {
   }
 }
 
-function createOnFileWatcherAddDir(configuredDownloadFolder) {
-  return async function onFileWatcherAddDir(path) {
+function createOnFileWatcherAddDir(
+  configuredDownloadFolder: string
+) {
+  return async function onFileWatcherAddDir(path: string) {
     console.log('\n Directory added : ', path);
     try {
       await zipDirectoriesFromDirectory(configuredDownloadFolder);
@@ -166,8 +163,10 @@ function createOnFileWatcherAddDir(configuredDownloadFolder) {
   }
 }
 
-function createOnFileWatcherUnlink(configuredDownloadFolder) {
-  return function onFileWatcherUnlink(path) {
+function createOnFileWatcherUnlink(
+  configuredDownloadFolder: string
+) {
+  return function onFileWatcherUnlink(path: string) {
     console.log('\n File removed : ', path);
     const dotPartLastIndex = path.lastIndexOf('.part');
     const isPartFile = dotPartLastIndex !== -1;
@@ -181,8 +180,10 @@ function createOnFileWatcherUnlink(configuredDownloadFolder) {
   }
 }
 
-function createOnFileWatcherUnlinkDir(configuredDownloadFolder) {
-  return function onFileWatcherUnlinkDir(path) {
+function createOnFileWatcherUnlinkDir(
+  configuredDownloadFolder: string
+) {
+  return function onFileWatcherUnlinkDir(path: string) {
     try {
       console.log('\n Directory removed : ', path);
       const potentialZippedDirectoryPath = `${path}.zip`;
@@ -199,13 +200,15 @@ function createOnFileWatcherUnlinkDir(configuredDownloadFolder) {
   }
 }
 
-function onFileWatcherError(error) {
+function onFileWatcherError(
+  error: Error
+) {
   console.log('\n Error occured in file watch events');
-  console.log(`\n Error : ${error}`);
+  console.log(`\n Error : ${error.message}`);
 }
 
-function generateDownloadFolderTreeJsonFile(
-  configuredDownloadFolder,
+export function generateDownloadFolderTreeJsonFile(
+  configuredDownloadFolder: string,
 ) {
   try {
     const tree = getSeedboxDirectoryStructure(configuredDownloadFolder);
@@ -221,11 +224,17 @@ function generateDownloadFolderTreeJsonFile(
   }
 }
 
-async function generateZipOnSeedbox({
+type generateZipOptions = {
+  outputZipName: string,
+  inputFolder: string,
+  folderName: string
+};
+
+export async function generateZipOnSeedbox({
   outputZipName,
   inputFolder,
   folderName,
-}) {
+}: generateZipOptions) {
   try {
     if (checkIfDownloadFileOrFolderExists(`${inputFolder}/../${folderName}.zip`)) {
       return;
@@ -253,7 +262,9 @@ async function generateZipOnSeedbox({
   }
 }
 
-function waitForChildProcessToExit(childProcess) {
+function waitForChildProcessToExit(
+  childProcess: ChildProcessWithoutNullStreams
+) {
   return new Promise((resolve, reject) => {
     childProcess.on('exit', resolve);
     childProcess.on('close', resolve);
@@ -263,19 +274,21 @@ function waitForChildProcessToExit(childProcess) {
 }
 
 function getSeedboxDirectoryStructure(
-  configuredDownloadFolder,
+  configuredDownloadFolder: string,
 ) {
   const directoryStructure = dirTree(configuredDownloadFolder, {}, (file) => {
     file.path = file.path.slice(configuredDownloadFolder.length, file.path.length);
   });
 
-  const sanitizedChildrens = directoryStructure.children.map((treeNode) => {
-    if (treeNode.type === 'directory') {
-      return sanitizeFolderPath(configuredDownloadFolder, treeNode);
-    }
+  const sanitizedChildrens = directoryStructure.children
+    ? directoryStructure.children.map((treeNode) => {
+      if (treeNode.type === 'directory') {
+        return sanitizeFolderPath(configuredDownloadFolder, treeNode);
+      }
 
-    return treeNode;
-  });
+      return treeNode;
+    })
+    : []
 
   const sanitizedChildrensZipFiltered = sanitizedChildrens.filter(
     (children) => filterOutZippedFolderFiles(children, configuredDownloadFolder),
@@ -287,7 +300,10 @@ function getSeedboxDirectoryStructure(
   };
 }
 
-function filterOutZippedFolderFiles(treeNode, configuredDownloadFolder) {
+function filterOutZippedFolderFiles(
+  treeNode: DirectoryTree,
+  configuredDownloadFolder: string
+) {
   const { extension, path } = treeNode;
 
   if (extension && extension === '.zip') {
@@ -302,13 +318,13 @@ function filterOutZippedFolderFiles(treeNode, configuredDownloadFolder) {
   return true;
 }
 
-function sanitizeFolderPath(
-  configuredDownloadFolder,
-  folder,
-) {
+export function sanitizeFolderPath(
+  configuredDownloadFolder: string,
+  folder: DirectoryTree,
+): DirectoryTree {
   const { path: directoryPath, children: directoryChildrens } = folder;
 
-  const newPath = folder.path.slice(configuredDownloadFolder.length, folder.path.length);
+  const newPath = folder.path.slice(configuredDownloadFolder.length, directoryPath.length);
 
   if (directoryChildrens && directoryChildrens.length) {
 
@@ -332,12 +348,12 @@ function sanitizeFolderPath(
   };
 }
 
-function replaceSpacesWithEscapedSpaces(inputString) {
+function replaceSpacesWithEscapedSpaces(inputString: string) {
   const findSpacesRegex = /(\s+)/g;
   return inputString.replace(findSpacesRegex, '\\ ');
 }
 
-function checkIfDownloadFileOrFolderExists(path) {
+function checkIfDownloadFileOrFolderExists(path: string) {
   try {
     fs.accessSync(path, fs.constants.R_OK);
     return true;
@@ -346,7 +362,7 @@ function checkIfDownloadFileOrFolderExists(path) {
   }
 }
 
-function checkIfFileIsDirectory(path) {
+function checkIfFileIsDirectory(path: string) {
   try {
     return fs.lstatSync(path).isDirectory();
   } catch (e) {
