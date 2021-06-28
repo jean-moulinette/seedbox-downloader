@@ -7,6 +7,7 @@ Typically, you would want to use this package to host the files downloaded by yo
 Here is what it looks like
 
 ![seedbox-downloader_preview](https://raw.githubusercontent.com/Fanghornn/seedbox-downloader/master/seedbox-downloader-preview.png)
+
 ## Installation
 
 Install the npm package globaly with your favorite package manager
@@ -30,4 +31,4 @@ Then you can start the seedbox-downloader by using the command:
 
 ## Contribute
 
-  If you want to work on the project, you need to use `./cli.js start --dev` instead of the `./cli.js start` command, then, you need to start webpack bundler watcher by using `yarn start`.
+  If you want to work on the project, run `npm run dev` to start.

@@ -12,11 +12,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "next build",
+    "init-seedbox": "ts-node --project tsconfig.cli.json ./cli/index.ts"
   },
-  "eslintIgnore": [
-    "server"
-  ],
+  "_moduleAliases": {
+    "server": "src/server"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fanghornn/seedbox-downloader.git"
@@ -38,17 +40,22 @@
     "http-auth": "^3.2.4",
     "lodash": "^4.17.20",
     "memoize-one": "^5.1.1",
+    "module-alias": "^2.2.2",
     "next": "11.0.0",
+    "npm": "^7.19.0",
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-confirm-alert": "^2.6.1",
     "react-dom": "17.0.2",
     "react-is": "^17.0.2",
     "react-switch": "^6.0.0",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "ts-node": "^10.0.0"
   },
   "devDependencies": {
+    "@types/command-line-args": "^5.0.0",
     "@types/fs-extra": "^9.0.11",
+    "@types/http-auth": "^4.1.0",
     "@types/react": "17.0.11",
     "@types/styled-components": "^5.1.10",
     "babel-plugin-styled-components": "^1.12.0",
