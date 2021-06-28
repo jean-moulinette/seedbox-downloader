@@ -28,7 +28,9 @@
       "ui/*": ["src/ui/*"],
       "ui": ["src/ui"],
       "server/*": ["src/server/*"],
-      "server": ["src/server"]
+      "server": ["src/server"],
+      "public/*": ["public/*"],
+      "public": ["public"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

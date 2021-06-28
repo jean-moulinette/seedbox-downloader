@@ -12,6 +12,9 @@ export const COLORS = {
 };
 
 export const APP_COLORS = {
+  PRIMARY_COLOR: COLORS.color,
+  BACKGROUND_DARK: COLORS.black,
+  BACKGROUND_WHITE: COLORS.white,
   LOADER: {
     PRIMARY: COLORS.color,
   },
@@ -38,7 +41,7 @@ export const themes = {
   [LightThemeSymbol]: {
     textPrimary: COLORS.black,
     textSecondary: COLORS.blackLight,
-    background: COLORS.white,
+    background: APP_COLORS.BACKGROUND_WHITE,
     primaryColor: COLORS.color,
     menu: {
       icon: COLORS.colorDark,
@@ -49,7 +52,7 @@ export const themes = {
   [DarkThemeSymbol]: {
     textPrimary: COLORS.white,
     textSecondary: COLORS.whiteDark,
-    background: COLORS.black,
+    background: APP_COLORS.BACKGROUND_DARK,
     primaryColor: COLORS.color,
     menu: {
       icon: COLORS.colorDark,
