@@ -1,8 +1,8 @@
-import App from 'bootstrap';
+import FileExplorer from 'business/file-explorer';
 import React from 'react';
 
 function HomePage() {
-  return <App />;
+  return <FileExplorer />;
 }
 
 export default HomePage;

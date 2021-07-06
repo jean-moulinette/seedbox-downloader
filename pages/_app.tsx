@@ -1,10 +1,21 @@
 import 'public/main.css';
 
+import SeedboxDownloaderProvider from 'bootstrap/provider';
+import SeedboxHeader from 'business/seedbox-header';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import getUserDefaultTheme from 'services/get-user-default-theme';
+import { getThemeSelectionFromStorage } from 'services/local-storage/theme';
+import { ThemeProvider } from 'styled-components';
 import { APP_COLORS } from 'ui/helpers';
+import { DarkThemeSymbol, LightThemeSymbol, themes } from 'ui/helpers/colors';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [theme, setTheme] = useState<
+    typeof DarkThemeSymbol | typeof LightThemeSymbol
+  >(LightThemeSymbol);
+
   const styles = `
     @media (prefers-color-scheme: dark) {
       body {
@@ -18,6 +29,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   `;
 
+  useEffect(() => {
+    const savedUserTheme = getThemeSelectionFromStorage();
+    const userTheme = getUserDefaultTheme();
+
+    setTheme(savedUserTheme || userTheme);
+  }, []);
+
   return (
     <>
       <Head>
@@ -28,7 +46,14 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <style dangerouslySetInnerHTML={{ __html: styles}} />
       </Head>
-      <Component {...pageProps} />
+      <ThemeProvider theme={themes[theme]}>
+        <SeedboxHeader
+          onThemeChange={setTheme}
+        />
+        <SeedboxDownloaderProvider>
+          <Component {...pageProps} />
+        </SeedboxDownloaderProvider>
+      </ThemeProvider>
     </>
   );
 }
