@@ -29,7 +29,7 @@ export async function getTreeFromServer() {
 }
 
 export function deleteFileFromServer(filePath) {
-  return axios.delete(`/delete-file${filePath}`);
+  return axios.delete(`/api/delete-file/${filePath}`);
 }
 
 // Deeply search a directory through a directory tree

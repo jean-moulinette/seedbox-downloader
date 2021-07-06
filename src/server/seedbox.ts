@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 
-// import auth from 'http-auth';
+import { ENV_IDENTIFIERS } from 'server/constants';
 import {
   generateDownloadFolderTreeJsonFile,
   initDownloadFolderWatchers,
@@ -20,8 +20,6 @@ export default async function startSeedbox({
   htpasswd,
   dev,
 }: SeedboxStartOptions) {
-  // setupAppMiddlewares(serverOptions);
-
   console.log('\n Seedbox-downloader is now generating the file tree from the directory :');
   console.log(`\n ${configuredDownloadFolder}`);
 
@@ -49,14 +47,15 @@ export default async function startSeedbox({
     console.log(` Error : ${e.message}`);
   }
 
+  const { DOWNLOAD_DIR, HTPASSWD } = ENV_IDENTIFIERS;
+  const envString = `${HTPASSWD}=${htpasswd} ${DOWNLOAD_DIR}=${configuredDownloadFolder}`;
   const startScriptCommand = dev
     ? 'dev'
     : 'start';
-
   const execCommand = `npm run ${startScriptCommand} -- -p ${hostingPort}`;
 
-  // Launch next server
-  const nextProcess = exec(execCommand);
+  // Launch next server with env vars
+  const nextProcess = exec(`${envString} ${execCommand}`);
 
   if (dev) {
     nextProcess.stdout?.on('data', console.log);
