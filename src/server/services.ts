@@ -7,18 +7,17 @@ import chokidar from 'chokidar';
 import dirTree from 'directory-tree';
 import type { DirectoryTree } from 'directory-tree';
 import fse from 'fs-extra';
-
-const {
+import {
   SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
   WATCHER_EVENTS,
-} = require('./constants');
+} from 'server/constants';
 
 const readDir = util.promisify(fs.readdir);
 
 export function initDownloadFolderWatchers(
   configuredDownloadFolder: string
 ) {
-  const { ADD, ADD_DIR, CHANGE, UNLINK, UNLINK_DIR, ERROR } = WATCHER_EVENTS;
+  const { ADD, ADD_DIR, UNLINK, UNLINK_DIR, ERROR } = WATCHER_EVENTS;
 
   let downloadFolderWatcher;
 
@@ -70,7 +69,7 @@ export async function unlinkFileOnSeedbox(
     if (!checkIfDownloadFileOrFolderExists(completeFilePath)) {
       console.log(`\n File : ${completeFilePath}`);
       console.log('\n not found for deletion');
-      throw new Error('404');
+      throw 404;
     }
 
     await fse.remove(completeFilePath);
@@ -144,7 +143,7 @@ function createOnFileWatcherAdd(
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-  }
+  };
 }
 
 function createOnFileWatcherAddDir(
@@ -160,7 +159,7 @@ function createOnFileWatcherAddDir(
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-  }
+  };
 }
 
 function createOnFileWatcherUnlink(
@@ -177,7 +176,7 @@ function createOnFileWatcherUnlink(
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-  }
+  };
 }
 
 function createOnFileWatcherUnlinkDir(
@@ -197,7 +196,7 @@ function createOnFileWatcherUnlinkDir(
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-  }
+  };
 }
 
 function onFileWatcherError(
@@ -270,7 +269,7 @@ function waitForChildProcessToExit(
     childProcess.on('close', resolve);
     childProcess.on('error', reject);
     childProcess.stdout.on('data', () => {});
-  })
+  });
 }
 
 function getSeedboxDirectoryStructure(
@@ -288,7 +287,7 @@ function getSeedboxDirectoryStructure(
 
       return treeNode;
     })
-    : []
+    : [];
 
   const sanitizedChildrensZipFiltered = sanitizedChildrens.filter(
     (children) => filterOutZippedFolderFiles(children, configuredDownloadFolder),
@@ -348,16 +347,16 @@ export function sanitizeFolderPath(
   };
 }
 
-function replaceSpacesWithEscapedSpaces(inputString: string) {
-  const findSpacesRegex = /(\s+)/g;
-  return inputString.replace(findSpacesRegex, '\\ ');
-}
-
 function checkIfDownloadFileOrFolderExists(path: string) {
   try {
-    fs.accessSync(path, fs.constants.R_OK);
+    fs.accessSync(
+      path,
+      fs.constants.R_OK,
+    );
+
     return true;
   } catch (e) {
+    console.log('\n Error while checking file existence : ', e.message);
     return false;
   }
 }
