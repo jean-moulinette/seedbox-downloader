@@ -57,7 +57,15 @@ export function main(
   } else if (help) {
     console.log(helpMsg);
   } else if (command === 'start') {
-    startSeedbox(options);
+    // force trailing slash on download folder path
+    const downloadFolderPath = configuredDownloadFolder[configuredDownloadFolder.length - 1] !== '/'
+      ? `${configuredDownloadFolder}/`
+      : configuredDownloadFolder;
+
+    startSeedbox({
+      ...options,
+      configuredDownloadFolder: downloadFolderPath,
+    });
   }
 }
 
