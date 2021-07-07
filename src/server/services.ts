@@ -1,18 +1,16 @@
 import { spawn } from 'child_process';
 import type { ChildProcessWithoutNullStreams } from 'child_process';
 import fs from 'fs';
-import util from 'util';
 
 import chokidar from 'chokidar';
 import dirTree from 'directory-tree';
 import type { DirectoryTree } from 'directory-tree';
 import fse from 'fs-extra';
+import fsPromises from 'fs/promises';
 import {
   SEEDBOX_DOWNLOADER_TREE_FILE_PATH,
   WATCHER_EVENTS,
 } from 'server/constants';
-
-const readDir = util.promisify(fs.readdir);
 
 export function initDownloadFolderWatchers(
   configuredDownloadFolder: string
@@ -93,7 +91,7 @@ export async function zipDirectoriesFromDirectory(
   directory: string
 ) {
   try {
-    const files = await readDir(directory, {
+    const files = await fsPromises.readdir(directory, {
       withFileTypes: true,
     });
     const directories = files.filter(file => file.isDirectory());
@@ -223,6 +221,10 @@ export function generateDownloadFolderTreeJsonFile(
   }
 }
 
+export async function getFileStats(path: string) {
+  return fsPromises.stat(path);
+}
+
 type generateZipOptions = {
   outputZipName: string,
   inputFolder: string,
@@ -345,6 +347,15 @@ export function sanitizeFolderPath(
     ...folder,
     path: newPath,
   };
+}
+
+export async function pipeFileReadStreamToStream(filePath: string, writableStream: NodeJS.WritableStream) {
+  const readStream = fs.createReadStream(filePath);
+
+  await new Promise((resolve) => {
+    readStream.pipe(writableStream);
+    readStream.on('end', resolve);
+  });
 }
 
 function checkIfDownloadFileOrFolderExists(path: string) {

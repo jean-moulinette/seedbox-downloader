@@ -54,6 +54,7 @@
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
+    "@types/content-disposition": "^0.5.4",
     "@types/fs-extra": "^9.0.11",
     "@types/http-auth": "^4.1.0",
     "@types/react": "17.0.11",

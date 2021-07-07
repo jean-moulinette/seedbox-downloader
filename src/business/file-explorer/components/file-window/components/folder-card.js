@@ -8,7 +8,7 @@ import { Blocks } from 'ui';
 const folderCard = function folderCard({ directory, deleteFile }) {
   const { path, name } = directory;
 
-  const downloadFolderLink = `/zip-folder${directory.path}`;
+  const downloadFolderLink = `/api/folder/${directory.path}`;
 
   const innerMenuOptions = [
     <Blocks.DirectoryCardOptionButton
