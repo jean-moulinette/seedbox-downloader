@@ -9,12 +9,11 @@ import getUserDefaultTheme from 'services/get-user-default-theme';
 import { getThemeSelectionFromStorage } from 'services/local-storage/theme';
 import { ThemeProvider } from 'styled-components';
 import { APP_COLORS } from 'ui/helpers';
-import { DarkThemeSymbol, LightThemeSymbol, themes } from 'ui/helpers/colors';
+import { LightThemeSymbol, themes } from 'ui/helpers/colors';
+import type { ThemeSymbol } from 'ui/helpers/colors';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [theme, setTheme] = useState<
-    typeof DarkThemeSymbol | typeof LightThemeSymbol
-  >(LightThemeSymbol);
+  const [theme, setTheme] = useState<ThemeSymbol>(LightThemeSymbol);
 
   const styles = `
     @media (prefers-color-scheme: dark) {

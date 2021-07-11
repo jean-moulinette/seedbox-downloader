@@ -37,6 +37,8 @@ export const APP_COLORS = {
 export const LightThemeSymbol = Symbol('light');
 export const DarkThemeSymbol = Symbol('dark');
 
+export type ThemeSymbol = typeof LightThemeSymbol | typeof DarkThemeSymbol
+
 export const themes = {
   [LightThemeSymbol]: {
     textPrimary: COLORS.black,
