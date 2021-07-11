@@ -1,11 +1,15 @@
-import * as React from 'react';
-
-import { Blocks } from 'ui';
-import PropTypes from 'prop-types';
+import type { DirectoryTree } from 'directory-tree';
 import filesize from 'filesize';
 import CrossIcon from 'icons/cross/component';
+import * as React from 'react';
+import { Blocks } from 'ui';
 
-const fileCard = function fileCard({ file, deleteFile }) {
+interface Props {
+  file: DirectoryTree
+  deleteFile: () => void
+}
+
+const fileCard = function fileCard({ file, deleteFile }: Props) {
   const { path, name, size } = file;
 
   const innerMenuOptions = [
@@ -23,19 +27,10 @@ const fileCard = function fileCard({ file, deleteFile }) {
       key={path}
       label={name}
       size={filesize(size)}
-      href={`/file${path}`}
+      href={`api/file/${path}`}
       innerMenuOptions={innerMenuOptions}
     />
   );
-};
-
-fileCard.propTypes = {
-  file: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
-  }).isRequired,
-  deleteFile: PropTypes.func.isRequired,
 };
 
 export default fileCard;

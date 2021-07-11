@@ -1,4 +1,5 @@
 import contentDisposition from 'content-disposition';
+import mime from 'mime-types';
 import type { NextApiResponse } from 'next';
 import { ENV_IDENTIFIERS } from 'server/constants';
 import { getFileStats } from 'server/services';
@@ -37,22 +38,19 @@ type prepareHeadersForFileDownloadArgs = {
   res: NextApiResponse
   filePath: string
   fileName: string
-  contentType: string
 }
 
 export async function prepareHeadersForFileDownload({
   res,
   filePath,
   fileName,
-  contentType,
 }: prepareHeadersForFileDownloadArgs) {
   const stats = await getFileStats(filePath);
   // Use third party to handle forbidden chars
   const contentDispositionValue = contentDisposition(fileName);
   // Set headers to promp the user to download the file and name the file
-
   res.setHeader('Content-Disposition', contentDispositionValue);
-  res.setHeader('Content-Type', contentType);
+  res.setHeader('Content-Type', mime.lookup(filePath) || 'application/octet-stream');
   res.setHeader('Content-Length', stats.size);
   res.setHeader('Last-Modified', stats.mtime.toUTCString());
   res.setHeader('Cache-Control', 'max-age=0');
