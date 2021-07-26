@@ -1,9 +1,11 @@
-import * as React from 'react';
-import memoize from 'memoize-one';
-
-import { Layout, Blocks } from 'ui';
 import { AppContext } from 'bootstrap/provider';
+import { ActionTypes } from 'bootstrap/provider';
 import { Directory } from 'bootstrap/types';
+import memoize from 'memoize-one';
+import * as React from 'react';
+import prompt from 'services/prompt';
+import treeServices from 'services/tree';
+import { Blocks, Layout } from 'ui';
 
 import FileCard from '../file-card';
 import FolderCard from '../folder-card';
@@ -22,9 +24,11 @@ class FilesGrid extends React.Component {
 
   generateNavigationItems() {
     const {
-      goToParentDirectory,
-      directoryTree: { path: rootDirectoryPath },
-      selectedDirectory: { path: selectedDirectoryPath },
+      state: {
+        directoryTree: { path: rootDirectoryPath },
+        selectedDirectory: { path: selectedDirectoryPath },
+      },
+      dispatch,
     } = this.context;
 
     if (rootDirectoryPath === selectedDirectoryPath) {
@@ -35,14 +39,45 @@ class FilesGrid extends React.Component {
       <Blocks.DirectoryCard
         key="../"
         label="../"
-        onClick={goToParentDirectory}
+        onClick={() => dispatch({
+          type: ActionTypes.GO_TO_PARENT_DIRECTORY,
+        })}
       />
     );
   }
 
+  deleteFile = async (filePath) => {
+    const { dispatch } = this.context;
+    const { selectedDirectory: { path: selectedDirectoryPath } } = this.props;
+
+    try {
+      await treeServices.deleteFileFromServer(filePath);
+    } catch (e) {
+      global.console.warn(`Error while trying to delete file ${filePath}`);
+      global.console.error(e);
+      return;
+    }
+
+    try {
+      const tree = await treeServices.getTreeFromServer();
+      dispatch({
+        type: ActionTypes.AFTER_FILE_DELETE,
+        newTree: tree,
+      });
+    } catch (e) {
+      global.console.warn('Error while refreshing tree from server after file deletion');
+      global.console.error(e.message);
+    }
+  }
+
   generateItems() {
-    const { askDeleteFile } = this.context;
     const { selectedDirectory } = this.props;
+    const askDeleteFile = (filePath, fileName) => {
+      prompt(
+        `Do you really want to delete ${fileName} ?`,
+        () => this.deleteFile(filePath),
+      );
+    };
 
     const childrenSorted = selectedDirectory.children.sort((fileA, fileB) => {
       if (fileA.type === 'directory') { return -1; }

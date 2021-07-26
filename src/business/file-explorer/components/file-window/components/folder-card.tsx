@@ -1,11 +1,18 @@
-import { Consumer } from 'bootstrap/provider';
+import { ActionTypes, AppContext } from 'bootstrap/provider';
+import type { DirectoryTree } from 'directory-tree';
 import CrossIcon from 'icons/cross/component';
 import DownloadFolderIcon from 'icons/folder-download/component';
-import PropTypes from 'prop-types';
-import * as React from 'react';
+import React, { useContext } from 'react';
+import type { ReactElement } from 'react';
 import { Blocks } from 'ui';
 
-const folderCard = function folderCard({ directory, deleteFile }) {
+interface Props {
+  directory: DirectoryTree
+  deleteFile: () => void
+}
+
+const FolderCard = ({ directory, deleteFile }: Props): ReactElement => {
+  const { dispatch } = useContext(AppContext);
   const { path, name } = directory;
 
   const downloadFolderLink = `/api/folder/${directory.path}`;
@@ -28,27 +35,13 @@ const folderCard = function folderCard({ directory, deleteFile }) {
   ];
 
   return (
-    <Consumer>
-      {
-        ({ updateSelectedDirectory }) => (
-          <Blocks.DirectoryCard
-            key={path}
-            label={name}
-            onClick={() => updateSelectedDirectory(directory)}
-            innerMenuOptions={innerMenuOptions}
-          />
-        )
-      }
-    </Consumer>
+    <Blocks.DirectoryCard
+      key={path}
+      label={name}
+      onClick={() => dispatch({ type: ActionTypes.SET_SELECTED_DIRECTORY, payload: directory })}
+      innerMenuOptions={innerMenuOptions}
+    />
   );
 };
 
-folderCard.propTypes = {
-  directory: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-  }).isRequired,
-  deleteFile: PropTypes.func.isRequired,
-};
-
-export default folderCard;
+export default FolderCard;

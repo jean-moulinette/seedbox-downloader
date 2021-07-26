@@ -1,8 +1,10 @@
+import { AppContext } from 'bootstrap/provider';
+import { ActionTypes } from 'bootstrap/provider';
+import File from 'icons/file/component';
+import Folder from 'icons/folder/component';
+import noop from 'lodash/noop';
 import React from 'react';
 import { Layout } from 'ui';
-import Folder from 'icons/folder/component';
-import File from 'icons/file/component';
-import { AppContext } from 'bootstrap/provider';
 
 function renderMenuItems(items) {
   return items.map((itemProps) => (
@@ -23,20 +25,13 @@ export default class SideMenu extends React.Component {
     ];
   }
 
-  updateSelection(selectedItem) {
-    const { updateSelectedDirectory, selectedDirectory } = this.context;
-    const newSelectedStructure = selectedItem.children
-      ? selectedItem
-      : selectedDirectory;
-
-    updateSelectedDirectory(newSelectedStructure);
-  }
-
   generateNavigationItems() {
     const {
-      directoryTree: { path: rootDirectoryPath },
-      selectedDirectory: { path: selectedDirectoryPath },
-      goToParentDirectory,
+      state: {
+        directoryTree: { path: rootDirectoryPath },
+        selectedDirectory: { path: selectedDirectoryPath },
+      },
+      dispatch,
     } = this.context;
 
     if (rootDirectoryPath === selectedDirectoryPath) {
@@ -54,15 +49,15 @@ export default class SideMenu extends React.Component {
         ),
         level: 1,
         active: false,
-        onClick: () => {
-          goToParentDirectory();
-        },
+        onClick: () => dispatch({
+          type: ActionTypes.GO_TO_PARENT_DIRECTORY
+        }),
       },
     ];
   }
 
   generateDirectoryItems() {
-    const { selectedDirectory, updateSelectedDirectory } = this.context;
+    const { state: { selectedDirectory }, dispatch } = this.context;
     const { children, path: selectedDirectoryPath } = selectedDirectory;
 
     // Filter out items that are not directories
@@ -79,9 +74,10 @@ export default class SideMenu extends React.Component {
       ),
       level: 1,
       active: selectedDirectoryPath === directoryItem.path,
-      onClick: () => {
-        updateSelectedDirectory(directoryItem);
-      },
+      onClick: () => dispatch({
+        type: ActionTypes.SET_SELECTED_DIRECTORY,
+        payload: directoryItem
+      }),
     }));
 
     return [
@@ -95,14 +91,14 @@ export default class SideMenu extends React.Component {
         ),
         level: 0,
         active: false,
-        onClick: () => this.updateSelection(selectedDirectory),
+        onClick: noop,
       },
       ...directoryItems,
     ];
   }
 
   render() {
-    const { directoryTree } = this.context;
+    const { state: { directoryTree } } = this.context;
 
     const menuItems = directoryTree !== null
       ? this.getNavigationItems()
