@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { generateZipOnSeedbox, pipeFileReadStreamToStream } from 'server/services';
-import { generateResponseError, getEnvVar, prepareHeadersForFileDownload } from 'server/utils';
+import { generateZipOnSeedbox } from 'server/services';
+import {
+  generateResponseError,
+  getEnvVar,
+  pipeFileReadStreamToStream,
+  prepareHeadersForFileDownload,
+} from 'server/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { query: { folder } } = req;

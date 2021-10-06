@@ -1,9 +1,11 @@
 declare namespace NodeJS {
   interface Global {
-    passwdUsers: {
-      name: string
-      password: string
-    }[]
+    SEEDBOX_FILE_TREE?: import('directory-tree').DirectoryTree
+    PASSWD?: string | null
+    ACTIVE_USERS?: {
+      [hash: string]: { name: string }
+    }
+    INITED?: boolean
   }
 }
 

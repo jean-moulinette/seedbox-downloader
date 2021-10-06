@@ -1,8 +1,11 @@
+import type { ChildProcessWithoutNullStreams } from 'child_process';
+import fs from 'fs';
+
 import contentDisposition from 'content-disposition';
+import fsPromises from 'fs/promises';
 import mime from 'mime-types';
 import type { NextApiResponse } from 'next';
 import { ENV_IDENTIFIERS } from 'server/constants';
-import { getFileStats } from 'server/services';
 
 interface EnvVars {
   htpasswd: string
@@ -18,6 +21,10 @@ function getEnv(): EnvVars {
       : '',
     configuredDownloadFolder: process.env[DOWNLOAD_DIR] as string,
   };
+}
+
+export async function getFileStats(path: string) {
+  return fsPromises.stat(path);
 }
 
 export function getEnvVar(envVar: keyof EnvVars): string {
@@ -54,4 +61,24 @@ export async function prepareHeadersForFileDownload({
   res.setHeader('Content-Length', stats.size);
   res.setHeader('Last-Modified', stats.mtime.toUTCString());
   res.setHeader('Cache-Control', 'max-age=0');
+}
+
+export function waitForChildProcessToExit(
+  childProcess: ChildProcessWithoutNullStreams
+) {
+  return new Promise((resolve, reject) => {
+    childProcess.on('exit', resolve);
+    childProcess.on('close', resolve);
+    childProcess.on('error', reject);
+    childProcess.stdout.on('data', () => {});
+  });
+}
+
+export async function pipeFileReadStreamToStream(filePath: string, writableStream: NodeJS.WritableStream) {
+  const readStream = fs.createReadStream(filePath);
+
+  await new Promise((resolve) => {
+    readStream.pipe(writableStream);
+    readStream.on('end', resolve);
+  });
 }

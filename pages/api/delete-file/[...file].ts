@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSeedboxDirectoryStructure } from 'server/cli-services';
 import { unlinkFileOnSeedbox } from 'server/services';
 import { generateResponseError, getEnvVar } from 'server/utils';
 
@@ -26,6 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await unlinkFileOnSeedbox(decodedPath, configuredDownloadFolder);
+    global.SEEDBOX_FILE_TREE = getSeedboxDirectoryStructure(configuredDownloadFolder);
   } catch (e) {
     if (e === 404) {
       generateResponseError(

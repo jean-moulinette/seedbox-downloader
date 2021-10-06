@@ -1,17 +1,23 @@
 import { exec } from 'child_process';
 
-import { ENV_IDENTIFIERS } from 'server/constants';
+import type { DirectoryTree } from 'directory-tree';
 import {
   generateDownloadFolderTreeJsonFile,
   initDownloadFolderWatchers,
   zipDirectoriesFromDirectory,
+} from 'server/cli-services';
+import { ENV_IDENTIFIERS, PROCESS_EVENTS } from 'server/constants';
+import {
+  getHtpasswd,
+  getSeedboxDirectoryTreeJsonFile,
 } from 'server/services';
+import { getEnvVar } from 'server/utils';
 
 interface SeedboxStartOptions {
   dev: boolean
   hostingPort: number
   configuredDownloadFolder: string
-  htpasswd: string
+  htpasswd?: string | null
 }
 
 export default async function startSeedbox({
@@ -33,36 +39,54 @@ export default async function startSeedbox({
   }
 
   try {
-    console.log(`\n Seedbox will now start watching downloader folder for changes`);
-    initDownloadFolderWatchers(configuredDownloadFolder);
-  } catch (e) {
-    console.log('\n Watching downloader folder failed');
-    console.log(` Error : ${e.message}`);
-  }
-
-  try {
     await zipRootDirectories(configuredDownloadFolder);
   } catch (e) {
     console.log('\n Ziping root directories failed');
     console.log(` Error : ${e.message}`);
   }
 
-  const { DOWNLOAD_DIR, HTPASSWD } = ENV_IDENTIFIERS;
-  const envString = `${HTPASSWD}=${htpasswd} ${DOWNLOAD_DIR}=${configuredDownloadFolder}`;
   const startScriptCommand = dev
-    ? 'dev'
-    : 'start';
+  ? 'dev'
+  : 'start';
+
   const execCommand = `npm run ${startScriptCommand} -- -p ${hostingPort}`;
 
   // Launch next server with env vars
-  const nextProcess = exec(`${envString} ${execCommand}`);
+  const nextProcess = exec(
+    execCommand,
+    {
+      env: {
+        ...process.env,
+        [ENV_IDENTIFIERS.DOWNLOAD_DIR]: configuredDownloadFolder,
+        [ENV_IDENTIFIERS.HTPASSWD]: htpasswd || undefined,
+      }
+    }
+  );
+  const notifyServerProcess = () => nextProcess.send({ event: PROCESS_EVENTS.TREE_UPDATE });
+
+  try {
+    console.log(`\n Seedbox will now start watching downloader folder for changes`);
+    initDownloadFolderWatchers(configuredDownloadFolder, notifyServerProcess);
+  } catch (e) {
+    console.log('\n Watching downloader folder failed');
+    console.log(` Error : ${e.message}`);
+  }
 
   if (dev) {
     nextProcess.stdout?.on('data', console.log);
     nextProcess.stderr?.on('data', console.log);
   }
+}
 
-  console.log(`\n Seedbox-downloader is now listening on port ${hostingPort}.\n`);
+export function initServer() {
+  const htpasswdPath = getEnvVar('htpasswd');
+  global.PASSWD = getHtpasswd(htpasswdPath);
+  global.SEEDBOX_FILE_TREE = JSON.parse(getSeedboxDirectoryTreeJsonFile()) as DirectoryTree;
+  global.INITED = true;
+}
+
+export function isServerInited() {
+  return !!global.INITED;
 }
 
 async function zipRootDirectories(configuredRootDirectory: string) {

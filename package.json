@@ -14,7 +14,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "next build",
-    "init-seedbox": "ts-node --project tsconfig.cli.json ./cli/index.ts"
+    "init-seedbox": "ts-node --files --project tsconfig.cli.json ./cli/index.ts"
   },
   "_moduleAliases": {
     "server": "src/server"
@@ -37,6 +37,7 @@
     "directory-tree": "^2.2.4",
     "filesize": "^3.6.1",
     "fs-extra": "^8.1.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.20",
     "memoize-one": "^5.1.1",
     "mime-types": "^2.1.31",
@@ -50,7 +51,7 @@
     "react-is": "^17.0.2",
     "react-switch": "^6.0.0",
     "styled-components": "^5.3.0",
-    "ts-node": "^10.0.0"
+    "ts-node": "^10.1.0"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
@@ -58,6 +59,7 @@
     "@types/filesize": "^5.0.0",
     "@types/fs-extra": "^9.0.11",
     "@types/http-auth": "^4.1.0",
+    "@types/lodash": "^4.14.171",
     "@types/mime-types": "^2.1.0",
     "@types/react": "17.0.11",
     "@types/styled-components": "^5.1.10",
