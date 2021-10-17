@@ -1,7 +1,6 @@
 import FileFlatIcon from 'icons/file-flat/component';
-import PropTypes from 'prop-types';
-import * as React from 'react';
-
+import React from 'react';
+import type { ReactElement } from 'react';
 import { APP_SCALES } from 'ui/helpers/scales';
 
 import {
@@ -14,12 +13,19 @@ import {
   SizeContainer,
 } from './index.styles';
 
+interface Props {
+  label: string
+  size: string
+  href: string
+  innerMenuOptions: ReactElement[]
+}
+
 export default function FileCard({
   label,
   href,
   size,
-  innerMenuOptions,
-}) {
+  innerMenuOptions = [],
+}: Props): ReactElement {
   return (
     <FileContainer>
       <AnchorContainer href={href} title={label}>
@@ -41,7 +47,6 @@ export default function FileCard({
       {
         innerMenuOptions.length > 0 && (
           <InnerMenuFloatingContainer className="floating-container">
-            {/* eslint-disable-next-line react/no-array-index-key */}
             { innerMenuOptions }
           </InnerMenuFloatingContainer>
         )
@@ -49,14 +54,3 @@ export default function FileCard({
     </FileContainer>
   );
 }
-
-FileCard.defaultProps = {
-  innerMenuOptions: [],
-};
-
-FileCard.propTypes = {
-  label: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-  innerMenuOptions: PropTypes.arrayOf(PropTypes.element),
-};
