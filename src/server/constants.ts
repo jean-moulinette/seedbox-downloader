@@ -13,7 +13,3 @@ export const ENV_IDENTIFIERS = {
   HTPASSWD: 'HTPASSWD',
   DOWNLOAD_DIR: 'DOWNLOAD_DIR',
 };
-
-export const PROCESS_EVENTS = {
-  TREE_UPDATE: 'treeUpdate',
-};

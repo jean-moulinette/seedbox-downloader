@@ -5,30 +5,9 @@ import contentDisposition from 'content-disposition';
 import fsPromises from 'fs/promises';
 import mime from 'mime-types';
 import type { NextApiResponse } from 'next';
-import { ENV_IDENTIFIERS } from 'server/constants';
-
-interface EnvVars {
-  htpasswd: string
-  configuredDownloadFolder: string
-}
-
-function getEnv(): EnvVars {
-  const { DOWNLOAD_DIR, HTPASSWD } = ENV_IDENTIFIERS;
-
-  return {
-    htpasswd: process.env[HTPASSWD] !== 'undefined'
-      ? process.env[HTPASSWD] as string
-      : '',
-    configuredDownloadFolder: process.env[DOWNLOAD_DIR] as string,
-  };
-}
 
 export async function getFileStats(path: string) {
   return fsPromises.stat(path);
-}
-
-export function getEnvVar(envVar: keyof EnvVars): string {
-  return getEnv()[envVar];
 }
 
 export function generateResponseError(

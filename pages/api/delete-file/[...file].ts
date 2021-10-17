@@ -1,7 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import getConfig from 'next/config';
 import { getSeedboxDirectoryStructure } from 'server/cli-services';
 import { unlinkFileOnSeedbox } from 'server/services';
-import { generateResponseError, getEnvVar } from 'server/utils';
+import { generateResponseError } from 'server/utils';
+import { ENV_IDENTIFIERS } from 'src/server/constants';
+
+const { serverRuntimeConfig } = getConfig();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { query: { file } } = req;
@@ -23,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const decodedPath = Array.isArray(file)
     ? file.map(path =>  decodeURI(path)).join('/')
     : decodeURI(file);
-  const configuredDownloadFolder = getEnvVar('configuredDownloadFolder');
+    const configuredDownloadFolder = serverRuntimeConfig[ENV_IDENTIFIERS.DOWNLOAD_DIR];
 
   try {
     await unlinkFileOnSeedbox(decodedPath, configuredDownloadFolder);

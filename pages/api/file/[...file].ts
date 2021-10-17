@@ -1,10 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import getConfig from 'next/config';
 import {
   generateResponseError,
-  getEnvVar,
   pipeFileReadStreamToStream,
   prepareHeadersForFileDownload,
 } from 'server/utils';
+import { ENV_IDENTIFIERS } from 'src/server/constants';
+
+const { serverRuntimeConfig } = getConfig();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { query: { file } } = req;
@@ -23,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  const configuredDownloadFolder = getEnvVar('configuredDownloadFolder');
+  const configuredDownloadFolder = serverRuntimeConfig[ENV_IDENTIFIERS.DOWNLOAD_DIR];
   const decodedPath = Array.isArray(file)
     ? file.map(path =>  decodeURI(path)).join('/')
     : decodeURI(file);

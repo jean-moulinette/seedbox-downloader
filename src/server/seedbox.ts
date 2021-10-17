@@ -1,17 +1,11 @@
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 
-import type { DirectoryTree } from 'directory-tree';
 import {
   generateDownloadFolderTreeJsonFile,
   initDownloadFolderWatchers,
   zipDirectoriesFromDirectory,
 } from 'server/cli-services';
-import { ENV_IDENTIFIERS, PROCESS_EVENTS } from 'server/constants';
-import {
-  getHtpasswd,
-  getSeedboxDirectoryTreeJsonFile,
-} from 'server/services';
-import { getEnvVar } from 'server/utils';
+import { ENV_IDENTIFIERS } from 'server/constants';
 
 interface SeedboxStartOptions {
   dev: boolean
@@ -33,7 +27,9 @@ export default async function startSeedbox({
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
   } catch (e) {
     console.log('\n Generation of file tree failed, seedbox-downloader can not start');
-    console.log(` Error : ${e.message}`);
+    if (e instanceof Error) {
+      console.log(` Error : ${e.message}`);
+    }
 
     return;
   }
@@ -42,47 +38,45 @@ export default async function startSeedbox({
     await zipRootDirectories(configuredDownloadFolder);
   } catch (e) {
     console.log('\n Ziping root directories failed');
-    console.log(` Error : ${e.message}`);
+    if (e instanceof Error) {
+      console.log(` Error : ${e.message}`);
+    }
   }
 
   const startScriptCommand = dev
   ? 'dev'
   : 'start';
 
-  const execCommand = `npm run ${startScriptCommand} -- -p ${hostingPort}`;
+  const execCommandArgs = `run ${startScriptCommand} -- -p ${hostingPort}`;
 
   // Launch next server with env vars
-  const nextProcess = exec(
-    execCommand,
+  const nextProcess = spawn(
+    'npm',
+    execCommandArgs.split(' '),
     {
       env: {
         ...process.env,
         [ENV_IDENTIFIERS.DOWNLOAD_DIR]: configuredDownloadFolder,
         [ENV_IDENTIFIERS.HTPASSWD]: htpasswd || undefined,
-      }
+      },
+      stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
     }
   );
-  const notifyServerProcess = () => nextProcess.send({ event: PROCESS_EVENTS.TREE_UPDATE });
 
   try {
     console.log(`\n Seedbox will now start watching downloader folder for changes`);
-    initDownloadFolderWatchers(configuredDownloadFolder, notifyServerProcess);
+    initDownloadFolderWatchers(configuredDownloadFolder);
   } catch (e) {
     console.log('\n Watching downloader folder failed');
-    console.log(` Error : ${e.message}`);
+    if (e instanceof Error) {
+      console.log(` Error : ${e.message}`);
+    }
   }
 
   if (dev) {
     nextProcess.stdout?.on('data', console.log);
     nextProcess.stderr?.on('data', console.log);
   }
-}
-
-export function initServer() {
-  const htpasswdPath = getEnvVar('htpasswd');
-  global.PASSWD = getHtpasswd(htpasswdPath);
-  global.SEEDBOX_FILE_TREE = JSON.parse(getSeedboxDirectoryTreeJsonFile()) as DirectoryTree;
-  global.INITED = true;
 }
 
 export function isServerInited() {
@@ -96,7 +90,9 @@ async function zipRootDirectories(configuredRootDirectory: string) {
     await zipDirectoriesFromDirectory(configuredRootDirectory);
   } catch (e) {
     console.log('\n Failed to zip rootDirectories for reason: \n');
-    console.log(e.message);
+    if (e instanceof Error) {
+      console.log(e.message);
+    }
     return;
   }
 

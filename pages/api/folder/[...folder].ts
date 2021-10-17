@@ -1,11 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import getConfig from 'next/config';
 import { generateZipOnSeedbox } from 'server/services';
 import {
   generateResponseError,
-  getEnvVar,
   pipeFileReadStreamToStream,
   prepareHeadersForFileDownload,
 } from 'server/utils';
+import { ENV_IDENTIFIERS } from 'src/server/constants';
+
+const { serverRuntimeConfig } = getConfig();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { query: { folder } } = req;
@@ -27,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const decodedPath = Array.isArray(folder)
     ? folder.map(path =>  decodeURI(path)).join('/')
     : decodeURI(folder);
-  const configuredDownloadFolder = getEnvVar('configuredDownloadFolder');
+  const configuredDownloadFolder = serverRuntimeConfig[ENV_IDENTIFIERS.DOWNLOAD_DIR];
 
   const slashSplitedPath = decodedPath.split('/');
 
