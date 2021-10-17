@@ -31,7 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await unlinkFileOnSeedbox(decodedPath, configuredDownloadFolder);
-    global.SEEDBOX_FILE_TREE = getSeedboxDirectoryStructure(configuredDownloadFolder);
   } catch (e) {
     if (e === 404) {
       generateResponseError(
