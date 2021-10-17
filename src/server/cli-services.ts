@@ -157,9 +157,15 @@ function sanitizeFolderPath(
 export function getSeedboxDirectoryStructure(
   configuredDownloadFolder: string,
 ) {
-  const directoryStructure = dirTree(configuredDownloadFolder, {}, (file) => {
-    file.path = file.path.slice(configuredDownloadFolder.length, file.path.length);
-  });
+  const directoryStructure = dirTree(
+    configuredDownloadFolder,
+    {
+      attributes: ['size']
+    },
+    file => {
+      file.path = file.path.slice(configuredDownloadFolder.length, file.path.length);
+    },
+  );
 
   const sanitizedChildrens = directoryStructure.children
     ? directoryStructure.children.map((treeNode) => {
