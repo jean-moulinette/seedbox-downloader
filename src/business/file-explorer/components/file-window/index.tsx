@@ -44,7 +44,7 @@ export default function FileWindow(): ReactElement {
     <Layout.SideWindow>
       <Layout.Loader active={directoryTree === null} />
       <Layout.BreadCrumb items={breadCrumbItems} />
-      <FilesGrid selectedDirectory={selectedDirectory} />
+      <FilesGrid />
     </Layout.SideWindow>
   );
 }

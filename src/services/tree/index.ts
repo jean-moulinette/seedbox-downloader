@@ -8,7 +8,6 @@ const treeServices = {
       return response.data as DirectoryTree;
     } catch (e) {
       global.console.warn('Error while trying to fetch tree from server');
-      global.console.error(e.message);
       throw e;
     }
   },
