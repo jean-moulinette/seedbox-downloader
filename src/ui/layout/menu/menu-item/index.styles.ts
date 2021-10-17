@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-
 import { APP_FONT_STYLES, APP_SCALES } from 'ui/helpers';
 
-export const MenuLi = styled('li')`
+interface MenuLiProps {
+  level: number
+}
+
+export const MenuLi = styled('li')<MenuLiProps>`
   padding-top: ${APP_SCALES.MENU.ITEM_PADDING};
   padding-bottom: ${APP_SCALES.MENU.ITEM_PADDING};
   transition: border-left 0.3s ease;
@@ -18,7 +21,12 @@ export const MenuLi = styled('li')`
   `}
 `;
 
-export const MenuButton = styled('button')`
+interface MenuButtonProps {
+ active: boolean
+
+}
+
+export const MenuButton = styled('a')<MenuButtonProps>`
   display: flex;
   align-items: center;
   ${({ theme }) => APP_FONT_STYLES.MENU.ITEM(theme)}
@@ -31,8 +39,8 @@ export const MenuButton = styled('button')`
   transition: background 100ms cubic-bezier(0.4, 0.0, 0.2, 1);
   cursor: pointer;
 
-  ${({ active }) => active && `
-    background-color: ${({ theme }) => theme.menu.active};
+  ${({ active, theme }) => active && `
+    background-color: ${theme.menu.active};
   `}
 
   &:active {
