@@ -79,10 +79,6 @@ export default async function startSeedbox({
   }
 }
 
-export function isServerInited() {
-  return !!global.INITED;
-}
-
 async function zipRootDirectories(configuredRootDirectory: string) {
   console.log('\n Start zipping root directories.\n');
 
