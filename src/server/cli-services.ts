@@ -12,7 +12,6 @@ import { checkIfDownloadFileOrFolderExists, generateZipOnSeedbox } from 'server/
 
 export function initDownloadFolderWatchers(
   configuredDownloadFolder: string,
-  onTreeFileUpdate: () => void,
 ) {
   const { ADD, ADD_DIR, UNLINK, UNLINK_DIR, ERROR } = WATCHER_EVENTS;
 
@@ -36,19 +35,19 @@ export function initDownloadFolderWatchers(
 
   downloadFolderWatcher.on(
     ADD,
-    createOnFileWatcherAdd(configuredDownloadFolder, onTreeFileUpdate),
+    createOnFileWatcherAdd(configuredDownloadFolder),
   );
   downloadFolderWatcher.on(
     ADD_DIR,
-    createOnFileWatcherAddDir(configuredDownloadFolder, onTreeFileUpdate),
+    createOnFileWatcherAddDir(configuredDownloadFolder),
   );
   downloadFolderWatcher.on(
     UNLINK,
-    createOnFileWatcherUnlink(configuredDownloadFolder, onTreeFileUpdate),
+    createOnFileWatcherUnlink(configuredDownloadFolder),
   );
   downloadFolderWatcher.on(
     UNLINK_DIR,
-    createOnFileWatcherUnlinkDir(configuredDownloadFolder, onTreeFileUpdate),
+    createOnFileWatcherUnlinkDir(configuredDownloadFolder),
   );
   downloadFolderWatcher.on(
     ERROR,
@@ -184,7 +183,6 @@ export function getSeedboxDirectoryStructure(
 
 function createOnFileWatcherAdd(
   configuredDownloadFolder: string,
-  onTreeFileUpdate: () => void,
 ) {
   return function onFileWatcherAdd(path: string) {
     console.log('\n File added : ', path);
@@ -211,13 +209,11 @@ function createOnFileWatcherAdd(
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-    onTreeFileUpdate();
   };
 }
 
 function createOnFileWatcherAddDir(
   configuredDownloadFolder: string,
-  onTreeFileUpdate: () => void,
 ) {
   return async function onFileWatcherAddDir(path: string) {
     console.log('\n Directory added : ', path);
@@ -225,17 +221,17 @@ function createOnFileWatcherAddDir(
       await zipDirectoriesFromDirectory(configuredDownloadFolder);
     } catch (e) {
       console.log('\n Error occured on AddDir event while zipping again directories from root');
-      console.log(`\n Error : ${e.message}`);
+      if (e instanceof Error) {
+        console.log(`\n Error : ${e.message}`);
+      }
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-    onTreeFileUpdate();
   };
 }
 
 function createOnFileWatcherUnlink(
   configuredDownloadFolder: string,
-  onTreeFileUpdate: () => void,
 ) {
   return function onFileWatcherUnlink(path: string) {
     console.log('\n File removed : ', path);
@@ -248,13 +244,11 @@ function createOnFileWatcherUnlink(
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-    onTreeFileUpdate();
   };
 }
 
 function createOnFileWatcherUnlinkDir(
   configuredDownloadFolder: string,
-  onTreeFileUpdate: () => void,
 ) {
   return function onFileWatcherUnlinkDir(path: string) {
     try {
@@ -266,11 +260,12 @@ function createOnFileWatcherUnlinkDir(
       }
     } catch (e) {
       console.log('\n Error occured while trying to unlink zip of deleted directory');
-      console.log(`\n Error : ${e.message}`);
+      if (e instanceof Error) {
+        console.log(`\n Error : ${e.message}`);
+      }
     }
 
     generateDownloadFolderTreeJsonFile(configuredDownloadFolder);
-    onTreeFileUpdate();
   };
 }
 

@@ -69,7 +69,10 @@ export function checkIfDownloadFileOrFolderExists(path: string) {
 
     return true;
   } catch (e) {
-    console.log('\n Error while checking file existence : ', e.message);
+    if (e instanceof Error) {
+      console.log('\n Error while checking file existence : ', e.message);
+    }
+
     return false;
   }
 }
