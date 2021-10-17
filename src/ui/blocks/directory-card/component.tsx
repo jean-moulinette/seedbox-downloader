@@ -1,17 +1,26 @@
-import * as React from 'react';
-
+import React from 'react';
+import type { ReactElement } from 'react';
 import { APP_SCALES } from 'ui/helpers/scales';
-import PropTypes from 'prop-types';
 
 import {
   FolderContainer,
   FullWidthAnchor,
-  InnerMenuFloatingContainer,
   Icon,
+  InnerMenuFloatingContainer,
   LabelContainer,
 } from './index.styles';
 
-export default function DirectoryCard({ label, onClick, innerMenuOptions }) {
+interface Props {
+  label: string
+  onClick: () => void
+  innerMenuOptions: ReactElement[]
+}
+
+export default function DirectoryCard({
+  label,
+  onClick,
+  innerMenuOptions = [],
+}: Props) {
   return (
     <FolderContainer>
       <FullWidthAnchor onClick={onClick} title={label}>
@@ -24,7 +33,6 @@ export default function DirectoryCard({ label, onClick, innerMenuOptions }) {
       {
         innerMenuOptions.length > 0 && (
           <InnerMenuFloatingContainer className="floating-container">
-            {/* eslint-disable-next-line react/no-array-index-key */}
             { innerMenuOptions }
           </InnerMenuFloatingContainer>
         )
@@ -32,13 +40,3 @@ export default function DirectoryCard({ label, onClick, innerMenuOptions }) {
     </FolderContainer>
   );
 }
-
-DirectoryCard.defaultProps = {
-  innerMenuOptions: [],
-};
-
-DirectoryCard.propTypes = {
-  label: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  innerMenuOptions: PropTypes.arrayOf(PropTypes.element),
-};
