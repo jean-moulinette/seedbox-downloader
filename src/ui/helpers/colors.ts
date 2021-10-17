@@ -39,27 +39,33 @@ export const DarkThemeSymbol = Symbol('dark');
 
 export type ThemeSymbol = typeof LightThemeSymbol | typeof DarkThemeSymbol
 
+const lightTheme = {
+  textPrimary: COLORS.black,
+  textSecondary: COLORS.blackLight,
+  background: APP_COLORS.BACKGROUND_WHITE,
+  primaryColor: COLORS.color,
+  menu: {
+    icon: COLORS.colorDark,
+    separator: COLORS.whiteDark,
+    active: COLORS.whiteDark,
+  },
+};
+
+const darkTheme = {
+  textPrimary: COLORS.white,
+  textSecondary: COLORS.whiteDark,
+  background: APP_COLORS.BACKGROUND_DARK,
+  primaryColor: COLORS.color,
+  menu: {
+    icon: COLORS.colorDark,
+    separator: COLORS.blackLight,
+    active: COLORS.blackLight,
+  },
+};
+
+export type ThemeType = typeof lightTheme
+
 export const themes = {
-  [LightThemeSymbol]: {
-    textPrimary: COLORS.black,
-    textSecondary: COLORS.blackLight,
-    background: APP_COLORS.BACKGROUND_WHITE,
-    primaryColor: COLORS.color,
-    menu: {
-      icon: COLORS.colorDark,
-      separator: COLORS.whiteDark,
-      active: COLORS.whiteDark,
-    },
-  },
-  [DarkThemeSymbol]: {
-    textPrimary: COLORS.white,
-    textSecondary: COLORS.whiteDark,
-    background: APP_COLORS.BACKGROUND_DARK,
-    primaryColor: COLORS.color,
-    menu: {
-      icon: COLORS.colorDark,
-      separator: COLORS.blackLight,
-      active: COLORS.blackLight,
-    },
-  },
+  [LightThemeSymbol]: lightTheme as ThemeType,
+  [DarkThemeSymbol]: darkTheme as ThemeType,
 };
