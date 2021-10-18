@@ -160,7 +160,8 @@ export function getSeedboxDirectoryStructure(
   const directoryStructure = dirTree(
     configuredDownloadFolder,
     {
-      attributes: ['size']
+      // @ts-ignore (due to typing error from module maintainer)
+      attributes: ['size', 'type',]
     },
     file => {
       file.path = file.path.slice(configuredDownloadFolder.length, file.path.length);
