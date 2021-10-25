@@ -1,11 +1,15 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
+import type { ReactNode } from 'react';
 
-import { Main, GlobalStyle } from './index.styles';
+import { GlobalStyle, Main } from './index.styles';
+
+interface Props {
+  children: ReactNode
+}
 
 export default function MainContent({
   children,
-}) {
+}: Props) {
   return (
     <>
       <GlobalStyle />
@@ -15,7 +19,3 @@ export default function MainContent({
     </>
   );
 }
-
-MainContent.propTypes = {
-  children: PropTypes.node.isRequired,
-};
