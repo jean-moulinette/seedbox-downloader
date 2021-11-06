@@ -2,9 +2,14 @@ import axios from 'axios';
 import type { DirectoryTree } from 'directory-tree';
 
 const treeServices = {
-  getTreeFromServer: async () => {
+  getTreeFromServer: async (treePath: string[]) => {
     try {
-      const response = await axios.get('/api/tree');
+      const directoryPathParams = treePath.map(path => `directoryPath=${path}`);
+      const formatedTreePathParam = directoryPathParams.length
+        ? directoryPathParams.join('&')
+        : 'directoryPath=/';
+
+      const response = await axios.get(`/api/tree?${formatedTreePathParam}`);
       return response.data as DirectoryTree;
     } catch (e) {
       global.console.warn('Error while trying to fetch tree from server');

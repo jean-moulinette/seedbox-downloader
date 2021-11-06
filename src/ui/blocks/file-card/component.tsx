@@ -30,7 +30,7 @@ export default function FileCard({
   return (
     <FileContainer>
       <Link passHref href={href} as={href}>
-        <AnchorContainer href={href} title={label}>
+        <AnchorContainer title={label}>
           <DecoratorContainer>
             <FileFlatIcon
               width={APP_SCALES.WINDOW_CONTENT.FILE_ICON_WIDTH}

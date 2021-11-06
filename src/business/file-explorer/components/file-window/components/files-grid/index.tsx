@@ -12,23 +12,6 @@ import FileCard from '../file-card';
 import FolderCard from '../folder-card';
 import { DirectoriesContainer, FilesContainer } from './index.styles';
 
-const deleteFile = async (filePath: string): Promise<DirectoryTree> => {
-  try {
-    await treeServices.deleteFileFromServer(filePath);
-  } catch (e) {
-    global.console.warn(`Error while trying to delete file ${filePath}`);
-    throw e;
-  }
-
-  try {
-    // TODO get only tree from current directory
-    return await treeServices.getTreeFromServer();
-  } catch (e) {
-    global.console.warn('Error while refreshing tree from server after file deletion');
-    throw e;
-  }
-};
-
 const askDeleteFile = ({
   fileName,
   onDeleteAsked,
@@ -54,16 +37,27 @@ const FilesGrid = (): ReactElement => {
   const onDeleteFile = useCallback(
     async (filePath: string) => {
       try {
-        const treeAfterDelete = await deleteFile(filePath);
+        await treeServices.deleteFileFromServer(filePath);
+      } catch (e) {
+        global.console.warn(`Error while trying to delete file ${filePath}`);
+        throw e;
+      }
+
+      try {
+        const treeAfterDelete = await treeServices.getTreeFromServer(
+          router.query.directoryPath as string[] || []
+        );
+
         dispatch({
           type: ActionTypes.AFTER_FILE_DELETE,
           newTree: treeAfterDelete,
         });
       } catch (e) {
-        global.console.error(e);
+        global.console.warn('Error while refreshing tree from server after file deletion');
+        throw e;
       }
     },
-    [dispatch]
+    [dispatch, router.query.directoryPath]
   );
 
   const directoryItems = useMemo(() => {

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import getConfig from 'next/config';
-import { getSeedboxDirectoryStructure } from 'server/cli-services';
+import { generateDownloadFolderTreeJsonFile } from 'server/cli-services';
 import { unlinkFileOnSeedbox } from 'server/services';
 import { generateResponseError } from 'server/utils';
 import { ENV_IDENTIFIERS } from 'src/server/constants';
@@ -31,6 +31,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await unlinkFileOnSeedbox(decodedPath, configuredDownloadFolder);
+
+    // create promise so the node thread won't be blocked by the tree generation
+    await new Promise((resolve, reject) => {
+      try {
+        resolve(generateDownloadFolderTreeJsonFile(configuredDownloadFolder));
+      } catch(e) {
+        reject(e);
+      }
+    });
   } catch (e) {
     if (e === 404) {
       generateResponseError(

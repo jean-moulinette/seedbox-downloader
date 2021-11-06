@@ -27,7 +27,7 @@ const fileCard = function fileCard({ file, deleteFile }: Props) {
       key={path}
       label={name}
       size={filesize(size)}
-      href={`api/file/${path}`}
+      href={`/api/file/${path}`}
       innerMenuOptions={innerMenuOptions}
     />
   );
