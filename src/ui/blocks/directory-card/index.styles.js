@@ -1,7 +1,6 @@
-import styled from 'styled-components';
-
-import { APP_SCALES, APP_FONT_STYLES, BREAKPOINTS } from 'ui/helpers';
 import FolderFlatIcon from 'icons/folder-flat/component';
+import styled from 'styled-components';
+import { APP_FONT_STYLES, APP_SCALES, BREAKPOINTS } from 'ui/helpers';
 
 export const FolderContainer = styled('div')`
   position: relative;
@@ -57,6 +56,7 @@ export const FullWidthAnchor = styled('a')`
   text-overflow: ellipsis;
   overflow: hidden;
   border: none;
+  text-decoration: initial;
 `;
 
 export const InnerMenuFloatingContainer = styled('div')`

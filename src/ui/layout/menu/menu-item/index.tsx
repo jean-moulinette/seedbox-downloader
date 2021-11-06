@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import type { ReactElement } from 'react';
 
@@ -6,7 +7,7 @@ import { ButtonLabel, IconContainer, MenuButton, MenuLi } from './index.styles';
 interface Props {
   label: string
   active: boolean
-  onClick: () => void
+  slug: string
   icon: ReactElement
   level: number
 }
@@ -14,24 +15,34 @@ interface Props {
 export default function MenuItem({
   label,
   active,
-  onClick,
+  slug,
   icon,
   level,
 }: Props) {
+  const isRootHref = slug === '';
+
+  const href = isRootHref
+    ? '/'
+    : `/[...slug]`;
+  const asPath = isRootHref
+    ? `/`
+    :`/${slug}`;
+
   return (
     <MenuLi level={level} key={label}>
-      <MenuButton
-        active={active}
-        title={label}
-        onClick={onClick}
-      >
-        <IconContainer>
-          { icon }
-        </IconContainer>
-        <ButtonLabel>
-          {label}
-        </ButtonLabel>
-      </MenuButton>
+      <Link passHref href={href} as={asPath}>
+        <MenuButton
+          active={active}
+          title={label}
+        >
+          <IconContainer>
+            { icon }
+          </IconContainer>
+          <ButtonLabel>
+            {label}
+          </ButtonLabel>
+        </MenuButton>
+      </Link>
     </MenuLi>
   );
 }

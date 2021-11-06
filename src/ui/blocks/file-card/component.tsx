@@ -1,4 +1,5 @@
 import FileFlatIcon from 'icons/file-flat/component';
+import Link from 'next/link';
 import React from 'react';
 import type { ReactElement } from 'react';
 import { APP_SCALES } from 'ui/helpers/scales';
@@ -28,22 +29,24 @@ export default function FileCard({
 }: Props): ReactElement {
   return (
     <FileContainer>
-      <AnchorContainer href={href} title={label}>
-        <DecoratorContainer>
-          <FileFlatIcon
-            width={APP_SCALES.WINDOW_CONTENT.FILE_ICON_WIDTH}
-            height={APP_SCALES.WINDOW_CONTENT.FILE_ICON_HEIGHT}
-          />
-        </DecoratorContainer>
-        <InformationsContainer>
-          <LabelContainer>
-            {label}
-          </LabelContainer>
-          <SizeContainer>
-            {size}
-          </SizeContainer>
-        </InformationsContainer>
-      </AnchorContainer>
+      <Link passHref href={href} as={href}>
+        <AnchorContainer href={href} title={label}>
+          <DecoratorContainer>
+            <FileFlatIcon
+              width={APP_SCALES.WINDOW_CONTENT.FILE_ICON_WIDTH}
+              height={APP_SCALES.WINDOW_CONTENT.FILE_ICON_HEIGHT}
+            />
+          </DecoratorContainer>
+          <InformationsContainer>
+            <LabelContainer>
+              {label}
+            </LabelContainer>
+            <SizeContainer>
+              {size}
+            </SizeContainer>
+          </InformationsContainer>
+        </AnchorContainer>
+      </Link>
       {
         innerMenuOptions.length > 0 && (
           <InnerMenuFloatingContainer className="floating-container">

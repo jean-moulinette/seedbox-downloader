@@ -1,4 +1,5 @@
 import type { DirectoryTree } from 'directory-tree';
+import slugify from 'slugify';
 
 // Deeply search a directory through a directory tree
 export function findRecursiveDirectory(
@@ -21,25 +22,34 @@ export function findRecursiveDirectory(
   return null;
 }
 
-export function updateExplorerPathAfterSelection(
-  selectedDirectory: DirectoryTree,
-  explorerPath: DirectoryTree[]
+export function findRecursiveDirectoryByNameSlug(
+  slugToFind: string,
+  rootDirectory: DirectoryTree,
 ) {
-  const selectedPathsArray = [...explorerPath];
-  const lastDirectorySelected = selectedPathsArray[selectedPathsArray.length - 1];
-  const isChildrenOfCurrentSelection = lastDirectorySelected.children
-    ? lastDirectorySelected.children.some(
-      (directoryChildren) => directoryChildren.path === selectedDirectory.path,
-    )
-    : false;
+  if (slugToFind === slugify(rootDirectory.name)) return rootDirectory;
 
-  if (lastDirectorySelected.path !== selectedDirectory.path) {
-    if (isChildrenOfCurrentSelection) {
-      selectedPathsArray.push(selectedDirectory);
-    } else if (selectedPathsArray.length !== 1) {
-      selectedPathsArray.pop();
-    }
+  if (rootDirectory.children) {
+    let result = null;
+
+    rootDirectory.children.every((children) => {
+      result = findRecursiveDirectoryByNameSlug(slugToFind, children);
+      return result === null;
+    });
+
+    return result;
   }
 
-  return selectedPathsArray;
+  return null;
+}
+
+export function removeChildrensOfDirectoryChildren(tree: DirectoryTree) {
+  return tree.children
+    ? {
+      ...tree,
+      children: tree.children.map(directoryChild => {
+        delete directoryChild.children;
+        return directoryChild;
+      })
+    }
+    : tree;
 }

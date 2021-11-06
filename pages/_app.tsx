@@ -1,8 +1,6 @@
 import 'public/main.css';
 
-import SeedboxDownloaderProvider from 'bootstrap/provider';
 import SeedboxHeader from 'business/seedbox-header';
-import type { DirectoryTree } from 'directory-tree';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
@@ -16,7 +14,6 @@ import type { ThemeSymbol } from 'ui/helpers/colors';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [theme, setTheme] = useState<ThemeSymbol>(LightThemeSymbol);
-  const [tree, setTree] = useState<DirectoryTree | null>(null);
 
   const styles = `
     @media (prefers-color-scheme: dark) {
@@ -38,18 +35,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     setTheme(savedUserTheme || userTheme);
   }, []);
 
-  useEffect(() => {
-    const getTree = async () => {
-      try {
-        setTree(await treeServices.getTreeFromServer());
-      } catch (_) {
-        global.console.error('Unable to initialize seedbox with tree');
-      }
-    };
-
-    getTree();
-  }, []);
-
   return (
     <>
       <Head>
@@ -64,11 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <SeedboxHeader
           onThemeChange={setTheme}
         />
-        {tree && (
-          <SeedboxDownloaderProvider tree={tree}>
-            <Component {...pageProps} />
-          </SeedboxDownloaderProvider>
-        )}
+          <Component {...pageProps} />
       </ThemeProvider>
     </>
   );

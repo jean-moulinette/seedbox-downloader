@@ -1,10 +1,12 @@
 import { ActionTypes, AppContext } from 'bootstrap/provider';
 import type { DirectoryTree } from 'directory-tree';
+import { useRouter } from 'next/router';
 import React, { useCallback, useContext, useMemo } from 'react';
 import type { ReactElement } from 'react';
+import getSlugUrlForParentRoute from 'services/get-slug-url-for-parent-route';
 import prompt from 'services/prompt';
 import treeServices from 'services/tree';
-import { Blocks, Layout } from 'ui';
+import { Blocks } from 'ui';
 
 import FileCard from '../file-card';
 import FolderCard from '../folder-card';
@@ -41,9 +43,9 @@ const askDeleteFile = ({
 };
 
 const FilesGrid = (): ReactElement => {
+  const router = useRouter();
   const {
     state: {
-      selectedDirectory,
       directoryTree,
     },
     dispatch,
@@ -65,14 +67,14 @@ const FilesGrid = (): ReactElement => {
   );
 
   const directoryItems = useMemo(() => {
-    if (!selectedDirectory || !selectedDirectory.children) {
+    if (!directoryTree || !directoryTree.children) {
       return {
         files: [],
         directories: [],
       };
     }
 
-    const childrenSorted = selectedDirectory.children.sort((fileA, fileB) => {
+    const childrenSorted = directoryTree.children.sort((fileA, fileB) => {
       if (fileA.type === 'directory') { return -1; }
       if (fileB.type === 'file') { return 1; }
       return 0;
@@ -109,19 +111,18 @@ const FilesGrid = (): ReactElement => {
         />
       )),
     };
-  }, [selectedDirectory]);
+  }, [directoryTree]);
 
   return (
     <>
       <DirectoriesContainer>
-        {selectedDirectory?.path !== directoryTree?.path && (
+        {router.asPath !== '/' && directoryTree && (
           <Blocks.DirectoryCard
-          key="../"
-          label="../"
-          onClick={() => dispatch({
-            type: ActionTypes.GO_TO_PARENT_DIRECTORY,
-          })}
-        />)}
+            key="../"
+            label="../"
+            slug={getSlugUrlForParentRoute(router)}
+          />
+        )}
         {directoryItems.directories}
       </DirectoriesContainer>
       <FilesContainer>

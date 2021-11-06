@@ -1,9 +1,9 @@
-import { ActionTypes, AppContext } from 'bootstrap/provider';
 import type { DirectoryTree } from 'directory-tree';
 import CrossIcon from 'icons/cross/component';
 import DownloadFolderIcon from 'icons/folder-download/component';
-import React, { useContext } from 'react';
+import React from 'react';
 import type { ReactElement } from 'react';
+import getSlugForDirectoryPath from 'services/get-slug-for-directory-path';
 import { Blocks } from 'ui';
 
 interface Props {
@@ -12,10 +12,9 @@ interface Props {
 }
 
 const FolderCard = ({ directory, deleteFile }: Props): ReactElement => {
-  const { dispatch } = useContext(AppContext);
   const { path, name } = directory;
 
-  const downloadFolderLink = `/api/folder/${directory.path}`;
+  const downloadFolderLink = `/api/folder/${path}`;
 
   const innerMenuOptions = [
     <Blocks.DirectoryCardOptionButton
@@ -38,7 +37,7 @@ const FolderCard = ({ directory, deleteFile }: Props): ReactElement => {
     <Blocks.DirectoryCard
       key={path}
       label={name}
-      onClick={() => dispatch({ type: ActionTypes.SET_SELECTED_DIRECTORY, payload: directory })}
+      slug={getSlugForDirectoryPath(path)}
       innerMenuOptions={innerMenuOptions}
     />
   );

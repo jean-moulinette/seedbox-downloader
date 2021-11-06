@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import type { ReactElement } from 'react';
 import { APP_SCALES } from 'ui/helpers/scales';
@@ -12,24 +13,35 @@ import {
 
 interface Props {
   label: string
-  onClick: () => void
-  innerMenuOptions: ReactElement[]
+  slug: string
+  innerMenuOptions?: ReactElement[]
 }
 
 export default function DirectoryCard({
   label,
-  onClick,
+  slug,
   innerMenuOptions = [],
 }: Props) {
+  const isRootHref = slug === '';
+
+  const href = isRootHref
+    ? '/'
+    : `/[...slug]`;
+  const asPath = isRootHref
+    ? `/`
+    :`/${slug}`;
+
   return (
     <FolderContainer>
-      <FullWidthAnchor onClick={onClick} title={label}>
-        <Icon
-          width={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_WIDTH}
-          height={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_HEIGHT}
-        />
-        <LabelContainer>{ label }</LabelContainer>
-      </FullWidthAnchor>
+      <Link passHref href={href} as={asPath}>
+        <FullWidthAnchor title={label}>
+          <Icon
+            width={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_WIDTH}
+            height={APP_SCALES.WINDOW_CONTENT.DIRECTORY_ICON_HEIGHT}
+          />
+          <LabelContainer>{ label }</LabelContainer>
+        </FullWidthAnchor>
+      </Link>
       {
         innerMenuOptions.length > 0 && (
           <InnerMenuFloatingContainer className="floating-container">
