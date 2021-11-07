@@ -31,7 +31,7 @@ const SideMenu = (): ReactElement | null => {
       ),
       level: 0,
       active: false,
-      slug: getSlugForDirectoryPath(directoryTree.path),
+      slug: '',
     };
     const navigationItems = router.asPath === '/'
       ? []
