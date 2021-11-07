@@ -3,7 +3,7 @@
   "version": "4.2.0",
   "description": "Seedbox downloader allows you to serve a directory and it's content from a server on a beautiful web interface.",
   "engines": {
-    "node": "14.15.0"
+    "node": ">=14.15.0"
   },
   "bin": {
     "seedbox-downloader": "./cli.js"
@@ -42,7 +42,7 @@
     "lodash": "^4.17.20",
     "mime-types": "^2.1.31",
     "module-alias": "^2.2.2",
-    "next": "11.0.0",
+    "next": "^12.0.3",
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-confirm-alert": "^2.6.1",
